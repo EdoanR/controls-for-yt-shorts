@@ -1,16 +1,21 @@
+/** Message that the Message Handler will use. < messageId, messageValue > */
+
 const MESSAGES = {
-    foo: 'bar',
+    foo: '',
+    aaa: '',
     lorem: {
-        ipsulum: 'dolor',
+        ipsulum: '',
         sit: true,
         amet: 2
     }
 };
 
+/** Responses for the messages of the Message Handler */
 const MESSAGES_RESPONSES = {
     foo: ''
 }
 
+/** Items for Storage Handler, this will be used for intellisense. < itemKey, itemDefaulValue > */
 const STORAGE_ITEMS = {
     aaa: 'AAA',
     bbb: 2,
