@@ -46,6 +46,21 @@ const storageHandler = {
     },
     /** @type {{[K in keyof STORAGE_ITEMS] : K}} */
     keys: {},
+    /** @type { (callback: (newValue: {[K in keyof STORAGE_ITEMS]? : STORAGE_ITEMS[K]}, oldValue: {[K in keyof STORAGE_ITEMS]? : STORAGE_ITEMS[K]}, areaName: "sync" | "local" | "managed")) => void } */
+    onChange: function(callback) {
+        if (!callback) return;
+        chrome.storage.onChanged.addListener((changes, areaName) => {
+
+            let newValue = {};
+            let oldValue = {};
+            for (let key in changes) {
+                newValue[key] = changes[key].newValue;
+                oldValue[key] = changes[key].oldValue;
+            }
+
+            callback(newValue, oldValue, areaName);
+        });
+    },
     local: {
         /** @type { <T extends Partial<STORAGE_ITEMS>>(items?: T) => Promise<void> } */
         set: async function(items) {

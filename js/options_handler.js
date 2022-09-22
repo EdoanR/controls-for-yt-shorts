@@ -12,7 +12,7 @@ class OptionHandler {
         this.changeCallbacks = new Map();
     }
 
-    /** @param {HTMLElement | string} element @param {string} storageKey */
+    /** @param {HTMLElement | string} element @param {keyof STORAGE_ITEMS} storageKey */
     addField(element, storageKey) {
         if (typeof element == 'string') {
             element = document.querySelector(element);
