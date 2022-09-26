@@ -1,4 +1,4 @@
-importScripts('js/handler_variables.js', 'js/storage_handler.js', 'js/message_handler.js');
+importScripts('js/storage_handler.js', 'js/message_handler.js', 'js/handlers.js');
 
 // Check if is not in production mode. This will be used when setting the contexts menu.
 const isDevMode = !('update_url' in chrome.runtime.getManifest());

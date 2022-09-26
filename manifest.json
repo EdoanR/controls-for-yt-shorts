@@ -10,7 +10,7 @@
     "content_scripts": [{
         "matches": ["*://website.com/*"],
         "css": ["css/content_script.css"],
-        "js": ["libs/jquery-3.6.0.min.js", "js/handler_variables.js", "js/message_handler.js", "js/storage_handler.js", "js/content_script.js"]
+        "js": ["libs/jquery-3.6.0.min.js", "js/message_handler.js", "js/storage_handler.js", "js/handlers.js", "js/content_script.js"]
     }],
     "action": {
         "default_popup": "html/popup.html",
