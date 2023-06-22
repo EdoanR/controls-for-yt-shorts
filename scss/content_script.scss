@@ -1,0 +1,56 @@
+ytd-reel-video-renderer:has(#shorts-player[CFYTS-player-enabled=true]) {
+
+    /* when hovering the video, move info of the video up to give the controls a space */
+    &[show-player-controls],
+    &:hover {
+        #overlay>ytd-reel-player-header-renderer {
+            margin-bottom: 69px;
+        }
+
+        .fluid_controls_container {
+            opacity: 1 !important;
+        }
+    }
+
+    #overlay {
+        background-image: none;
+    }
+
+    /* setting up the transition when hovering the video above */
+    #overlay>ytd-reel-player-header-renderer {
+        transition: margin-bottom 0.5s ease-in-out;
+        margin-bottom: 0px;
+        // width: 100%;
+        background-image: linear-gradient(0deg,rgba(0,0,0,0.4),transparent);
+    }
+
+    /* move the controls up */
+    .fluid_controls_container {
+        padding-bottom: 18px;
+        /* youtube overlay has a black gradient at the bottom that kinda hide the player */
+        /* so the background below will hel to see the controls a little better */
+        background-color: rgba(0, 0, 0, 0.85) !important;
+        z-index: 99 !important;
+        opacity: 0 !important;
+        visibility: visible !important;
+        transition: opacity 0.5s ease-in-out;
+    }
+
+    /* remove some buttons that doesn't work */
+    .fluid_control_fullscreen,
+    .fluid_control_mini_player,
+    .fluid_control_theatre {
+        display: none !important;
+    }
+
+    #player-container #container .html5-video-container,
+    #player-container #container .html5-video-container .fluid_video_wrapper {
+        width: 100% !important;
+        height: 100% !important;
+    }
+
+}
+
+ytd-reel-video-renderer:has(#shorts-player[CFYTS-player-enabled=false]) .fluid_controls_container {
+    display: none !important;
+}

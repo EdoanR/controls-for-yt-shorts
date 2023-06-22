@@ -1,0 +1,8 @@
+{
+  "scripts": {
+    "scss": "sass --watch scss:css"
+  },
+  "devDependencies": {
+    "@types/chrome": "^0.0.237"
+  }
+}

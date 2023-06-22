@@ -1,0 +1,23 @@
+{
+    "AppName": {
+        "message": "Controles para YouTube™ Shorts"
+    },
+    "AppDescription": {
+        "message": "Adiciona controles para os vídeos do YouTube™ shorts, incluindo atalhos!"
+    },
+    "ThisLanguage" : {
+        "message": "pt_BR"
+    },
+    "Enabled": {
+        "message": "Ativado"
+    },
+    "Disabled": {
+        "message": "Desativado"
+    },
+    "SupportMe": {
+        "message": "Me apoie ❤"
+    },
+    "GitHubRepository": {
+        "message": "Repositório no GitHub"
+    }
+}

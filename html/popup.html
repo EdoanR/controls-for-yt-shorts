@@ -8,13 +8,30 @@
     <link rel="stylesheet" href="../css/popup.css">
 </head>
 <body>
-    <button id="open_options">Options Page</button>
     
-    <script src="../libs/jquery-3.6.0.min.js"></script>
-    <script src="../js/message_handler.js"></script>
-    <script src="../js/storage_handler.js"></script>
-    <script src="../js/options_handler.js"></script>
-    <script src="../js/handlers.js"></script>
+    <div class="option-container collumn">
+        <label id="enabled_text" for="enabled">
+            Enabled
+        </label>
+        <label class="switch">
+            <input id="enabled" type="checkbox" checked>
+            <span class="slider round"></span>
+        </label>
+    </div>
+
+    <div class="collumn info">
+        <span data-i18n="SupportMe">Support me ❤</span>
+        <div class="row">
+            <a id="pix" class="hide" href="https://nubank.com.br/pagar/xldsq/rfgW3dODQh">Pix</a>
+            <a href="https://ko-fi.com/edoan">Paypal</a>
+            <a href="https://www.paypal.com/donate/?hosted_button_id=AP5M7UXBWR47C">Ko-fi</a>
+        </div>
+        <div style="margin-top: 1em; font-size: 0.85em;">
+            <a data-i18n="GitHubRepository" href="">GitHub Repository</a>
+        </div>
+    </div>
+
+    <script src="../js/localize.js"></script>
     <script src="../js/popup.js"></script>
 </body>
 </html>

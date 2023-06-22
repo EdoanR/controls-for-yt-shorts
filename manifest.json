@@ -1,29 +1,29 @@
 {
-    "name": "Template Extesion v3",
+    "name": "__MSG_AppName__",
     "version": "1.0",
     "manifest_version": 3,
-    "description": "Use this template to create new extensions!",
-    "permissions": ["tabs", "storage", "contextMenus"],
+    "description": "__MSG_AppDescription__",
+    "permissions": ["tabs", "storage"],
+    "default_locale": "en",
     "background": {
         "service_worker": "background.js"
     },
     "content_scripts": [{
-        "matches": ["*://website.com/*"],
+        "matches": ["*://*.youtube.com/*"],
         "css": ["css/content_script.css"],
-        "js": ["libs/jquery-3.6.0.min.js", "js/message_handler.js", "js/storage_handler.js", "js/handlers.js", "js/content_script.js"]
+        "js": ["libs/mutation_summary.js", "libs/fluidplayer.min.js", "js/observer.js", "js/content_script.js"]
     }],
     "action": {
         "default_popup": "html/popup.html",
         "default_icon": {
-            "16": "images/icon-16.png",
-            "48": "images/icon-48.png",
-            "32": "images/icon-128.png"
+            "16": "images/icons/normal/icon-16.png",
+            "48": "images/icons/normal/icon-48.png",
+            "32": "images/icons/normal/icon-128.png"
         }
     },
-    "options_page": "html/options.html",
     "icons": {
-        "16": "images/icon-16.png",
-        "48": "images/icon-48.png",
-        "128": "images/icon-128.png"
+        "16": "images/icons/normal/icon-16.png",
+        "48": "images/icons/normal/icon-48.png",
+        "128": "images/icons/normal/icon-128.png"
     }
 }

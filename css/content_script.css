@@ -1,0 +1,46 @@
+ytd-reel-video-renderer:has(#shorts-player[CFYTS-player-enabled=true]) {
+  /* when hovering the video, move info of the video up to give the controls a space */
+  /* setting up the transition when hovering the video above */
+  /* move the controls up */
+  /* remove some buttons that doesn't work */
+}
+ytd-reel-video-renderer:has(#shorts-player[CFYTS-player-enabled=true])[show-player-controls] #overlay > ytd-reel-player-header-renderer, ytd-reel-video-renderer:has(#shorts-player[CFYTS-player-enabled=true]):hover #overlay > ytd-reel-player-header-renderer {
+  margin-bottom: 69px;
+}
+ytd-reel-video-renderer:has(#shorts-player[CFYTS-player-enabled=true])[show-player-controls] .fluid_controls_container, ytd-reel-video-renderer:has(#shorts-player[CFYTS-player-enabled=true]):hover .fluid_controls_container {
+  opacity: 1 !important;
+}
+ytd-reel-video-renderer:has(#shorts-player[CFYTS-player-enabled=true]) #overlay {
+  background-image: none;
+}
+ytd-reel-video-renderer:has(#shorts-player[CFYTS-player-enabled=true]) #overlay > ytd-reel-player-header-renderer {
+  transition: margin-bottom 0.5s ease-in-out;
+  margin-bottom: 0px;
+  background-image: linear-gradient(0deg, rgba(0, 0, 0, 0.4), transparent);
+}
+ytd-reel-video-renderer:has(#shorts-player[CFYTS-player-enabled=true]) .fluid_controls_container {
+  padding-bottom: 18px;
+  /* youtube overlay has a black gradient at the bottom that kinda hide the player */
+  /* so the background below will hel to see the controls a little better */
+  background-color: rgba(0, 0, 0, 0.85) !important;
+  z-index: 99 !important;
+  opacity: 0 !important;
+  visibility: visible !important;
+  transition: opacity 0.5s ease-in-out;
+}
+ytd-reel-video-renderer:has(#shorts-player[CFYTS-player-enabled=true]) .fluid_control_fullscreen,
+ytd-reel-video-renderer:has(#shorts-player[CFYTS-player-enabled=true]) .fluid_control_mini_player,
+ytd-reel-video-renderer:has(#shorts-player[CFYTS-player-enabled=true]) .fluid_control_theatre {
+  display: none !important;
+}
+ytd-reel-video-renderer:has(#shorts-player[CFYTS-player-enabled=true]) #player-container #container .html5-video-container,
+ytd-reel-video-renderer:has(#shorts-player[CFYTS-player-enabled=true]) #player-container #container .html5-video-container .fluid_video_wrapper {
+  width: 100% !important;
+  height: 100% !important;
+}
+
+ytd-reel-video-renderer:has(#shorts-player[CFYTS-player-enabled=false]) .fluid_controls_container {
+  display: none !important;
+}
+
+/*# sourceMappingURL=content_script.css.map */

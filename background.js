@@ -1,37 +1,58 @@
-importScripts('js/storage_handler.js', 'js/message_handler.js', 'js/handlers.js');
 
-// Check if is not in production mode. This will be used when setting the contexts menu.
-const isDevMode = !('update_url' in chrome.runtime.getManifest());
+// Send a message for a tab when it's url update.
+chrome.tabs.onUpdated.addListener((tabId, changeInfo, tab) => {
+    if (!changeInfo.url) return;
 
-chrome.runtime.onInstalled.addListener(details => {
-    CreateContextMenus();
+    chrome.tabs.sendMessage(tabId, { 
+        type: 'url update', 
+        newUrl: changeInfo.url 
+    }).catch(err => {}); 
+
 });
 
-// Use this to open option by clicking the extension icon. (Notice: this will not work if the extension has popup.)
-// chrome.action.onClicked.addListener((tab) => {
-//     chrome.runtime.openOptionsPage();
-// });
+chrome.storage.sync.get({ enabled: true }).then(items => {
+    updateAllTabIcons(items.enabled);
+});
 
-//#region Context Menus
+chrome.storage.sync.onChanged.addListener(changes => {
+    if (!changes.enabled) return;
 
-function CreateContextMenus() {
-    if (!isDevMode) return; // The context menus below will be used only on dev mode.
+    updateAllTabIcons(changes.enabled.newValue);
+});
 
-    // Context menu to reload extension.
-    chrome.contextMenus.create({
-        id: 'reloadExtension',
-        title: 'Reload',
-        contexts: ['action'] // v3
+chrome.tabs.onUpdated.addListener((tabId, changeInfo, tab) => {
+    if (!changeInfo.url) return;
+
+    chrome.storage.sync.get({ enabled: true }).then(items => {
+        updateTabIcon(tab, items.enabled);
+    })
+});
+
+function updateAllTabIcons(enabled) {
+    chrome.tabs.query({}).then(tabs => {
+        for (const tab of tabs) {
+            updateTabIcon(tab, enabled);
+        }
     });
 }
 
-// Adding functionality to the context menus.
-chrome.contextMenus.onClicked.addListener( (info, tab) => {
-	if (info.menuItemId == 'reloadExtension') {
-		
-        chrome.runtime.reload();
-		return;
-	}
-});
+/** @param {chrome.tabs.Tab} tab @param {boolean} enabled */
+function updateTabIcon(tab, enabled = true) {
+    if (!tab || !tab.id) return;
 
-//#endregion
+    const tabId = tab.id;
+    const setIcon = (iconName) => {
+        chrome.action.setIcon({path: {
+            '16': `images/icons/${iconName}-16.png`,
+            '48': `images/icons/${iconName}-48.png`,
+            '128': `images/icons/${iconName}-128.png`
+        }, tabId: tabId});
+    }
+
+    if (tab.url && /\/shorts\//.test(tab.url)) {
+        setIcon(enabled ? 'normal/icon' : 'paused/icon_pause');
+    } else {
+        setIcon(enabled ? 'normal/icon2' : 'paused/icon_pause2');
+    }
+
+}

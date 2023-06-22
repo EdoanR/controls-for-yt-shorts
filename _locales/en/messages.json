@@ -1,0 +1,23 @@
+{
+    "AppName": {
+        "message": "Controls for YouTube™ Shorts"
+    },
+    "AppDescription": {
+        "message": "Add controls for videos of YouTube™ shorts, including shortcuts!"
+    },
+    "ThisLanguage" : {
+        "message": "en"
+    },
+    "Enabled": {
+        "message": "Enabled"
+    },
+    "Disabled": {
+        "message": "Disabled"
+    },
+    "SupportMe": {
+        "message": "Support me ❤"
+    },
+    "GitHubRepository": {
+        "message": "GitHub Repository"
+    }
+}
