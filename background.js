@@ -33,6 +33,8 @@ function updateAllTabIcons(enabled) {
         for (const tab of tabs) {
             updateTabIcon(tab, enabled);
         }
+    }).catch(err => {
+        console.log('Could not query tabs', err);
     });
 }
 
@@ -42,11 +44,16 @@ function updateTabIcon(tab, enabled = true) {
 
     const tabId = tab.id;
     const setIcon = (iconName) => {
-        chrome.action.setIcon({path: {
-            '16': `images/icons/${iconName}-16.png`,
-            '48': `images/icons/${iconName}-48.png`,
-            '128': `images/icons/${iconName}-128.png`
-        }, tabId: tabId});
+        chrome.action.setIcon({
+            path: {
+                '16': `images/icons/${iconName}-16.png`,
+                '48': `images/icons/${iconName}-48.png`,
+                '128': `images/icons/${iconName}-128.png`
+            }, 
+            tabId
+        }).catch(err => {
+            console.log(`Could not add icon to the tab ${tabId}`, err);
+        });
     }
 
     if (tab.url && /\/shorts\//.test(tab.url)) {
