@@ -3,7 +3,8 @@
     "version": "1.0",
     "manifest_version": 3,
     "description": "__MSG_AppDescription__",
-    "permissions": ["tabs", "storage"],
+    "permissions": ["tabs", "storage", "scripting"],
+    "host_permissions": ["*://*.youtube.com/*"],
     "default_locale": "en",
     "background": {
         "service_worker": "background.js"
@@ -11,7 +12,7 @@
     "content_scripts": [{
         "matches": ["*://*.youtube.com/*"],
         "css": ["css/content_script.css"],
-        "js": ["libs/mutation_summary.js", "libs/fluidplayer.min.js", "js/observer.js", "js/content_script.js"]
+        "js": ["libs/mutation_summary.js", "libs/fluidplayer.min.js", "js/observer.js", "js/utils.js", "js/content_script.js"]
     }],
     "action": {
         "default_popup": "html/popup.html",

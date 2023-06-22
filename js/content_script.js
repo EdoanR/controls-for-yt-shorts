@@ -1,3 +1,5 @@
+debugLog('content script started.');
+
 let player = null;
 
 chrome.storage.sync.get({ enabled: true }).then(items => {
@@ -37,7 +39,7 @@ chrome.storage.sync.get({ enabled: true }).then(items => {
         const video = document.querySelector('#shorts-player video');
 
         if (!video) return;
-        if (video.hasAttribute(playerAttributeName)) return;
+        if (video.hasAttribute(playerAttributeName)) return debugLog('video already has controls.');
 
         video.setAttribute(playerAttributeName, '');
 

@@ -1,3 +1,36 @@
+chrome.runtime.onInstalled.addListener( addContentScriptToTabs );
+
+function addContentScriptToTabs() {
+    
+    // dinamically add content scripts on install.
+    chrome.tabs.query({}).then(tabs => {
+        for (const tab of tabs) {
+            // only for youtube urls.
+            if (!tab.url || !tab.url.match(/https:\/\/(www\.)?youtube\.com\//)) continue;
+
+            // add css first.
+            chrome.scripting.insertCSS({
+                target: { tabId: tab.id },
+                files: ["css/content_script.css"]
+            }).then(() => {
+                // add js files.
+
+                chrome.scripting.executeScript({
+                    target: { tabId: tab.id },
+                    files: ["libs/mutation_summary.js", "libs/fluidplayer.min.js", "js/observer.js", "js/utils.js", "js/content_script.js"]
+                }).catch(err => {
+                    console.log(`Could not add content scripts to the tab ${tab.id}`, err);
+                })
+
+            }).catch(err => {
+                console.log(`Could not add css files to the tab ${tab.id}`, err);
+            })
+
+        }
+    }).catch(err => {
+        console.log('Could not query tabs', err);
+    });
+}
 
 // Send a message for a tab when it's url update.
 chrome.tabs.onUpdated.addListener((tabId, changeInfo, tab) => {
