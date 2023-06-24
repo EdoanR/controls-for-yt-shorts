@@ -14,6 +14,7 @@ ytd-reel-video-renderer:has(#shorts-player[CFYTS-player-enabled=true]) {
 
     #overlay {
         background-image: none;
+        padding-right: 0;
     }
 
     /* setting up the transition when hovering the video above */
