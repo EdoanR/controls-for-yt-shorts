@@ -1,8 +1,7 @@
 ytd-reel-video-renderer:has(#shorts-player[CFYTS-player-enabled=true]) {
-  /* when hovering the video, move info of the video up to give the controls a space */
   /* setting up the transition when hovering the video above */
   /* move the controls up */
-  /* remove some buttons that doesn't work */
+  /* remove some buttons from control that doesn't work */
 }
 ytd-reel-video-renderer:has(#shorts-player[CFYTS-player-enabled=true])[show-player-controls] #overlay > ytd-reel-player-header-renderer, ytd-reel-video-renderer:has(#shorts-player[CFYTS-player-enabled=true]):hover #overlay > ytd-reel-player-header-renderer {
   margin-bottom: 69px;

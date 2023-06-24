@@ -1,19 +1,24 @@
+// apply only when the extension is activated.
 ytd-reel-video-renderer:has(#shorts-player[CFYTS-player-enabled=true]) {
 
-    /* when hovering the video, move info of the video up to give the controls a space */
+    // when hovering or pausing the video
     &[show-player-controls],
     &:hover {
+        // move info of the video up to give the controls a space
         #overlay>ytd-reel-player-header-renderer {
             margin-bottom: 69px;
         }
 
+        // show controllers
         .fluid_controls_container {
             opacity: 1 !important;
         }
     }
 
     #overlay {
+        // remove the overlay gradient that show on top of the controls.
         background-image: none;
+        // fix space padding when opening comments.
         padding-right: 0;
     }
 
@@ -21,7 +26,7 @@ ytd-reel-video-renderer:has(#shorts-player[CFYTS-player-enabled=true]) {
     #overlay>ytd-reel-player-header-renderer {
         transition: margin-bottom 0.5s ease-in-out;
         margin-bottom: 0px;
-        // width: 100%;
+        // add the gradient that was removed from #overlay but now in a lower hierarch than the controls.
         background-image: linear-gradient(0deg,rgba(0,0,0,0.4),transparent);
     }
 
@@ -37,13 +42,14 @@ ytd-reel-video-renderer:has(#shorts-player[CFYTS-player-enabled=true]) {
         transition: opacity 0.5s ease-in-out;
     }
 
-    /* remove some buttons that doesn't work */
+    /* remove some buttons from control that doesn't work */
     .fluid_control_fullscreen,
     .fluid_control_mini_player,
     .fluid_control_theatre {
         display: none !important;
     }
 
+    // make controls adapt to size changes (such when you unzoom the page)
     #player-container #container .html5-video-container,
     #player-container #container .html5-video-container .fluid_video_wrapper {
         width: 100% !important;
@@ -52,6 +58,7 @@ ytd-reel-video-renderer:has(#shorts-player[CFYTS-player-enabled=true]) {
 
 }
 
+// hide controls when the extension is deactivated. 
 ytd-reel-video-renderer:has(#shorts-player[CFYTS-player-enabled=false]) .fluid_controls_container {
     display: none !important;
 }
