@@ -77,8 +77,9 @@ chrome.storage.sync.get({ enabled: true }).then(items => {
                 e.stopImmediatePropagation();
             }
 
-            if (e.shiftKey) return;
+            if (e.shiftKey) return; // ignore shorcuts using shift key.
 
+            // spacebar and "M" are already handled by YouTube.
             if (e.key === 'ArrowUp') {
                 video.volume = Math.min(1, video.volume + 0.05);
                 preventDefault();
