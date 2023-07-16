@@ -41,6 +41,7 @@ chrome.storage.sync.get({ enabled: true }).then(items => {
         if (!video) return;
         if (video.hasAttribute(playerAttributeName)) return debugLog('video already has controls.');
 
+        /** @type {HTMLVideoElement} */
         video.setAttribute(playerAttributeName, '');
 
         player = fluidPlayer(video, {
@@ -48,6 +49,7 @@ chrome.storage.sync.get({ enabled: true }).then(items => {
                 playPauseAnimation: false,
                 playButtonShowing: false,
                 doubleclickFullscreen: false,
+                keyboardControl: false,
                 loop: true
             }
         });
@@ -63,7 +65,42 @@ chrome.storage.sync.get({ enabled: true }).then(items => {
         video.addEventListener('loadedmetadata', () => {
             // setting the changed volume to the new videos.
             if (savedVolume !== null && video.volume !== savedVolume) video.volume = savedVolume;
-        })
+        });
+
+        document.addEventListener('keydown', e => {
+            if (!items.enabled) return;
+            if (e.target.matches('input, [contenteditable]')) return;
+
+            const preventDefault = () => {
+                e.preventDefault();
+                e.stopPropagation();
+                e.stopImmediatePropagation();
+            }
+
+            if (e.shiftKey) return;
+
+            if (e.key === 'ArrowUp') {
+                video.volume = Math.min(1, video.volume + 0.05);
+                preventDefault();
+            } else if (e.key === 'ArrowDown') {
+                video.volume = Math.max(0, video.volume - 0.05);
+                preventDefault();
+            } else if (e.key === 'ArrowLeft') {
+                video.currentTime = Math.min(video.currentTime - 5, 0);
+                preventDefault();
+            } else if (e.key === 'ArrowRight') {
+                video.currentTime = Math.min(video.currentTime + 5, video.duration);
+                preventDefault();
+            } else if (e.key.match(/^[0-9]$/)) {
+                const numericValue = parseInt(e.key);
+                const percentage = numericValue * 10;
+                const position = (video.duration * percentage) / 100;
+
+                video.currentTime = position;
+                preventDefault();
+            }
+
+        }, true);
 
         fluidContainer.addEventListener('click', e => {
             // when clicking at the video bar it can click throught it and pause/play the video.
