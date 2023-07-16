@@ -46,7 +46,9 @@ chrome.storage.sync.get({ enabled: true }).then(items => {
         player = fluidPlayer(video, {
             layoutControls: {
                 playPauseAnimation: false,
-                playButtonShowing: false
+                playButtonShowing: false,
+                doubleclickFullscreen: false,
+                loop: true
             }
         });
 
