@@ -1,6 +1,9 @@
 devLog('content script started.');
 
 let player = null;
+/** @type {HTMLVideoElement} */
+let VIDEO = null;
+let listeningKeys = false;
 
 chrome.storage.sync.get({ enabled: true }).then(items => {
     const playerAttributeName = 'CFYTS-player';
@@ -44,6 +47,8 @@ chrome.storage.sync.get({ enabled: true }).then(items => {
         /** @type {HTMLVideoElement} */
         video.setAttribute(playerAttributeName, '');
 
+        VIDEO = video;
+
         player = fluidPlayer(video, {
             layoutControls: {
                 playPauseAnimation: false,
@@ -67,48 +72,52 @@ chrome.storage.sync.get({ enabled: true }).then(items => {
             if (savedVolume !== null && video.volume !== savedVolume) video.volume = savedVolume;
         });
 
-        document.addEventListener('keydown', e => {
-            if (!items.enabled) return;
-            if (!location.href.includes('/shorts/')) return;
-            if (e.target.matches('input, [contenteditable]')) return;
-
-            const preventDefault = () => {
-                e.preventDefault();
-                e.stopPropagation();
-                e.stopImmediatePropagation();
-            }
-
-            if (e.shiftKey) return; // ignore shorcuts using shift key.
-
-            // spacebar and "M" are already handled by YouTube.
-            if (e.key === 'ArrowUp') {
-                video.volume = Math.min(1, video.volume + 0.05);
-                preventDefault();
-            } else if (e.key === 'ArrowDown') {
-                video.volume = Math.max(0, video.volume - 0.05);
-                preventDefault();
-            } else if (e.key === 'ArrowLeft') {
-                video.currentTime = Math.min(video.currentTime - 5, 0);
-                preventDefault();
-            } else if (e.key === 'ArrowRight') {
-                video.currentTime = Math.min(video.currentTime + 5, video.duration);
-                preventDefault();
-            } else if (e.key.match(/^[0-9]$/)) {
-                const numericValue = parseInt(e.key);
-                const percentage = numericValue * 10;
-                const position = (video.duration * percentage) / 100;
-
-                video.currentTime = position;
-                preventDefault();
-            }
-
-        }, true);
-
         fluidContainer.addEventListener('click', e => {
             // when clicking at the video bar it can click throught it and pause/play the video.
             // the following line prevent that from happening.
             e.stopPropagation();
         });
+
+        if (!listeningKeys) {
+            listeningKeys = true;
+            
+            document.addEventListener('keydown', e => {
+                if (!items.enabled) return;
+                if (!location.href.includes('/shorts/')) return;
+                if (e.target.matches('input, [contenteditable]')) return;
+    
+                const preventDefault = () => {
+                    e.preventDefault();
+                    e.stopPropagation();
+                    e.stopImmediatePropagation();
+                }
+    
+                if (e.shiftKey) return; // ignore shorcuts using shift key.
+
+                // spacebar and "M" are already handled by YouTube.
+                if (e.key === 'ArrowUp') {
+                    VIDEO.volume = Math.min(1, VIDEO.volume + 0.05);
+                    preventDefault();
+                } else if (e.key === 'ArrowDown') {
+                    VIDEO.volume = Math.max(0, VIDEO.volume - 0.05);
+                    preventDefault();
+                } else if (e.key === 'ArrowLeft') {
+                    VIDEO.currentTime = Math.max(VIDEO.currentTime - 5, 0);
+                    preventDefault();
+                } else if (e.key === 'ArrowRight') {
+                    VIDEO.currentTime = Math.min(VIDEO.currentTime + 5, VIDEO.duration);
+                    preventDefault();
+                } else if (e.key.match(/^[0-9]$/)) {
+                    const numericValue = parseInt(e.key);
+                    const percentage = numericValue * 10;
+                    const position = (VIDEO.duration * percentage) / 100;
+    
+                    VIDEO.currentTime = position;
+                    preventDefault();
+                }
+    
+            }, true);
+        }
 
     }
 
