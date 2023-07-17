@@ -10,6 +10,7 @@ Add a control bar below videos from YouTube Shorts, it only appears when you hov
 Keyboard shortcuts:
 - Left/Right arrow keys to rewind/fast-forward the video by 5 seconds.
 - Up/Down arrow keys to increase/decrease the volume.
+- "M" to mute/unmute the video.
 - Spacebar to pause/resume the video.
 
 # Installation
