@@ -69,6 +69,7 @@ chrome.storage.sync.get({ enabled: true }).then(items => {
 
         document.addEventListener('keydown', e => {
             if (!items.enabled) return;
+            if (!location.href.includes('/shorts/')) return;
             if (e.target.matches('input, [contenteditable]')) return;
 
             const preventDefault = () => {
