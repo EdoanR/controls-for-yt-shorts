@@ -20,6 +20,11 @@ ytd-reel-video-renderer:has(#shorts-player[CFYTS-player-enabled=true]) {
         background-image: none;
         // fix space padding when opening comments.
         padding-right: 0;
+
+        // hide small progress bar below the video.
+        #progress-bar {
+            display: none !important;
+        }
     }
 
     /* setting up the transition when hovering the video above */

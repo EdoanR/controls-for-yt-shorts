@@ -13,6 +13,9 @@ ytd-reel-video-renderer:has(#shorts-player[CFYTS-player-enabled=true]) #overlay 
   background-image: none;
   padding-right: 0;
 }
+ytd-reel-video-renderer:has(#shorts-player[CFYTS-player-enabled=true]) #overlay #progress-bar {
+  display: none !important;
+}
 ytd-reel-video-renderer:has(#shorts-player[CFYTS-player-enabled=true]) #overlay > ytd-reel-player-header-renderer {
   transition: margin-bottom 0.5s ease-in-out;
   margin-bottom: 0px;
