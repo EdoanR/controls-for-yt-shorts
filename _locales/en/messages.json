@@ -14,6 +14,12 @@
     "Disabled": {
         "message": "Disabled"
     },
+    "ControlsAlwaysVisibleOption": {
+        "message": "Controls always visible"
+    },
+    "HideVideoInfoOption": {
+        "message": "Hide title and channel info"
+    },
     "SupportMe": {
         "message": "Support me ❤"
     },
