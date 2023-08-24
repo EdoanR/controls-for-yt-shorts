@@ -80,18 +80,18 @@ chrome.storage.sync.get({ enabled: true }).then(items => {
 
         if (!listeningKeys) {
             listeningKeys = true;
-            
+
             document.addEventListener('keydown', e => {
                 if (!items.enabled) return;
                 if (!location.href.includes('/shorts/')) return;
                 if (e.target.matches('input, [contenteditable]')) return;
-    
+
                 const preventDefault = () => {
                     e.preventDefault();
                     e.stopPropagation();
                     e.stopImmediatePropagation();
                 }
-    
+
                 if (e.shiftKey) return; // ignore shorcuts using shift key.
 
                 // spacebar and "M" are already handled by YouTube.
@@ -111,11 +111,11 @@ chrome.storage.sync.get({ enabled: true }).then(items => {
                     const numericValue = parseInt(e.key);
                     const percentage = numericValue * 10;
                     const position = (VIDEO.duration * percentage) / 100;
-    
+
                     VIDEO.currentTime = position;
                     preventDefault();
                 }
-    
+
             }, true);
         }
 
