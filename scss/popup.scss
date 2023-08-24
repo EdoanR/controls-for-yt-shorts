@@ -2,7 +2,7 @@
 body {
     background-color: #0F0F0F;
     color: white;
-    width: 200px;
+    width: 300px;
     display: flex;
     flex-direction: column;
     align-items: center;
@@ -29,12 +29,12 @@ a {
     gap: 0.5em;
 }
 
-.row {
-    display: flex;
-    width: 100%;
-    justify-content: center;
-    gap: 0.5em;
-}
+// .row {
+//     display: flex;
+//     width: 100%;
+//     justify-content: center;
+//     gap: 0.5em;
+// }
 
 .info {
     background-color: #272727;

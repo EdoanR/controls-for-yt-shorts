@@ -1,7 +1,7 @@
 body {
   background-color: #0F0F0F;
   color: white;
-  width: 200px;
+  width: 300px;
   display: flex;
   flex-direction: column;
   align-items: center;
@@ -25,13 +25,6 @@ a {
   flex-direction: column;
   justify-content: center;
   align-items: center;
-  gap: 0.5em;
-}
-
-.row {
-  display: flex;
-  width: 100%;
-  justify-content: center;
   gap: 0.5em;
 }
 

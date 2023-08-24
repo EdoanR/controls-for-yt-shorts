@@ -5,7 +5,7 @@ let player = null;
 let VIDEO = null;
 let listeningKeys = false;
 
-chrome.storage.sync.get({ enabled: true }).then(items => {
+chrome.storage.sync.get({ enabled: true, controlAlwaysVisible: false, hideVideoInfo: false }).then(items => {
     const playerAttributeName = 'CFYTS-player';
     const playerEnabledAttributeName = 'CFYTS-player-enabled';
 
