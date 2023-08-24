@@ -84,6 +84,13 @@ ytd-reel-video-renderer:has(#shorts-player[cfyts-player-enabled=true]) {
         height: 100% !important;
     }
 
+    &:has(#watch-while-engagement-panel ytd-engagement-panel-section-list-renderer[visibility="ENGAGEMENT_PANEL_VISIBILITY_EXPANDED"]) {
+        // add margin to the progress bar when comments are open.
+        .fluid_slider {
+            margin-right: 55px;
+        }
+    }
+
 }
 
 // hide controls when the extension is deactivated. 
