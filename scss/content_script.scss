@@ -7,7 +7,7 @@ ytd-reel-video-renderer:has(#shorts-player[cfyts-player-enabled=true]) {
         &:hover {
             // move info of the video up to give the controls a space
             #overlay>ytd-reel-player-header-renderer {
-                margin-bottom: 69px;
+                margin-bottom: 63px;
             }
     
             // show controllers
@@ -20,7 +20,7 @@ ytd-reel-video-renderer:has(#shorts-player[cfyts-player-enabled=true]) {
     &:has(#shorts-player[cfyts-controls-always-on=true]) {
         // move info of the video up to give the controls a space
         #overlay>ytd-reel-player-header-renderer {
-            margin-bottom: 69px;
+            margin-bottom: 63px;
         }
 
         // show controllers
@@ -60,7 +60,7 @@ ytd-reel-video-renderer:has(#shorts-player[cfyts-player-enabled=true]) {
 
     /* move the controls up */
     .fluid_controls_container {
-        padding-bottom: 18px;
+        padding-bottom: 10px;
         /* youtube overlay has a black gradient at the bottom that kinda hide the player */
         /* so the background below will hel to see the controls a little better */
         background-color: rgba(0, 0, 0, 0.85) !important;
