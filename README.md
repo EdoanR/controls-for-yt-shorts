@@ -9,13 +9,14 @@ Add a control bar below videos from YouTube Shorts.
 
 Keyboard shortcuts:
 - Left/Right arrow keys to rewind/fast-forward the video by 5 seconds.
-- Up/Down arrow keys to increase/decrease the volume.
+- Shift/Cmd + Up/Down arrow keys to increase/decrease the volume.
 - "M" to mute/unmute the video.
 - Spacebar to pause/resume the video.
 
 ## Options
 - **Always show controls**: don't need to hover the video for the controls to appear.
 - **Hide title and channel**: hide video info when not hovering the video.
+- **Control volume with Arrow Up/Down**: allow you to control the volume with arrow keys without holding shift/cmd, it is optional, as many users use it to scroll between shorts.
 
 # Installation
 1. Go to the [Web Store page](https://chrome.google.com/webstore/detail/controls-for-youtube-shor/daocpklojfnjgomjaemhhibodkpcjlpe).

@@ -20,6 +20,9 @@
     "HideVideoInfoOption": {
         "message": "Hide title and channel info"
     },
+    "ArrowControlVolume": {
+        "message": "Arrow Up/Down to control volume"
+    },
     "SupportMe": {
         "message": "Support me ❤"
     },

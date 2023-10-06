@@ -5,7 +5,12 @@ let PLAYER = null;
 let VIDEO = null;
 let LISTENING_KEYS = false;
 
-chrome.storage.sync.get({ enabled: true, controlAlwaysVisible: false, hideVideoInfo: false }).then(items => {
+chrome.storage.sync.get({ 
+    enabled: true, 
+    controlAlwaysVisible: false, 
+    hideVideoInfo: false, 
+    controlVolumeWithArrows: false 
+}).then(items => {
     const playerAttributeName = 'cfyts-player';
     const playerEnabledAttributeName = 'cfyts-player-enabled';
     const alwaysVisibleAttrName = 'cfyts-controls-always-on';
@@ -120,18 +125,19 @@ chrome.storage.sync.get({ enabled: true, controlAlwaysVisible: false, hideVideoI
                     e.stopPropagation();
                     e.stopImmediatePropagation();
                 }
-                
+
                 // spacebar and "M" are already handled by YouTube.
-    
-                if (e.key === 'ArrowUp' && e.shiftKey) {
-                    VIDEO.volume = Math.min(1, VIDEO.volume + 0.05);
-                    preventDefault();
-                } else if (e.key === 'ArrowDown' && e.shiftKey) {
-                    VIDEO.volume = Math.max(0, VIDEO.volume - 0.05);
+
+                if ((e.key === 'ArrowUp' || e.key === 'ArrowDown') && (items.controlVolumeWithArrows || e.shiftKey)) {
+                    if (e.key === 'ArrowUp') {
+                        VIDEO.volume = Math.min(1, VIDEO.volume + 0.05);
+                    } else if (e.key === 'ArrowDown') {
+                        VIDEO.volume = Math.max(0, VIDEO.volume - 0.05);
+                    }
                     preventDefault();
                 }
 
-                if (e.shiftKey) return; // ignore shorcuts using shift key.
+                if (e.shiftKey) return; // ignore shortcuts below when using shift key.
                 
                 if (e.key === 'ArrowLeft') {
                     VIDEO.currentTime = Math.max(VIDEO.currentTime - 5, 0);

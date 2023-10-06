@@ -20,6 +20,9 @@
     "HideVideoInfoOption": {
         "message": "Esconder título e canal"
     },
+    "ArrowControlVolume": {
+        "message": "Volume com seta cima/baixo"
+    },
     "SupportMe": {
         "message": "Me apoie ❤"
     },
