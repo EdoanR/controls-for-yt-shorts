@@ -120,17 +120,20 @@ chrome.storage.sync.get({ enabled: true, controlAlwaysVisible: false, hideVideoI
                     e.stopPropagation();
                     e.stopImmediatePropagation();
                 }
-    
-                if (e.shiftKey) return; // ignore shorcuts using shift key.
-
+                
                 // spacebar and "M" are already handled by YouTube.
-                if (e.key === 'ArrowUp') {
+    
+                if (e.key === 'ArrowUp' && e.shiftKey) {
                     VIDEO.volume = Math.min(1, VIDEO.volume + 0.05);
                     preventDefault();
-                } else if (e.key === 'ArrowDown') {
+                } else if (e.key === 'ArrowDown' && e.shiftKey) {
                     VIDEO.volume = Math.max(0, VIDEO.volume - 0.05);
                     preventDefault();
-                } else if (e.key === 'ArrowLeft') {
+                }
+
+                if (e.shiftKey) return; // ignore shorcuts using shift key.
+                
+                if (e.key === 'ArrowLeft') {
                     VIDEO.currentTime = Math.max(VIDEO.currentTime - 5, 0);
                     preventDefault();
                 } else if (e.key === 'ArrowRight') {
