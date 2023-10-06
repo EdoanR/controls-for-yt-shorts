@@ -89,10 +89,5 @@ function updateTabIcon(tab, enabled = true) {
         });
     }
 
-    if (tab.url && /\/shorts\//.test(tab.url)) {
-        setIcon(enabled ? 'normal/icon' : 'paused/icon_pause');
-    } else {
-        setIcon(enabled ? 'normal/icon2' : 'paused/icon_pause2');
-    }
-
+    setIcon(enabled ? 'normal/icon' : 'paused/icon_pause');
 }
