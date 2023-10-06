@@ -4,7 +4,7 @@ ytd-reel-video-renderer:has(#shorts-player[cfyts-player-enabled=true]) {
     // when hovering or pausing the video
     &:has(#shorts-player[cfyts-controls-always-on=false]) {
         &[show-player-controls],
-        &:hover {
+        &:has(ytd-reel-player-overlay-renderer:hover) {
             // move info of the video up to give the controls a space
             #overlay>ytd-reel-player-header-renderer {
                 margin-bottom: 63px;
@@ -29,7 +29,7 @@ ytd-reel-video-renderer:has(#shorts-player[cfyts-player-enabled=true]) {
         }
     }
 
-    &:not(&[show-player-controls], &:hover) {
+    &:not(&[show-player-controls], &:has(ytd-reel-player-overlay-renderer:hover)) {
         &:has(#shorts-player[cfyts-hide-video-info=true]) {
             // move info of the video up to give the controls a space
             #overlay>ytd-reel-player-header-renderer {
