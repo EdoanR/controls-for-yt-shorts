@@ -14,7 +14,7 @@ Keyboard shortcuts:
 - Spacebar to pause/resume the video.
 
 ## Options
-- **Always show controls**: don't need to hover the vide o for the controls to appear.
+- **Always show controls**: don't need to hover the video for the controls to appear.
 - **Hide title and channel**: hide video info when not hovering the video.
 
 # Installation
