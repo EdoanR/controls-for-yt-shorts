@@ -5,11 +5,17 @@ let PLAYER = null;
 let VIDEO = null;
 let LISTENING_KEYS = false;
 
+let VOLUME_SAVE_TIMEOUT = null;
+let EXPECT_USER_VOLUME_CHANGE = false;
+let MOUSE_SLIDER_DOWN = false;
+let SLIDER_CLICK_TIMEOUT = null;
+
 chrome.storage.sync.get({ 
     enabled: true, 
     controlAlwaysVisible: false, 
     hideVideoInfo: false, 
-    controlVolumeWithArrows: false 
+    controlVolumeWithArrows: false,
+    savedVolumeValue: null
 }).then(items => {
     const playerAttributeName = 'cfyts-player';
     const playerEnabledAttributeName = 'cfyts-player-enabled';
@@ -97,19 +103,60 @@ chrome.storage.sync.get({
         // this for youtube to automatically mute the next shorts. 
         const muteButton = fluidContainer.querySelector('.fluid_control_mute');
         muteButton.addEventListener('click', e => {
+            e.preventDefault();
+            e.stopPropagation();
+
             clickMuteButton();
+        }, true);
+
+        // this will keep track if the user is changing the volume by changing the slider.
+        /** @type {HTMLDivElement} */
+        const volumeSlider = fluidContainer.querySelector('.fluid_control_volume_container');
+        volumeSlider.addEventListener('mousedown', e => {
+            MOUSE_SLIDER_DOWN = true;
+            EXPECT_USER_VOLUME_CHANGE = true;
         });
 
-        // this is handle when user unmute the video by changing it's volume
-        let volume = VIDEO.volume;
+        volumeSlider.addEventListener('mouseup', e => {
+            MOUSE_SLIDER_DOWN = false;
+
+            clearTimeout(SLIDER_CLICK_TIMEOUT);
+            SLIDER_CLICK_TIMEOUT = setTimeout(() => {
+                // this prevent expecting user volume change when the user simply click on the volume slider without dragging.
+                if (EXPECT_USER_VOLUME_CHANGE && !MOUSE_SLIDER_DOWN) EXPECT_USER_VOLUME_CHANGE = false;
+            }, 500);
+        });
+
         let muted = VIDEO.muted;
+
+        VIDEO.addEventListener('loadeddata', e => {
+            if (!muted && VIDEO.muted) VIDEO.muted = false; // this is for when the user change the volume while the video is muted.
+            if (items.savedVolumeValue !== null) VIDEO.volume = items.savedVolumeValue;
+        });
+
         VIDEO.addEventListener('volumechange', e => {
-            if (!VIDEO.muted && muted && VIDEO.volume !== volume) {
-                clickMuteButton();
+            muted = VIDEO.muted;
+
+            if (EXPECT_USER_VOLUME_CHANGE || MOUSE_SLIDER_DOWN) {
+                items.savedVolumeValue = VIDEO.volume;
+
+                EXPECT_USER_VOLUME_CHANGE = false;
+
+                // as this can be called multiple times while changing the volume slider.
+                // it should use a timeout to save the volume to prevent exceeding chrome storage calls.
+
+                clearTimeout(VOLUME_SAVE_TIMEOUT);
+                VOLUME_SAVE_TIMEOUT = null;
+
+                VOLUME_SAVE_TIMEOUT = setTimeout(() => {
+                    chrome.storage.sync.set({ savedVolumeValue: items.savedVolumeValue }).then(() => {
+                        devLog('volume saved:', items.savedVolumeValue);
+                    });
+                }, 500);
+            } else if (items.savedVolumeValue !== null) {
+                VIDEO.volume = items.savedVolumeValue;
             }
 
-            muted = VIDEO.muted;
-            volume = VIDEO.volume;
         });
 
         if (!LISTENING_KEYS) {
@@ -131,8 +178,10 @@ chrome.storage.sync.get({
                 if ((e.key === 'ArrowUp' || e.key === 'ArrowDown') && (items.controlVolumeWithArrows || e.shiftKey)) {
                     if (e.key === 'ArrowUp') {
                         VIDEO.volume = Math.min(1, VIDEO.volume + 0.05);
+                        EXPECT_USER_VOLUME_CHANGE = true;
                     } else if (e.key === 'ArrowDown') {
                         VIDEO.volume = Math.max(0, VIDEO.volume - 0.05);
+                        EXPECT_USER_VOLUME_CHANGE = true;
                     }
                     preventDefault();
                 }
