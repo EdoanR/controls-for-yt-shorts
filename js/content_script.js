@@ -135,6 +135,7 @@ chrome.storage.sync.get({
         });
 
         VIDEO.addEventListener('volumechange', e => {
+            if (!chrome.runtime.id) return;
             muted = VIDEO.muted;
 
             if (EXPECT_USER_VOLUME_CHANGE || MOUSE_SLIDER_DOWN) {
