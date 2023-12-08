@@ -22,7 +22,7 @@ ytd-reel-video-renderer:has(#shorts-player[cfyts-player-enabled=true]) #overlay 
   background-image: none;
   padding-right: 0;
 }
-ytd-reel-video-renderer:has(#shorts-player[cfyts-player-enabled=true]) #overlay #progress-bar {
+ytd-reel-video-renderer:has(#shorts-player[cfyts-player-enabled=true]) #player-container #progress-bar {
   display: none !important;
 }
 ytd-reel-video-renderer:has(#shorts-player[cfyts-player-enabled=true]) #overlay > ytd-reel-player-header-renderer {
