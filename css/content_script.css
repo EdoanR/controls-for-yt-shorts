@@ -53,6 +53,9 @@ ytd-reel-video-renderer:has(#shorts-player[cfyts-player-enabled=true]) #player-c
 ytd-reel-video-renderer:has(#shorts-player[cfyts-player-enabled=true]):has(#watch-while-engagement-panel ytd-engagement-panel-section-list-renderer[visibility=ENGAGEMENT_PANEL_VISIBILITY_EXPANDED]) .fluid_slider {
   margin-right: 55px;
 }
+ytd-reel-video-renderer:has(#shorts-player[cfyts-player-enabled=true]) .fluid_context_menu {
+  display: none !important;
+}
 
 ytd-reel-video-renderer:has(#shorts-player[CFYTS-player-enabled=false]) .fluid_controls_container {
   display: none !important;

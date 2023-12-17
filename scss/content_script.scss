@@ -91,6 +91,11 @@ ytd-reel-video-renderer:has(#shorts-player[cfyts-player-enabled=true]) {
         }
     }
 
+    // hide default fluid player context menu
+    .fluid_context_menu {
+        display: none !important;
+    }
+
 }
 
 // hide controls when the extension is deactivated. 

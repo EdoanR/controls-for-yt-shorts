@@ -83,6 +83,9 @@ chrome.storage.sync.get({
 
         PLAYER = fluidPlayer(video, {
             layoutControls: {
+                contextMenu: {
+                    controls: false
+                },
                 playPauseAnimation: false,
                 playButtonShowing: false,
                 doubleclickFullscreen: false,
@@ -132,6 +135,21 @@ chrome.storage.sync.get({
         VIDEO.addEventListener('loadeddata', e => {
             if (!muted && VIDEO.muted) VIDEO.muted = false; // this is for when the user change the volume while the video is muted.
             if (items.savedVolumeValue !== null) VIDEO.volume = items.savedVolumeValue;
+        });
+
+        // open normal video context menu on second right click.
+        VIDEO.addEventListener('contextmenu', e => {
+            const isContextMenuOpen = () => {
+                // check if the custom youtube context menu is open.
+                const contextMenu = document.querySelector('.ytp-popup.ytp-contextmenu');
+                if (!contextMenu) return false;
+                if (contextMenu.style.display === 'none') return false;
+                return true;
+            }
+
+            if (isContextMenuOpen()) {
+                e.stopPropagation();
+            }
         });
 
         VIDEO.addEventListener('volumechange', e => {
