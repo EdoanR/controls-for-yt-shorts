@@ -3,19 +3,25 @@ ytd-reel-video-renderer:has(#shorts-player[cfyts-player-enabled=true]) {
   /* move the controls up */
   /* remove some buttons from control that doesn't work */
 }
-ytd-reel-video-renderer:has(#shorts-player[cfyts-player-enabled=true]):has(#shorts-player[cfyts-controls-always-on=false])[show-player-controls] #overlay > ytd-reel-player-header-renderer, ytd-reel-video-renderer:has(#shorts-player[cfyts-player-enabled=true]):has(#shorts-player[cfyts-controls-always-on=false]):has(ytd-reel-player-overlay-renderer:hover) #overlay > ytd-reel-player-header-renderer {
+ytd-reel-video-renderer:has(#shorts-player[cfyts-player-enabled=true]):has(#shorts-player[cfyts-controls-always-on=false])[show-player-controls] #overlay > ytd-reel-player-header-renderer, ytd-reel-video-renderer:has(#shorts-player[cfyts-player-enabled=true]):has(#shorts-player[cfyts-controls-always-on=false])[show-player-controls] #overlay > reel-player-header-renderer, ytd-reel-video-renderer:has(#shorts-player[cfyts-player-enabled=true]):has(#shorts-player[cfyts-controls-always-on=false]):has(ytd-reel-player-overlay-renderer:hover) #overlay > ytd-reel-player-header-renderer, ytd-reel-video-renderer:has(#shorts-player[cfyts-player-enabled=true]):has(#shorts-player[cfyts-controls-always-on=false]):has(ytd-reel-player-overlay-renderer:hover) #overlay > reel-player-header-renderer {
   margin-bottom: 63px;
 }
 ytd-reel-video-renderer:has(#shorts-player[cfyts-player-enabled=true]):has(#shorts-player[cfyts-controls-always-on=false])[show-player-controls] .fluid_controls_container, ytd-reel-video-renderer:has(#shorts-player[cfyts-player-enabled=true]):has(#shorts-player[cfyts-controls-always-on=false]):has(ytd-reel-player-overlay-renderer:hover) .fluid_controls_container {
   opacity: 1 !important;
 }
-ytd-reel-video-renderer:has(#shorts-player[cfyts-player-enabled=true]):has(#shorts-player[cfyts-controls-always-on=true]) #overlay > ytd-reel-player-header-renderer {
+ytd-reel-video-renderer:has(#shorts-player[cfyts-player-enabled=true]):has(#shorts-player[cfyts-controls-always-on=false])[show-player-controls] ytd-reel-player-overlay-renderer > div.metadata-container, ytd-reel-video-renderer:has(#shorts-player[cfyts-player-enabled=true]):has(#shorts-player[cfyts-controls-always-on=false]):has(ytd-reel-player-overlay-renderer:hover) ytd-reel-player-overlay-renderer > div.metadata-container {
+  background-image: linear-gradient(0deg, rgba(0, 0, 0, 0), transparent);
+}
+ytd-reel-video-renderer:has(#shorts-player[cfyts-player-enabled=true]):has(#shorts-player[cfyts-controls-always-on=true]) #overlay > ytd-reel-player-header-renderer, ytd-reel-video-renderer:has(#shorts-player[cfyts-player-enabled=true]):has(#shorts-player[cfyts-controls-always-on=true]) #overlay > reel-player-header-renderer {
   margin-bottom: 63px;
 }
 ytd-reel-video-renderer:has(#shorts-player[cfyts-player-enabled=true]):has(#shorts-player[cfyts-controls-always-on=true]) .fluid_controls_container {
   opacity: 1 !important;
 }
-ytd-reel-video-renderer:has(#shorts-player[cfyts-player-enabled=true]):not(ytd-reel-video-renderer:has(#shorts-player[cfyts-player-enabled=true])[show-player-controls], ytd-reel-video-renderer:has(#shorts-player[cfyts-player-enabled=true]):has(ytd-reel-player-overlay-renderer:hover)):has(#shorts-player[cfyts-hide-video-info=true]) #overlay > ytd-reel-player-header-renderer {
+ytd-reel-video-renderer:has(#shorts-player[cfyts-player-enabled=true]):has(#shorts-player[cfyts-controls-always-on=true]) ytd-reel-player-overlay-renderer > div.metadata-container {
+  background-image: linear-gradient(0deg, rgba(0, 0, 0, 0), transparent);
+}
+ytd-reel-video-renderer:has(#shorts-player[cfyts-player-enabled=true]):not(ytd-reel-video-renderer:has(#shorts-player[cfyts-player-enabled=true])[show-player-controls], ytd-reel-video-renderer:has(#shorts-player[cfyts-player-enabled=true]):has(ytd-reel-player-overlay-renderer:hover)):has(#shorts-player[cfyts-hide-video-info=true]) #overlay > ytd-reel-player-header-renderer, ytd-reel-video-renderer:has(#shorts-player[cfyts-player-enabled=true]):not(ytd-reel-video-renderer:has(#shorts-player[cfyts-player-enabled=true])[show-player-controls], ytd-reel-video-renderer:has(#shorts-player[cfyts-player-enabled=true]):has(ytd-reel-player-overlay-renderer:hover)):has(#shorts-player[cfyts-hide-video-info=true]) #overlay > reel-player-header-renderer {
   opacity: 0;
 }
 ytd-reel-video-renderer:has(#shorts-player[cfyts-player-enabled=true]) #overlay {
@@ -25,10 +31,14 @@ ytd-reel-video-renderer:has(#shorts-player[cfyts-player-enabled=true]) #overlay 
 ytd-reel-video-renderer:has(#shorts-player[cfyts-player-enabled=true]) #player-container #progress-bar {
   display: none !important;
 }
-ytd-reel-video-renderer:has(#shorts-player[cfyts-player-enabled=true]) #overlay > ytd-reel-player-header-renderer {
+ytd-reel-video-renderer:has(#shorts-player[cfyts-player-enabled=true]) #overlay > ytd-reel-player-header-renderer, ytd-reel-video-renderer:has(#shorts-player[cfyts-player-enabled=true]) #overlay > reel-player-header-renderer {
   transition: margin-bottom 0.5s ease-in-out, opacity 0.25s ease-in-out;
   margin-bottom: 0px;
   background-image: linear-gradient(0deg, rgba(0, 0, 0, 0.4), transparent);
+}
+ytd-reel-video-renderer:has(#shorts-player[cfyts-player-enabled=true]) ytd-reel-player-overlay-renderer div.metadata-container {
+  background-image: linear-gradient(0deg, rgba(0, 0, 0, 0.4), transparent);
+  transition: background-image 0.5s ease-in-out;
 }
 ytd-reel-video-renderer:has(#shorts-player[cfyts-player-enabled=true]) .fluid_controls_container {
   padding-bottom: 10px;

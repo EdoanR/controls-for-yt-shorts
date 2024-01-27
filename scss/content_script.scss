@@ -6,7 +6,7 @@ ytd-reel-video-renderer:has(#shorts-player[cfyts-player-enabled=true]) {
         &[show-player-controls],
         &:has(ytd-reel-player-overlay-renderer:hover) {
             // move info of the video up to give the controls a space
-            #overlay>ytd-reel-player-header-renderer {
+            #overlay>ytd-reel-player-header-renderer, #overlay>reel-player-header-renderer {
                 margin-bottom: 63px;
             }
     
@@ -14,12 +14,16 @@ ytd-reel-video-renderer:has(#shorts-player[cfyts-player-enabled=true]) {
             .fluid_controls_container {
                 opacity: 1 !important;
             }
+
+            ytd-reel-player-overlay-renderer > div.metadata-container {
+                background-image: linear-gradient(0deg,rgba(0,0,0,0),transparent);
+            }
         }
     }
 
     &:has(#shorts-player[cfyts-controls-always-on=true]) {
         // move info of the video up to give the controls a space
-        #overlay>ytd-reel-player-header-renderer {
+        #overlay>ytd-reel-player-header-renderer, #overlay>reel-player-header-renderer {
             margin-bottom: 63px;
         }
 
@@ -27,12 +31,16 @@ ytd-reel-video-renderer:has(#shorts-player[cfyts-player-enabled=true]) {
         .fluid_controls_container {
             opacity: 1 !important;
         }
+
+        ytd-reel-player-overlay-renderer > div.metadata-container {
+            background-image: linear-gradient(0deg,rgba(0,0,0,0),transparent);
+        }
     }
 
     &:not(&[show-player-controls], &:has(ytd-reel-player-overlay-renderer:hover)) {
         &:has(#shorts-player[cfyts-hide-video-info=true]) {
             // move info of the video up to give the controls a space
-            #overlay>ytd-reel-player-header-renderer {
+            #overlay>ytd-reel-player-header-renderer, #overlay>reel-player-header-renderer {
                 opacity: 0;
             }
         }
@@ -51,11 +59,16 @@ ytd-reel-video-renderer:has(#shorts-player[cfyts-player-enabled=true]) {
     }
 
     /* setting up the transition when hovering the video above */
-    #overlay>ytd-reel-player-header-renderer {
+    #overlay>ytd-reel-player-header-renderer, #overlay>reel-player-header-renderer {
         transition: margin-bottom 0.5s ease-in-out, opacity 0.25s ease-in-out;
         margin-bottom: 0px;
         // add the gradient that was removed from #overlay but now in a lower hierarch than the controls.
         background-image: linear-gradient(0deg,rgba(0,0,0,0.4),transparent);
+    }
+
+    ytd-reel-player-overlay-renderer div.metadata-container {
+        background-image: linear-gradient(0deg,rgba(0,0,0,0.4),transparent);
+        transition: background-image 0.5s ease-in-out;
     }
 
     /* move the controls up */
