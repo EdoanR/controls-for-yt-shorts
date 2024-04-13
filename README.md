@@ -25,7 +25,7 @@ Keyboard shortcuts:
 4. Enjoy!
 
 # Local Installation
-1. Go to the [releases page](https://github.com/Zennos/controls-for-yt-shorts/releases) and download the zip file of a version that you prefer.
+1. Go to the [releases page](https://github.com/EdoanR/controls-for-yt-shorts/releases) and download the zip file of a version that you prefer.
 2. Export the downloaded zip file to a preferred folder.
 3. Then go to your extensions page by typing `chrome://extensions` in the address bar and press Enter.
 4. Enable the toggle **Developer mode**, typically found in the top-right corner.
