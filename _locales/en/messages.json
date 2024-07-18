@@ -1,32 +1,32 @@
 {
-    "AppName": {
-        "message": "Controls for YouTube™ Shorts"
-    },
-    "AppDescription": {
-        "message": "Add controls for videos of YouTube™ shorts, including shortcuts!"
-    },
-    "ThisLanguage" : {
-        "message": "en"
-    },
-    "Enabled": {
-        "message": "Enabled"
-    },
-    "Disabled": {
-        "message": "Disabled"
-    },
-    "ControlsAlwaysVisibleOption": {
-        "message": "Controls always visible"
-    },
-    "HideVideoInfoOption": {
-        "message": "Hide title and channel info"
-    },
-    "ArrowControlVolume": {
-        "message": "Arrow Up/Down to control volume"
-    },
-    "SupportMe": {
-        "message": "Support me ❤"
-    },
-    "GitHubRepository": {
-        "message": "GitHub Repository"
-    }
+  "AppName": {
+    "message": "Controls for YouTube™ Shorts"
+  },
+  "AppDescription": {
+    "message": "Add controls for videos of YouTube™ shorts, including shortcuts!"
+  },
+  "ThisLanguage": {
+    "message": "en"
+  },
+  "Enabled": {
+    "message": "Enabled"
+  },
+  "Disabled": {
+    "message": "Disabled"
+  },
+  "ControlsAlwaysVisibleOption": {
+    "message": "Controls always visible"
+  },
+  "HideVideoInfoOption": {
+    "message": "Hide title and channel info"
+  },
+  "ArrowControlVolume": {
+    "message": "Arrow Up/Down to control volume"
+  },
+  "SupportMe": {
+    "message": "Support me ❤"
+  },
+  "GitHubRepository": {
+    "message": "GitHub Repository"
+  }
 }

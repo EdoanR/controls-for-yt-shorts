@@ -1,69 +1,99 @@
-<!DOCTYPE html>
+<!doctype html>
 <html lang="en">
-
-<head>
-    <meta charset="UTF-8">
-    <meta http-equiv="X-UA-Compatible" content="IE=edge">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <head>
+    <meta charset="UTF-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title data-i18n="AppName">Popup</title>
-    <link rel="stylesheet" href="../css/bootstrap.min.css">
-    <link rel="stylesheet" href="../css/popup.css">
-</head>
+    <link rel="stylesheet" href="../css/bootstrap.min.css" />
+    <link rel="stylesheet" href="../css/popup.css" />
+  </head>
 
-<body>
-
+  <body>
     <div class="option-container collumn">
-        <label id="enabled_text" for="enabled">
-            Enabled
-        </label>
-        <label class="switch">
-            <input id="enabled" type="checkbox" checked>
-            <span class="slider round"></span>
-        </label>
+      <label id="enabled_text" for="enabled"> Enabled </label>
+      <label class="switch">
+        <input id="enabled" type="checkbox" checked />
+        <span class="slider round"></span>
+      </label>
 
-        <div>
-            <div class="form-check" data-bs-theme="dark" style="margin-top: 1em;">
-                <label class="form-check-label">
-                    <span data-i18n="ControlsAlwaysVisibleOption">Controls always visible</span>
-                    <input type="checkbox" class="form-check-input" id="controls_always_visible" value="checkedValue">
-                </label>
-            </div>
-    
-            <div class="form-check" data-bs-theme="dark">
-                <label class="form-check-label">
-                    <span data-i18n="HideVideoInfoOption">Hide title and channel info</span>
-                    <input type="checkbox" class="form-check-input" id="hide_video_info" value="checkedValue">
-                </label>
-            </div>
-    
-            <div class="form-check" data-bs-theme="dark">
-                <label class="form-check-label">
-                    <span data-i18n="ArrowControlVolume">Arrow Up/Down to control volume</span>
-                    <input type="checkbox" class="form-check-input" id="control_volume_arrow" value="checkedValue">
-                </label>
-            </div>
+      <div>
+        <div class="form-check" data-bs-theme="dark" style="margin-top: 1em">
+          <label class="form-check-label">
+            <span data-i18n="ControlsAlwaysVisibleOption"
+              >Controls always visible</span
+            >
+            <input
+              type="checkbox"
+              class="form-check-input"
+              id="controls_always_visible"
+              value="checkedValue"
+            />
+          </label>
         </div>
+
+        <div class="form-check" data-bs-theme="dark">
+          <label class="form-check-label">
+            <span data-i18n="HideVideoInfoOption"
+              >Hide title and channel info</span
+            >
+            <input
+              type="checkbox"
+              class="form-check-input"
+              id="hide_video_info"
+              value="checkedValue"
+            />
+          </label>
+        </div>
+
+        <div class="form-check" data-bs-theme="dark">
+          <label class="form-check-label">
+            <span data-i18n="ArrowControlVolume"
+              >Arrow Up/Down to control volume</span
+            >
+            <input
+              type="checkbox"
+              class="form-check-input"
+              id="control_volume_arrow"
+              value="checkedValue"
+            />
+          </label>
+        </div>
+      </div>
     </div>
 
     <div class="collumn info">
-        <span data-i18n="SupportMe">Support me ❤</span>
-        <div>
-            <a target="_blank" href="https://www.patreon.com/EdoanDev">Patreon</a>
-        </div>
-        <div style="display: flex; flex-direction: row; gap: 0.5rem;">
-            <a target="_blank" id="pix" class="hide" href="https://nubank.com.br/pagar/xldsq/rfgW3dODQh">Pix</a>
-            <a target="_blank" href="https://www.paypal.com/donate/?hosted_button_id=AP5M7UXBWR47C">Paypal</a>
-            <a target="_blank" href="https://ko-fi.com/edoan">Ko-fi</a>
-        </div>
-        <div style="margin-top: 1em; font-size: 0.85em;">
-            <a data-i18n="GitHubRepository" target="_blank"
-                href="https://github.com/EdoanR/controls-for-yt-shorts">GitHub Repository</a>
-        </div>
+      <span data-i18n="SupportMe">Support me ❤</span>
+      <div>
+        <a target="_blank" href="https://www.patreon.com/EdoanDev">Patreon</a>
+      </div>
+      <div style="display: flex; flex-direction: row; gap: 0.5rem">
+        <a
+          target="_blank"
+          id="pix"
+          class="hide"
+          href="https://nubank.com.br/pagar/xldsq/rfgW3dODQh"
+          >Pix</a
+        >
+        <a
+          target="_blank"
+          href="https://www.paypal.com/donate/?hosted_button_id=AP5M7UXBWR47C"
+          >Paypal</a
+        >
+        <a target="_blank" href="https://ko-fi.com/edoan">Ko-fi</a>
+      </div>
+      <div style="margin-top: 1em; font-size: 0.85em">
+        <a
+          data-i18n="GitHubRepository"
+          target="_blank"
+          href="https://github.com/EdoanR/controls-for-yt-shorts"
+          >GitHub Repository</a
+        >
+      </div>
     </div>
 
     <script src="../libs/bootstrap.min.js"></script>
     <script src="../js/localize.js"></script>
     <script src="../js/popup.js"></script>
-</body>
-
+  </body>
 </html>

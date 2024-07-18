@@ -1,32 +1,32 @@
 {
-    "AppName": {
-        "message": "Controles para YouTube™ Shorts"
-    },
-    "AppDescription": {
-        "message": "Adiciona controles para os vídeos do YouTube™ shorts, incluindo atalhos!"
-    },
-    "ThisLanguage" : {
-        "message": "pt_BR"
-    },
-    "Enabled": {
-        "message": "Ativado"
-    },
-    "Disabled": {
-        "message": "Desativado"
-    },
-    "ControlsAlwaysVisibleOption": {
-        "message": "Manter controle sempre visível"
-    },
-    "HideVideoInfoOption": {
-        "message": "Esconder título e canal"
-    },
-    "ArrowControlVolume": {
-        "message": "Volume com seta cima/baixo"
-    },
-    "SupportMe": {
-        "message": "Me apoie ❤"
-    },
-    "GitHubRepository": {
-        "message": "Repositório no GitHub"
-    }
+  "AppName": {
+    "message": "Controles para YouTube™ Shorts"
+  },
+  "AppDescription": {
+    "message": "Adiciona controles para os vídeos do YouTube™ shorts, incluindo atalhos!"
+  },
+  "ThisLanguage": {
+    "message": "pt_BR"
+  },
+  "Enabled": {
+    "message": "Ativado"
+  },
+  "Disabled": {
+    "message": "Desativado"
+  },
+  "ControlsAlwaysVisibleOption": {
+    "message": "Manter controle sempre visível"
+  },
+  "HideVideoInfoOption": {
+    "message": "Esconder título e canal"
+  },
+  "ArrowControlVolume": {
+    "message": "Volume com seta cima/baixo"
+  },
+  "SupportMe": {
+    "message": "Me apoie ❤"
+  },
+  "GitHubRepository": {
+    "message": "Repositório no GitHub"
+  }
 }

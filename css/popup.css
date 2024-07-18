@@ -1,5 +1,5 @@
 body {
-  background-color: #0F0F0F;
+  background-color: #0f0f0f;
   color: white;
   width: 300px;
   display: flex;
@@ -16,7 +16,7 @@ body {
 }
 
 a {
-  color: #2196F3;
+  color: #2196f3;
   text-decoration: none;
 }
 
@@ -73,7 +73,7 @@ a {
   width: 26px;
   left: 4px;
   bottom: 4px;
-  background-color: #3EA6FF;
+  background-color: #3ea6ff;
   -webkit-transition: 0.4s;
   transition: 0.4s;
 }
@@ -85,10 +85,10 @@ a {
 }
 
 input + .slider:before {
-  background-color: #FFFFFF;
+  background-color: #ffffff;
 }
 input:checked + .slider:before {
-  background-color: #3EA6FF;
+  background-color: #3ea6ff;
 }
 
 input:focus + .slider {

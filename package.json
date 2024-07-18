@@ -1,9 +1,11 @@
 {
   "scripts": {
-    "scss": "sass --watch scss:css"
+    "scss": "sass --watch scss:css",
+    "format": "prettier --write . --ignore-path .prettierignore"
   },
   "devDependencies": {
     "@types/chrome": "^0.0.237",
+    "prettier": "^3.3.3",
     "sass": "^1.66.1"
   }
 }

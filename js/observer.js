@@ -1,4 +1,3 @@
-
 /**
  * @typedef {Object} ObserverWatchQuery
  * @property {string[]} elements - selector of the elements that should be watched.
@@ -8,77 +7,79 @@
  */
 
 class Observer {
+  /** @param {ObserverWatchQuery[]} queries */
+  watchElements(queries) {
+    const summaryQueries = [];
 
-    /** @param {ObserverWatchQuery[]} queries */
-    watchElements(queries) {
-        const summaryQueries = [];
+    /** @type {ObserverWatchQuery[]} */
+    const observerOriginalQueries = [];
 
-        /** @type {ObserverWatchQuery[]} */
-        const observerOriginalQueries = [];
+    // Creating queries for mutationSummary.
+    queries.forEach((query) => {
+      for (let element of query.elements) {
+        const q = {
+          element: element,
+        };
 
-        // Creating queries for mutationSummary.
-        queries.forEach(query => {
-            for (let element of query.elements) {
+        if (query.elementAttributes)
+          q.elementAttributes = query.elementAttributes;
 
-                const q = {
-                    element: element
-                };
+        summaryQueries.push(q);
+        observerOriginalQueries.push(query);
+      }
+    });
 
-                if (query.elementAttributes) q.elementAttributes = query.elementAttributes;
+    new MutationSummary({
+      callback: (summaries) => {
+        // devLog('summaries:', summaries);
 
-                summaryQueries.push(q);
-                observerOriginalQueries.push(query);
+        for (let i = 0; i < summaries.length; i++) {
+          const summary = summaries[i];
+          const queryCallback = observerOriginalQueries[i].onElement;
+
+          if (summary.attributeChanged) {
+            for (const [attr, elements] of Object.entries(
+              summary.attributeChanged,
+            )) {
+              for (const element of elements) {
+                queryCallback(element, attr, false);
+              }
             }
-        });
+          }
 
-        new MutationSummary({
-            callback: (summaries => {
-                
-                // devLog('summaries:', summaries);
+          for (const element of summary.added) {
+            queryCallback(element, "", false);
+          }
 
-                for (let i = 0; i < summaries.length; i++) {
+          if (observerOriginalQueries[i].reparenting) {
+            for (const element of summary.reparented) {
+              queryCallback(element, "", true);
+            }
+          }
+        }
+      },
+      queries: summaryQueries,
+    });
+  }
 
-                    const summary = summaries[i];
-                    const queryCallback = observerOriginalQueries[i].onElement;
+  observeTextContentElement(element, callback) {
+    const observer = new MutationObserver(callback);
 
-                    if (summary.attributeChanged) {
-                        for (const [attr, elements] of Object.entries(summary.attributeChanged)) {
-                            for (const element of elements) {
-                                queryCallback(element, attr, false);
-                            }
-                        }
-                    }
+    observer.observe(element, {
+      characterData: false,
+      childList: true,
+      attributes: false,
+    });
+    return observer;
+  }
 
-                    for (const element of summary.added) {
-                        queryCallback(element, '', false);
-                    }
+  /** @param {Node} element @param {MutationObserverInit} options */
+  observeElement(element, callback, options = {}) {
+    const observer = new MutationObserver(callback);
 
-                    if (observerOriginalQueries[i].reparenting) {
-                        for (const element of summary.reparented) {
-                            queryCallback(element, '', true);
-                        }
-                    }
-                }
-
-            }),
-            queries: summaryQueries
-        });
-    }
-
-    observeTextContentElement(element, callback) {
-        const observer = new MutationObserver(callback);
-
-        observer.observe(element, {characterData: false, childList: true, attributes: false});
-        return observer;
-    }
-
-    /** @param {Node} element @param {MutationObserverInit} options */
-    observeElement(element, callback, options = {}) {
-        const observer = new MutationObserver(callback);
-
-        observer.observe(element, options);
-        return observer;
-    }
+    observer.observe(element, options);
+    return observer;
+  }
 }
 
 const observer = new Observer();
