@@ -59,7 +59,7 @@ ytd-reel-video-renderer:has(#shorts-player[cfyts-player-enabled='true']) {
   }
 
   // hide progress bar
-  #player-container #progress-bar {
+  #player-container #progress-bar, .PlayerControlsProgressBarHost {
     display: none !important;
   }
 
