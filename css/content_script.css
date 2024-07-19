@@ -1,6 +1,9 @@
 ytd-reel-video-renderer:has(#shorts-player[cfyts-player-enabled=true]) {
   /* remove some buttons from control that doesn't work */
 }
+ytd-reel-video-renderer:has(#shorts-player[cfyts-player-enabled=true]) .player-controls {
+  display: none !important;
+}
 ytd-reel-video-renderer:has(#shorts-player[cfyts-player-enabled=true]) .fluid_controls_container {
   padding-bottom: 10px;
   background-color: rgba(0, 0, 0, 0.85) !important;
@@ -9,11 +12,11 @@ ytd-reel-video-renderer:has(#shorts-player[cfyts-player-enabled=true]) .fluid_co
   visibility: visible !important;
   transition: opacity 0.5s ease-in-out;
 }
-ytd-reel-video-renderer:has(#shorts-player[cfyts-player-enabled=true]) .metadata-container.ytd-reel-player-overlay-renderer {
+ytd-reel-video-renderer:has(#shorts-player[cfyts-player-enabled=true]) .metadata-container.ytd-reel-player-overlay-renderer, ytd-reel-video-renderer:has(#shorts-player[cfyts-player-enabled=true]) .YtwReelsPlayerOverlayLayoutViewModelHostMetadataContainer {
   transition: margin-bottom 0.5s ease-in-out, opacity 0.25s ease-in-out, border-bottom-left-radius 0.25s ease-in-out, border-bottom-right-radius 0.25s ease-in-out;
   margin-bottom: 0px;
 }
-ytd-reel-video-renderer:has(#shorts-player[cfyts-player-enabled=true]):has(#shorts-player[cfyts-controls-always-on=true]) .metadata-container.ytd-reel-player-overlay-renderer, ytd-reel-video-renderer:has(#shorts-player[cfyts-player-enabled=true])[show-player-controls] .metadata-container.ytd-reel-player-overlay-renderer, ytd-reel-video-renderer:has(#shorts-player[cfyts-player-enabled=true]):has(ytd-reel-player-overlay-renderer:hover) .metadata-container.ytd-reel-player-overlay-renderer {
+ytd-reel-video-renderer:has(#shorts-player[cfyts-player-enabled=true]):has(#shorts-player[cfyts-controls-always-on=true]) .metadata-container.ytd-reel-player-overlay-renderer, ytd-reel-video-renderer:has(#shorts-player[cfyts-player-enabled=true]):has(#shorts-player[cfyts-controls-always-on=true]) .YtwReelsPlayerOverlayLayoutViewModelHostMetadataContainer, ytd-reel-video-renderer:has(#shorts-player[cfyts-player-enabled=true])[show-player-controls] .metadata-container.ytd-reel-player-overlay-renderer, ytd-reel-video-renderer:has(#shorts-player[cfyts-player-enabled=true])[show-player-controls] .YtwReelsPlayerOverlayLayoutViewModelHostMetadataContainer, ytd-reel-video-renderer:has(#shorts-player[cfyts-player-enabled=true]):has(ytd-reel-player-overlay-renderer:hover) .metadata-container.ytd-reel-player-overlay-renderer, ytd-reel-video-renderer:has(#shorts-player[cfyts-player-enabled=true]):has(ytd-reel-player-overlay-renderer:hover) .YtwReelsPlayerOverlayLayoutViewModelHostMetadataContainer {
   margin-bottom: 63px;
   border-bottom-left-radius: 0px;
   border-bottom-right-radius: 0px;

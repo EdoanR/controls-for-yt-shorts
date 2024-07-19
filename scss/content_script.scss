@@ -1,5 +1,10 @@
 // apply only when the extension is activated.
 ytd-reel-video-renderer:has(#shorts-player[cfyts-player-enabled='true']) {
+
+  // hide default controls.
+  .player-controls {
+    display: none !important;
+  }
   
   // setting up controls visuals
   .fluid_controls_container {
@@ -13,7 +18,7 @@ ytd-reel-video-renderer:has(#shorts-player[cfyts-player-enabled='true']) {
   }
 
   // setting up video info transitions
-  .metadata-container.ytd-reel-player-overlay-renderer {
+  .metadata-container.ytd-reel-player-overlay-renderer, .YtwReelsPlayerOverlayLayoutViewModelHostMetadataContainer {
     transition:
       margin-bottom 0.5s ease-in-out,
       opacity 0.25s ease-in-out,
@@ -26,7 +31,7 @@ ytd-reel-video-renderer:has(#shorts-player[cfyts-player-enabled='true']) {
     // when controls always on or hovering the video.
     
     // move info of the video up to give the controls a space
-    .metadata-container.ytd-reel-player-overlay-renderer {
+    .metadata-container.ytd-reel-player-overlay-renderer, .YtwReelsPlayerOverlayLayoutViewModelHostMetadataContainer {
       margin-bottom: 63px;
       border-bottom-left-radius: 0px;
       border-bottom-right-radius: 0px;
