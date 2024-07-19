@@ -1,40 +1,40 @@
 // apply only when the extension is activated.
 ytd-reel-video-renderer:has(#shorts-player[cfyts-player-enabled='true']) {
-  // when hovering or pausing the video
-  &:has(#shorts-player[cfyts-controls-always-on='false']) {
-    &[show-player-controls],
-    &:has(ytd-reel-player-overlay-renderer:hover) {
-      // move info of the video up to give the controls a space
-      #overlay > ytd-reel-player-header-renderer,
-      #overlay > reel-player-header-renderer {
-        margin-bottom: 63px;
-      }
-
-      // show controllers
-      .fluid_controls_container {
-        opacity: 1 !important;
-      }
-
-      ytd-reel-player-overlay-renderer > div.metadata-container {
-        background-image: linear-gradient(0deg, rgba(0, 0, 0, 0), transparent);
-      }
-    }
+  
+  // setting up controls visuals
+  .fluid_controls_container {
+    padding-bottom: 10px;
+    // add black background behind the controls.
+    background-color: rgba(0, 0, 0, 0.85) !important;
+    z-index: 99 !important;
+    opacity: 0;
+    visibility: visible !important;
+    transition: opacity 0.5s ease-in-out;
   }
 
-  &:has(#shorts-player[cfyts-controls-always-on='true']) {
+  // setting up video info transitions
+  .metadata-container.ytd-reel-player-overlay-renderer {
+    transition:
+      margin-bottom 0.5s ease-in-out,
+      opacity 0.25s ease-in-out,
+      border-bottom-left-radius 0.25s ease-in-out,
+      border-bottom-right-radius 0.25s ease-in-out;
+    margin-bottom: 0px;
+  }
+
+  &:has(#shorts-player[cfyts-controls-always-on='true']), &[show-player-controls], &:has(ytd-reel-player-overlay-renderer:hover) { 
+    // when controls always on or hovering the video.
+    
     // move info of the video up to give the controls a space
-    #overlay > ytd-reel-player-header-renderer,
-    #overlay > reel-player-header-renderer {
+    .metadata-container.ytd-reel-player-overlay-renderer {
       margin-bottom: 63px;
+      border-bottom-left-radius: 0px;
+      border-bottom-right-radius: 0px;
     }
 
     // show controllers
     .fluid_controls_container {
-      opacity: 1 !important;
-    }
-
-    ytd-reel-player-overlay-renderer > div.metadata-container {
-      background-image: linear-gradient(0deg, rgba(0, 0, 0, 0), transparent);
+      opacity: 1;
     }
   }
 
@@ -42,18 +42,15 @@ ytd-reel-video-renderer:has(#shorts-player[cfyts-player-enabled='true']) {
       &[show-player-controls],
       &:has(ytd-reel-player-overlay-renderer:hover)
     ) {
+    // hide video info.
     &:has(#shorts-player[cfyts-hide-video-info='true']) {
-      // move info of the video up to give the controls a space
-      #overlay > ytd-reel-player-header-renderer,
-      #overlay > reel-player-header-renderer {
+      .metadata-container.ytd-reel-player-overlay-renderer {
         opacity: 0;
       }
     }
   }
 
   #overlay {
-    // remove the overlay gradient that show on top of the controls.
-    background-image: none;
     // fix space padding when opening comments.
     padding-right: 0;
   }
@@ -61,34 +58,6 @@ ytd-reel-video-renderer:has(#shorts-player[cfyts-player-enabled='true']) {
   // hide progress bar
   #player-container #progress-bar, .PlayerControlsProgressBarHost {
     display: none !important;
-  }
-
-  /* setting up the transition when hovering the video above */
-  #overlay > ytd-reel-player-header-renderer,
-  #overlay > reel-player-header-renderer {
-    transition:
-      margin-bottom 0.5s ease-in-out,
-      opacity 0.25s ease-in-out;
-    margin-bottom: 0px;
-    // add the gradient that was removed from #overlay but now in a lower hierarch than the controls.
-    background-image: linear-gradient(0deg, rgba(0, 0, 0, 0.4), transparent);
-  }
-
-  ytd-reel-player-overlay-renderer div.metadata-container {
-    background-image: linear-gradient(0deg, rgba(0, 0, 0, 0.4), transparent);
-    transition: background-image 0.5s ease-in-out;
-  }
-
-  /* move the controls up */
-  .fluid_controls_container {
-    padding-bottom: 10px;
-    /* youtube overlay has a black gradient at the bottom that kinda hide the player */
-    /* so the background below will hel to see the controls a little better */
-    background-color: rgba(0, 0, 0, 0.85) !important;
-    z-index: 99 !important;
-    opacity: 0 !important;
-    visibility: visible !important;
-    transition: opacity 0.5s ease-in-out;
   }
 
   /* remove some buttons from control that doesn't work */
