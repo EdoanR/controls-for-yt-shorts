@@ -1,4 +1,4 @@
-devLog("content script started.");
+devLog('content script started.');
 
 let PLAYER = null;
 /** @type {HTMLVideoElement} */
@@ -19,18 +19,18 @@ chrome.storage.sync
     savedVolumeValue: null,
   })
   .then((items) => {
-    const playerAttributeName = "cfyts-player";
-    const playerEnabledAttributeName = "cfyts-player-enabled";
-    const alwaysVisibleAttrName = "cfyts-controls-always-on";
-    const hideVideoInfoAttrName = "cfyts-hide-video-info";
+    const playerAttributeName = 'cfyts-player';
+    const playerEnabledAttributeName = 'cfyts-player-enabled';
+    const alwaysVisibleAttrName = 'cfyts-controls-always-on';
+    const hideVideoInfoAttrName = 'cfyts-hide-video-info';
 
     const isShortsPage = () => {
-      return location.href.includes("/shorts/");
+      return location.href.includes('/shorts/');
     };
 
     observer.watchElements([
       {
-        elements: ["#shorts-player"],
+        elements: ['#shorts-player'],
         onElement: (element) => {
           checkPage();
         },
@@ -46,7 +46,7 @@ chrome.storage.sync
 
       updateShortsPlayerAttributes();
 
-      if (changes["enabled"]) {
+      if (changes['enabled']) {
         checkPage();
       }
     });
@@ -55,7 +55,7 @@ chrome.storage.sync
     checkPage();
 
     chrome.runtime.onMessage.addListener((message) => {
-      if (message?.type !== "url update") return;
+      if (message?.type !== 'url update') return;
       // the url of the page changed, let's check if there's any youtube shorts.
       // this is in case the observer fail on us.
 
@@ -72,14 +72,14 @@ chrome.storage.sync
         return;
       }
 
-      const video = document.querySelector("#shorts-player video");
+      const video = document.querySelector('#shorts-player video');
 
       if (!video) return;
       if (video.hasAttribute(playerAttributeName))
-        return devLog("video already has controls.");
+        return devLog('video already has controls.');
 
       /** @type {HTMLVideoElement} */
-      video.setAttribute(playerAttributeName, "");
+      video.setAttribute(playerAttributeName, '');
 
       VIDEO = video;
 
@@ -97,10 +97,10 @@ chrome.storage.sync
       });
 
       const fluidContainer = document.querySelector(
-        ".fluid_controls_container",
+        '.fluid_controls_container',
       );
 
-      fluidContainer.addEventListener("click", (e) => {
+      fluidContainer.addEventListener('click', (e) => {
         // when clicking at the video bar it can click throught it and pause/play the video.
         // the following line prevent that from happening.
         e.stopPropagation();
@@ -108,9 +108,9 @@ chrome.storage.sync
 
       // click on mute button if the mute button from fluid controls was clicked.
       // this for youtube to automatically mute the next shorts.
-      const muteButton = fluidContainer.querySelector(".fluid_control_mute");
+      const muteButton = fluidContainer.querySelector('.fluid_control_mute');
       muteButton.addEventListener(
-        "click",
+        'click',
         (e) => {
           e.preventDefault();
           e.stopPropagation();
@@ -123,14 +123,14 @@ chrome.storage.sync
       // this will keep track if the user is changing the volume by changing the slider.
       /** @type {HTMLDivElement} */
       const volumeSlider = fluidContainer.querySelector(
-        ".fluid_control_volume_container",
+        '.fluid_control_volume_container',
       );
-      volumeSlider.addEventListener("mousedown", (e) => {
+      volumeSlider.addEventListener('mousedown', (e) => {
         MOUSE_SLIDER_DOWN = true;
         EXPECT_USER_VOLUME_CHANGE = true;
       });
 
-      volumeSlider.addEventListener("mouseup", (e) => {
+      volumeSlider.addEventListener('mouseup', (e) => {
         MOUSE_SLIDER_DOWN = false;
 
         clearTimeout(SLIDER_CLICK_TIMEOUT);
@@ -143,21 +143,21 @@ chrome.storage.sync
 
       let muted = VIDEO.muted;
 
-      VIDEO.addEventListener("loadeddata", (e) => {
+      VIDEO.addEventListener('loadeddata', (e) => {
         if (!muted && VIDEO.muted) VIDEO.muted = false; // this is for when the user change the volume while the video is muted.
         if (items.savedVolumeValue !== null)
           VIDEO.volume = items.savedVolumeValue;
       });
 
       // open normal video context menu on second right click.
-      VIDEO.addEventListener("contextmenu", (e) => {
+      VIDEO.addEventListener('contextmenu', (e) => {
         const isContextMenuOpen = () => {
           // check if the custom youtube context menu is open.
           const contextMenu = document.querySelector(
-            ".ytp-popup.ytp-contextmenu",
+            '.ytp-popup.ytp-contextmenu',
           );
           if (!contextMenu) return false;
-          if (contextMenu.style.display === "none") return false;
+          if (contextMenu.style.display === 'none') return false;
           return true;
         };
 
@@ -166,7 +166,7 @@ chrome.storage.sync
         }
       });
 
-      VIDEO.addEventListener("volumechange", (e) => {
+      VIDEO.addEventListener('volumechange', (e) => {
         if (!chrome.runtime.id) return;
         muted = VIDEO.muted;
 
@@ -185,7 +185,7 @@ chrome.storage.sync
             chrome.storage.sync
               .set({ savedVolumeValue: items.savedVolumeValue })
               .then(() => {
-                devLog("volume saved:", items.savedVolumeValue);
+                devLog('volume saved:', items.savedVolumeValue);
               });
           }, 500);
         } else if (items.savedVolumeValue !== null) {
@@ -197,11 +197,11 @@ chrome.storage.sync
         LISTENING_KEYS = true;
 
         document.addEventListener(
-          "keydown",
+          'keydown',
           (e) => {
             if (!items.enabled) return;
             if (!isShortsPage()) return;
-            if (e.target.matches("input, [contenteditable]")) return;
+            if (e.target.matches('input, [contenteditable]')) return;
 
             const preventDefault = () => {
               e.preventDefault();
@@ -212,13 +212,13 @@ chrome.storage.sync
             // spacebar and "M" are already handled by YouTube.
 
             if (
-              (e.key === "ArrowUp" || e.key === "ArrowDown") &&
+              (e.key === 'ArrowUp' || e.key === 'ArrowDown') &&
               (items.controlVolumeWithArrows || e.shiftKey)
             ) {
-              if (e.key === "ArrowUp") {
+              if (e.key === 'ArrowUp') {
                 VIDEO.volume = Math.min(1, VIDEO.volume + 0.05);
                 EXPECT_USER_VOLUME_CHANGE = true;
-              } else if (e.key === "ArrowDown") {
+              } else if (e.key === 'ArrowDown') {
                 VIDEO.volume = Math.max(0, VIDEO.volume - 0.05);
                 EXPECT_USER_VOLUME_CHANGE = true;
               }
@@ -227,10 +227,10 @@ chrome.storage.sync
 
             if (e.shiftKey) return; // ignore shortcuts below when using shift key.
 
-            if (e.key === "ArrowLeft") {
+            if (e.key === 'ArrowLeft') {
               VIDEO.currentTime = Math.max(VIDEO.currentTime - 5, 0);
               preventDefault();
-            } else if (e.key === "ArrowRight") {
+            } else if (e.key === 'ArrowRight') {
               VIDEO.currentTime = Math.min(
                 VIDEO.currentTime + 5,
                 VIDEO.duration,
@@ -251,7 +251,7 @@ chrome.storage.sync
     }
 
     function updateShortsPlayerAttributes() {
-      const shortsPlayer = document.querySelector("#shorts-player");
+      const shortsPlayer = document.querySelector('#shorts-player');
       if (!shortsPlayer) return;
 
       shortsPlayer.setAttribute(playerEnabledAttributeName, items.enabled);
@@ -264,7 +264,7 @@ chrome.storage.sync
 
     function clickMuteButton() {
       const controlButtons = document.querySelectorAll(
-        "ytd-reel-video-renderer[is-active] ytd-shorts-player-controls button",
+        'ytd-reel-video-renderer[is-active] ytd-shorts-player-controls button',
       );
       const shortsMuteButton = controlButtons[1];
 

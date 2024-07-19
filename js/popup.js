@@ -1,13 +1,13 @@
 // Get options elements.
-const enabledStateText = document.querySelector("#enabled_text");
-const enabledCheckBox = document.querySelector("#enabled");
+const enabledStateText = document.querySelector('#enabled_text');
+const enabledCheckBox = document.querySelector('#enabled');
 
 const alwaysVisibleCheckbox = document.querySelector(
-  "#controls_always_visible",
+  '#controls_always_visible',
 );
-const hideVideoInfoCheckbox = document.querySelector("#hide_video_info");
+const hideVideoInfoCheckbox = document.querySelector('#hide_video_info');
 const controlVolumeArrowCheckbox = document.querySelector(
-  "#control_volume_arrow",
+  '#control_volume_arrow',
 );
 
 // Load options values.
@@ -28,35 +28,35 @@ chrome.storage.sync
   });
 
 // listen for options changes and save it.
-enabledCheckBox.addEventListener("change", (e) => {
+enabledCheckBox.addEventListener('change', (e) => {
   chrome.storage.sync.set({ enabled: enabledCheckBox.checked });
   updateText();
 });
 
-alwaysVisibleCheckbox.addEventListener("change", (e) => {
+alwaysVisibleCheckbox.addEventListener('change', (e) => {
   chrome.storage.sync.set({
     controlAlwaysVisible: alwaysVisibleCheckbox.checked,
   });
 });
 
-hideVideoInfoCheckbox.addEventListener("change", (e) => {
+hideVideoInfoCheckbox.addEventListener('change', (e) => {
   chrome.storage.sync.set({ hideVideoInfo: hideVideoInfoCheckbox.checked });
 });
 
-controlVolumeArrowCheckbox.addEventListener("change", (e) => {
+controlVolumeArrowCheckbox.addEventListener('change', (e) => {
   chrome.storage.sync.set({
     controlVolumeWithArrows: controlVolumeArrowCheckbox.checked,
   });
 });
 
-if (i18n("ThisLanguage") === "pt_BR") {
+if (i18n('ThisLanguage') === 'pt_BR') {
   // show pix only for Brazil.
-  document.querySelector("#pix").classList.remove("hide");
+  document.querySelector('#pix').classList.remove('hide');
 }
 
 // update enabled/disabled text.
 function updateText() {
   enabledStateText.textContent = enabledCheckBox.checked
-    ? i18n("Enabled")
-    : i18n("Disabled");
+    ? i18n('Enabled')
+    : i18n('Disabled');
 }

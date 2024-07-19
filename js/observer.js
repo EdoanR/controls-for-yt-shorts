@@ -48,12 +48,12 @@ class Observer {
           }
 
           for (const element of summary.added) {
-            queryCallback(element, "", false);
+            queryCallback(element, '', false);
           }
 
           if (observerOriginalQueries[i].reparenting) {
             for (const element of summary.reparented) {
-              queryCallback(element, "", true);
+              queryCallback(element, '', true);
             }
           }
         }

@@ -14,7 +14,7 @@ function addContentScriptToTabs() {
         chrome.scripting
           .insertCSS({
             target: { tabId: tab.id },
-            files: ["css/content_script.css"],
+            files: ['css/content_script.css'],
           })
           .then(() => {
             // add js files.
@@ -23,11 +23,11 @@ function addContentScriptToTabs() {
               .executeScript({
                 target: { tabId: tab.id },
                 files: [
-                  "libs/mutation_summary.js",
-                  "libs/fluidplayer.min.js",
-                  "js/observer.js",
-                  "js/utils.js",
-                  "js/content_script.js",
+                  'libs/mutation_summary.js',
+                  'libs/fluidplayer.min.js',
+                  'js/observer.js',
+                  'js/utils.js',
+                  'js/content_script.js',
                 ],
               })
               .catch((err) => {
@@ -43,7 +43,7 @@ function addContentScriptToTabs() {
       }
     })
     .catch((err) => {
-      console.log("Could not query tabs", err);
+      console.log('Could not query tabs', err);
     });
 }
 
@@ -53,7 +53,7 @@ chrome.tabs.onUpdated.addListener((tabId, changeInfo, tab) => {
 
   chrome.tabs
     .sendMessage(tabId, {
-      type: "url update",
+      type: 'url update',
       newUrl: changeInfo.url,
     })
     .catch((err) => {});
@@ -86,7 +86,7 @@ function updateAllTabIcons(enabled) {
       }
     })
     .catch((err) => {
-      console.log("Could not query tabs", err);
+      console.log('Could not query tabs', err);
     });
 }
 
@@ -110,5 +110,5 @@ function updateTabIcon(tab, enabled = true) {
       });
   };
 
-  setIcon(enabled ? "normal/icon" : "paused/icon_pause");
+  setIcon(enabled ? 'normal/icon' : 'paused/icon_pause');
 }

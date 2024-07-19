@@ -1,21 +1,21 @@
 const localizeGetLanguage = function () {
-  let lang = chrome.i18n.getMessage("@@ui_locale");
+  let lang = chrome.i18n.getMessage('@@ui_locale');
   let hasTranslation =
-    chrome.i18n.getMessage("ThisLanguage") !== lang ? false : true;
+    chrome.i18n.getMessage('ThisLanguage') !== lang ? false : true;
 
-  if (!hasTranslation) return "en";
+  if (!hasTranslation) return 'en';
   return lang;
 };
 
 const localizeHtmlPage = function () {
-  const prefix = "data-i18n";
+  const prefix = 'data-i18n';
   const attributes = [
-    "",
-    "placeholder",
-    "title",
-    "value",
-    "innerHTML",
-    "aria-label",
+    '',
+    'placeholder',
+    'title',
+    'value',
+    'innerHTML',
+    'aria-label',
   ];
 
   for (let at of attributes) {
@@ -33,7 +33,7 @@ const localizeHtmlPage = function () {
         continue;
       }
 
-      if (at == "innerHTML") {
+      if (at == 'innerHTML') {
         element.innerHTML = message;
       } else if (!at) {
         for (let childNode of element.childNodes) {
@@ -50,15 +50,15 @@ const localizeHtmlPage = function () {
   // Data urls
 
   let lang = localizeGetLanguage();
-  if (lang == "en") return;
+  if (lang == 'en') return;
 
-  let urlElements = document.querySelectorAll("[data-i18n-url]");
+  let urlElements = document.querySelectorAll('[data-i18n-url]');
 
   for (let element of urlElements) {
-    let attType = element.getAttribute("data-i18n-url");
+    let attType = element.getAttribute('data-i18n-url');
     if (!attType) {
       console.log(
-        "[localize.js] Element with data-i18n-url without provinding the attribute data-i18n-type",
+        '[localize.js] Element with data-i18n-url without provinding the attribute data-i18n-type',
         element,
       );
       continue;
@@ -80,7 +80,7 @@ const localizeHtmlPage = function () {
 };
 
 const i18n = (messageName) => {
-  if (!messageName) return "";
+  if (!messageName) return '';
   return chrome.i18n.getMessage(messageName);
 };
 

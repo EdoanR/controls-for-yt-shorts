@@ -1,7 +1,7 @@
 // apply only when the extension is activated.
-ytd-reel-video-renderer:has(#shorts-player[cfyts-player-enabled="true"]) {
+ytd-reel-video-renderer:has(#shorts-player[cfyts-player-enabled='true']) {
   // when hovering or pausing the video
-  &:has(#shorts-player[cfyts-controls-always-on="false"]) {
+  &:has(#shorts-player[cfyts-controls-always-on='false']) {
     &[show-player-controls],
     &:has(ytd-reel-player-overlay-renderer:hover) {
       // move info of the video up to give the controls a space
@@ -21,7 +21,7 @@ ytd-reel-video-renderer:has(#shorts-player[cfyts-player-enabled="true"]) {
     }
   }
 
-  &:has(#shorts-player[cfyts-controls-always-on="true"]) {
+  &:has(#shorts-player[cfyts-controls-always-on='true']) {
     // move info of the video up to give the controls a space
     #overlay > ytd-reel-player-header-renderer,
     #overlay > reel-player-header-renderer {
@@ -42,7 +42,7 @@ ytd-reel-video-renderer:has(#shorts-player[cfyts-player-enabled="true"]) {
       &[show-player-controls],
       &:has(ytd-reel-player-overlay-renderer:hover)
     ) {
-    &:has(#shorts-player[cfyts-hide-video-info="true"]) {
+    &:has(#shorts-player[cfyts-hide-video-info='true']) {
       // move info of the video up to give the controls a space
       #overlay > ytd-reel-player-header-renderer,
       #overlay > reel-player-header-renderer {
@@ -107,7 +107,7 @@ ytd-reel-video-renderer:has(#shorts-player[cfyts-player-enabled="true"]) {
 
   &:has(
       #watch-while-engagement-panel
-        ytd-engagement-panel-section-list-renderer[visibility="ENGAGEMENT_PANEL_VISIBILITY_EXPANDED"]
+        ytd-engagement-panel-section-list-renderer[visibility='ENGAGEMENT_PANEL_VISIBILITY_EXPANDED']
     ) {
     // add margin to the progress bar when comments are open.
     .fluid_slider {
@@ -122,7 +122,7 @@ ytd-reel-video-renderer:has(#shorts-player[cfyts-player-enabled="true"]) {
 }
 
 // hide controls when the extension is deactivated.
-ytd-reel-video-renderer:has(#shorts-player[CFYTS-player-enabled="false"])
+ytd-reel-video-renderer:has(#shorts-player[CFYTS-player-enabled='false'])
   .fluid_controls_container {
   display: none !important;
 }
