@@ -100,6 +100,8 @@ chrome.storage.sync
         '.fluid_controls_container',
       );
 
+      fluidContainer.classList.remove('initial_controls_show');
+
       fluidContainer.addEventListener('click', (e) => {
         // when clicking at the video bar it can click throught it and pause/play the video.
         // the following line prevent that from happening.
