@@ -35,22 +35,8 @@ ytd-shorts[cfyts-enabled='true'] {
 
   // when "always visible" option is disabled.
   &[cfyts-always-visible='false'] {
-    // on player hover
-    &:has(.player-wrapper:hover) {
-      // move overlay up
-      ytd-reel-player-overlay-renderer .metadata-container {
-        margin-bottom: $player-height;
-        border-radius: 0px; // remove rounded bottom corners
-      }
-
-      // show controls
-      .cfyts-player-controls {
-        height: $player-height;
-      }
-    }
-
-    // on video info hover
-    &:has(reel-player-header-renderer:hover) {
+    // on player hover, or video info hover
+    &:has(.player-wrapper:hover, reel-player-header-renderer:hover) {
       // move overlay up
       ytd-reel-player-overlay-renderer .metadata-container {
         margin-bottom: $player-height;
@@ -85,16 +71,8 @@ ytd-shorts[cfyts-enabled='true'] {
       opacity: 0;
     }
 
-    // on player hover
-    &:has(.player-wrapper:hover) {
-      // show video info
-      #overlay {
-        opacity: 1;
-      }
-    }
-
-    // on video info hover
-    &:has(reel-player-header-renderer:hover) {
+    // on player hover, or video info hover
+    &:has(.player-wrapper:hover, reel-player-header-renderer:hover) {
       // show video info
       #overlay {
         opacity: 1;
