@@ -1,275 +1,209 @@
 devLog('content script started.');
 
-let PLAYER = null;
-/** @type {HTMLVideoElement} */
-let VIDEO = null;
-let LISTENING_KEYS = false;
-
-let VOLUME_SAVE_TIMEOUT = null;
-let EXPECT_USER_VOLUME_CHANGE = false;
-let MOUSE_SLIDER_DOWN = false;
-let SLIDER_CLICK_TIMEOUT = null;
-
 chrome.storage.sync
   .get({
     enabled: true,
     controlAlwaysVisible: false,
     hideVideoInfo: false,
     controlVolumeWithArrows: false,
-    savedVolumeValue: null,
   })
   .then((items) => {
-    const playerAttributeName = 'cfyts-player';
-    const playerEnabledAttributeName = 'cfyts-player-enabled';
-    const alwaysVisibleAttrName = 'cfyts-controls-always-on';
-    const hideVideoInfoAttrName = 'cfyts-hide-video-info';
+    /** @type {YTShortsPlayer | null} */
+    let player = null;
 
-    const isShortsPage = () => {
-      return location.href.includes('/shorts/');
-    };
+    const shortVideoSelector = '#shorts-container video';
+    const shortsVolumeControlClassName = 'desktop-shorts-volume-controls';
+    const shortsVolumeSliderClassName =
+      'YtdDesktopShortsVolumeControlsNativeSlider';
+    const shortsMuteButtonClassName =
+      'YtdDesktopShortsVolumeControlsMuteIconButton';
+    const ytShortsPageTagName = 'ytd-shorts';
 
-    observer.watchElements([
-      {
-        elements: ['#shorts-player'],
-        onElement: (element) => {
-          checkPage();
-        },
-      },
-    ]);
+    /** @type {HTMLVideoElement | null} */
+    let shortsVideo = null;
+    /** @type {HTMLElement | null} */
+    let shortVideoContainer = null;
+    /** @type {HTMLInputElement | null} */
+    let shortsVolumeSlider = null;
+    /** @type {HTMLButtonElement | null} */
+    let shortsMuteButton = null;
 
-    // listen to storage change
+    let ytShortsPageElement = document.querySelector(ytShortsPageTagName);
+    if (ytShortsPageElement) updatePageAttributes();
+
+    const observableElement =
+      document.querySelector(
+        '#shorts-container, ytd-shorts, ytd-page-manager',
+      ) || document.body;
+
+    checkForMuteButton();
+    checkForVolumeSlider();
+    checkForVideoAndContainer();
+
+    const observer = new MutationObserver((mutations) => {
+      for (const mutation of mutations) {
+        for (const addedNode of mutation.addedNodes) {
+          if (!addedNode.tagName) continue;
+
+          /** @type {HTMLElement} */
+          const element = addedNode;
+          if (IS_DEV) element.setAttribute('node-added', '');
+
+          if (element.tagName === shortsVolumeControlClassName.toUpperCase()) {
+            shortsVolumeSlider = null;
+            shortsMuteButton = null;
+            devLog('controls reset');
+          }
+
+          if (element.tagName === ytShortsPageTagName.toUpperCase()) {
+            ytShortsPageElement = element;
+            devLog('yt shorts page element found');
+            updatePageAttributes();
+          }
+
+          checkForVideoAndContainer(element);
+          checkForMuteButton(element);
+          checkForVolumeSlider(element);
+        }
+      }
+    });
+
+    observer.observe(observableElement, {
+      subtree: true,
+      childList: true,
+    });
+
+    devLog('observing element...', observableElement);
+
     chrome.storage.sync.onChanged.addListener((changes) => {
-      // update items.
       for (const key in changes) {
         items[key] = changes[key].newValue;
       }
 
-      updateShortsPlayerAttributes();
-
-      if (changes['enabled']) {
-        checkPage();
-      }
+      updatePageAttributes();
     });
 
-    // the current page that the script was inject could be a shorts page, so let's check it.
-    checkPage();
+    function updatePageAttributes() {
+      if (!ytShortsPageElement) return;
 
-    chrome.runtime.onMessage.addListener((message) => {
-      if (message?.type !== 'url update') return;
-      // the url of the page changed, let's check if there's any youtube shorts.
-      // this is in case the observer fail on us.
+      ytShortsPageElement.setAttribute(
+        'cfyts-enabled',
+        items.enabled.toString(),
+      );
 
-      setTimeout(() => {
-        checkPage();
-      }, 5000);
-    });
+      ytShortsPageElement.setAttribute(
+        'cfyts-always-visible',
+        items.controlAlwaysVisible.toString(),
+      );
 
-    function checkPage() {
-      updateShortsPlayerAttributes();
+      ytShortsPageElement.setAttribute(
+        'cfyts-hide-info',
+        items.hideVideoInfo.toString(),
+      );
+    }
 
-      if (!isShortsPage()) {
-        if (PLAYER) PLAYER.destroy();
-        return;
+    /** @param {HTMLElement} [ element ] */
+    function checkForVideoAndContainer(element) {
+      if (!element) element = document.querySelector(shortVideoSelector);
+      if (!element) return;
+      if (player) return;
+      if (element.tagName !== 'VIDEO') return;
+
+      const video = document.querySelector(shortVideoSelector);
+      const container = document.querySelector(
+        '#shorts-container ytd-player #container .html5-video-player',
+      );
+
+      devLog('video found?', video, container);
+      if (!video || !container) return;
+
+      shortsVideo = video;
+      shortVideoContainer = container;
+
+      createPlayerWhenAllElementFound();
+    }
+
+    /** @param {HTMLElement} [ element ] */
+    function checkForMuteButton(element) {
+      if (!element)
+        element = document.querySelector(`.${shortsMuteButtonClassName}`);
+      if (!element) return;
+      if (shortsMuteButton) return;
+      if (element.className !== shortsMuteButtonClassName) return;
+
+      shortsMuteButton = element;
+      devLog('mute button found', shortsMuteButton);
+
+      if (player && shortsVolumeSlider) {
+        // update volume controls.
+        player.setNewShortVolumeControls(shortsMuteButton, shortsVolumeSlider);
+      } else {
+        // try to create player.
+        createPlayerWhenAllElementFound();
       }
+    }
 
-      const video = document.querySelector('#shorts-player video');
+    /** @param {HTMLElement} [ element ] */
+    function checkForVolumeSlider(element) {
+      if (!element)
+        element = document.querySelector(`.${shortsVolumeSliderClassName}`);
+      if (!element) return;
+      if (shortsVolumeSlider) return;
+      if (element.className !== shortsVolumeSliderClassName) return;
 
-      if (!video) return;
-      if (video.hasAttribute(playerAttributeName))
-        return devLog('video already has controls.');
+      const attrObserver = new MutationObserver((mutations) => {
+        for (const mutation of mutations) {
+          if (mutation.attributeName === 'style' && !mutation.oldValue) {
+            if (!player) return;
 
-      /** @type {HTMLVideoElement} */
-      video.setAttribute(playerAttributeName, '');
+            const styleAttr = element.getAttribute('style');
+            const percentMatch = styleAttr.match(/\d+%/);
+            const percent = percentMatch ? parseInt(percentMatch[0]) : null;
 
-      VIDEO = video;
-
-      PLAYER = fluidPlayer(video, {
-        layoutControls: {
-          contextMenu: {
-            controls: false,
-          },
-          playPauseAnimation: false,
-          playButtonShowing: false,
-          doubleclickFullscreen: false,
-          keyboardControl: false,
-          loop: true,
-        },
-      });
-
-      const fluidContainer = document.querySelector(
-        '.fluid_controls_container',
-      );
-
-      fluidContainer.classList.remove('initial_controls_show');
-
-      fluidContainer.addEventListener('click', (e) => {
-        // when clicking at the video bar it can click throught it and pause/play the video.
-        // the following line prevent that from happening.
-        e.stopPropagation();
-      });
-
-      // click on mute button if the mute button from fluid controls was clicked.
-      // this for youtube to automatically mute the next shorts.
-      const muteButton = fluidContainer.querySelector('.fluid_control_mute');
-      muteButton.addEventListener(
-        'click',
-        (e) => {
-          e.preventDefault();
-          e.stopPropagation();
-
-          clickMuteButton();
-        },
-        true,
-      );
-
-      // this will keep track if the user is changing the volume by changing the slider.
-      /** @type {HTMLDivElement} */
-      const volumeSlider = fluidContainer.querySelector(
-        '.fluid_control_volume_container',
-      );
-      volumeSlider.addEventListener('mousedown', (e) => {
-        MOUSE_SLIDER_DOWN = true;
-        EXPECT_USER_VOLUME_CHANGE = true;
-      });
-
-      volumeSlider.addEventListener('mouseup', (e) => {
-        MOUSE_SLIDER_DOWN = false;
-
-        clearTimeout(SLIDER_CLICK_TIMEOUT);
-        SLIDER_CLICK_TIMEOUT = setTimeout(() => {
-          // this prevent expecting user volume change when the user simply click on the volume slider without dragging.
-          if (EXPECT_USER_VOLUME_CHANGE && !MOUSE_SLIDER_DOWN)
-            EXPECT_USER_VOLUME_CHANGE = false;
-        }, 500);
-      });
-
-      let muted = VIDEO.muted;
-
-      VIDEO.addEventListener('loadeddata', (e) => {
-        if (!muted && VIDEO.muted) VIDEO.muted = false; // this is for when the user change the volume while the video is muted.
-        if (items.savedVolumeValue !== null)
-          VIDEO.volume = items.savedVolumeValue;
-      });
-
-      // open normal video context menu on second right click.
-      VIDEO.addEventListener('contextmenu', (e) => {
-        const isContextMenuOpen = () => {
-          // check if the custom youtube context menu is open.
-          const contextMenu = document.querySelector(
-            '.ytp-popup.ytp-contextmenu',
-          );
-          if (!contextMenu) return false;
-          if (contextMenu.style.display === 'none') return false;
-          return true;
-        };
-
-        if (isContextMenuOpen()) {
-          e.stopPropagation();
-        }
-      });
-
-      VIDEO.addEventListener('volumechange', (e) => {
-        if (!chrome.runtime.id) return;
-        muted = VIDEO.muted;
-
-        if (EXPECT_USER_VOLUME_CHANGE || MOUSE_SLIDER_DOWN) {
-          items.savedVolumeValue = VIDEO.volume;
-
-          EXPECT_USER_VOLUME_CHANGE = false;
-
-          // as this can be called multiple times while changing the volume slider.
-          // it should use a timeout to save the volume to prevent exceeding chrome storage calls.
-
-          clearTimeout(VOLUME_SAVE_TIMEOUT);
-          VOLUME_SAVE_TIMEOUT = null;
-
-          VOLUME_SAVE_TIMEOUT = setTimeout(() => {
-            chrome.storage.sync
-              .set({ savedVolumeValue: items.savedVolumeValue })
-              .then(() => {
-                devLog('volume saved:', items.savedVolumeValue);
-              });
-          }, 500);
-        } else if (items.savedVolumeValue !== null) {
-          VIDEO.volume = items.savedVolumeValue;
-        }
-      });
-
-      if (!LISTENING_KEYS) {
-        LISTENING_KEYS = true;
-
-        document.addEventListener(
-          'keydown',
-          (e) => {
-            if (!items.enabled) return;
-            if (!isShortsPage()) return;
-            if (e.target.matches('input, [contenteditable]')) return;
-
-            const preventDefault = () => {
-              e.preventDefault();
-              e.stopPropagation();
-              e.stopImmediatePropagation();
-            };
-
-            // spacebar and "M" are already handled by YouTube.
-
-            if (
-              (e.key === 'ArrowUp' || e.key === 'ArrowDown') &&
-              (items.controlVolumeWithArrows || e.shiftKey)
-            ) {
-              if (e.key === 'ArrowUp') {
-                VIDEO.volume = Math.min(1, VIDEO.volume + 0.05);
-                EXPECT_USER_VOLUME_CHANGE = true;
-              } else if (e.key === 'ArrowDown') {
-                VIDEO.volume = Math.max(0, VIDEO.volume - 0.05);
-                EXPECT_USER_VOLUME_CHANGE = true;
-              }
-              preventDefault();
-            }
-
-            if (e.shiftKey) return; // ignore shortcuts below when using shift key.
-
-            if (e.key === 'ArrowLeft') {
-              VIDEO.currentTime = Math.max(VIDEO.currentTime - 5, 0);
-              preventDefault();
-            } else if (e.key === 'ArrowRight') {
-              VIDEO.currentTime = Math.min(
-                VIDEO.currentTime + 5,
-                VIDEO.duration,
+            if (percent === null)
+              return devLog(
+                'could not get gradient percent from shorts volume slider.',
               );
-              preventDefault();
-            } else if (e.key.match(/^[0-9]$/)) {
-              const numericValue = parseInt(e.key);
-              const percentage = numericValue * 10;
-              const position = (VIDEO.duration * percentage) / 100;
 
-              VIDEO.currentTime = position;
-              preventDefault();
-            }
-          },
-          true,
-        );
+            player.setVolumeSliderInitialVolumeChange(percent);
+            attrObserver.disconnect();
+          }
+        }
+      });
+
+      shortsVolumeSlider = element;
+      devLog('volume slider found', shortsVolumeSlider);
+
+      attrObserver.observe(element, {
+        childList: false,
+        subtree: false,
+        attributes: true,
+        attributeFilter: ['style'],
+        attributeOldValue: true,
+      });
+
+      if (player && shortsMuteButton) {
+        // update volume controls.
+        player.setNewShortVolumeControls(shortsMuteButton, shortsVolumeSlider);
+      } else {
+        // try to create player.
+        createPlayerWhenAllElementFound();
       }
     }
 
-    function updateShortsPlayerAttributes() {
-      const shortsPlayer = document.querySelector('#shorts-player');
-      if (!shortsPlayer) return;
+    function createPlayerWhenAllElementFound() {
+      if (!shortsVideo) return;
+      if (!shortVideoContainer) return;
+      if (!shortsMuteButton) return;
+      if (!shortsVolumeSlider) return;
 
-      shortsPlayer.setAttribute(playerEnabledAttributeName, items.enabled);
-      shortsPlayer.setAttribute(
-        alwaysVisibleAttrName,
-        items.controlAlwaysVisible,
+      player = new YTShortsPlayer(
+        shortsVideo,
+        shortVideoContainer,
+        shortsMuteButton,
+        shortsVolumeSlider,
       );
-      shortsPlayer.setAttribute(hideVideoInfoAttrName, items.hideVideoInfo);
-    }
 
-    function clickMuteButton() {
-      const controlButtons = document.querySelectorAll(
-        'ytd-reel-video-renderer[is-active] ytd-shorts-player-controls button',
-      );
-      const shortsMuteButton = controlButtons[1];
-
-      if (shortsMuteButton) shortsMuteButton.click();
+      devLog('player added.');
     }
   });

@@ -1,57 +1,161 @@
-ytd-reel-video-renderer:has(#shorts-player[cfyts-player-enabled=true]) {
-  /* remove some buttons from control that doesn't work */
-}
-ytd-reel-video-renderer:has(#shorts-player[cfyts-player-enabled=true]) .player-controls {
-  display: none !important;
-}
-ytd-reel-video-renderer:has(#shorts-player[cfyts-player-enabled=true]) .fluid_controls_container {
-  padding-bottom: 10px;
-  background-color: rgba(0, 0, 0, 0.85) !important;
-  z-index: 99 !important;
-  opacity: 0;
-  visibility: visible !important;
-  transition: opacity 0.5s ease-in-out;
-}
-ytd-reel-video-renderer:has(#shorts-player[cfyts-player-enabled=true]) .metadata-container.ytd-reel-player-overlay-renderer, ytd-reel-video-renderer:has(#shorts-player[cfyts-player-enabled=true]) .YtwReelsPlayerOverlayLayoutViewModelHostMetadataContainer {
-  transition: margin-bottom 0.5s ease-in-out, opacity 0.25s ease-in-out, border-bottom-left-radius 0.25s ease-in-out, border-bottom-right-radius 0.25s ease-in-out;
+ytd-shorts[cfyts-enabled=true] ytd-reel-player-overlay-renderer .metadata-container {
   margin-bottom: 0px;
+  transition: margin-bottom 0.2s ease-in-out, opacity 0.2s ease-in-out;
 }
-ytd-reel-video-renderer:has(#shorts-player[cfyts-player-enabled=true]):has(#shorts-player[cfyts-controls-always-on=true]) .metadata-container.ytd-reel-player-overlay-renderer, ytd-reel-video-renderer:has(#shorts-player[cfyts-player-enabled=true]):has(#shorts-player[cfyts-controls-always-on=true]) .YtwReelsPlayerOverlayLayoutViewModelHostMetadataContainer, ytd-reel-video-renderer:has(#shorts-player[cfyts-player-enabled=true])[show-player-controls] .metadata-container.ytd-reel-player-overlay-renderer, ytd-reel-video-renderer:has(#shorts-player[cfyts-player-enabled=true])[show-player-controls] .YtwReelsPlayerOverlayLayoutViewModelHostMetadataContainer, ytd-reel-video-renderer:has(#shorts-player[cfyts-player-enabled=true]):has(ytd-reel-player-overlay-renderer:hover) .metadata-container.ytd-reel-player-overlay-renderer, ytd-reel-video-renderer:has(#shorts-player[cfyts-player-enabled=true]):has(ytd-reel-player-overlay-renderer:hover) .YtwReelsPlayerOverlayLayoutViewModelHostMetadataContainer {
-  margin-bottom: 63px;
-  border-bottom-left-radius: 0px;
-  border-bottom-right-radius: 0px;
+ytd-shorts[cfyts-enabled=true] #overlay {
+  transition: opacity 0.2s ease-in-out;
 }
-ytd-reel-video-renderer:has(#shorts-player[cfyts-player-enabled=true]):has(#shorts-player[cfyts-controls-always-on=true]) .fluid_controls_container, ytd-reel-video-renderer:has(#shorts-player[cfyts-player-enabled=true])[show-player-controls] .fluid_controls_container, ytd-reel-video-renderer:has(#shorts-player[cfyts-player-enabled=true]):has(ytd-reel-player-overlay-renderer:hover) .fluid_controls_container {
+ytd-shorts[cfyts-enabled=true] #scrubber {
+  display: none;
+}
+ytd-shorts[cfyts-enabled=true][cfyts-always-visible=false]:has(.player-wrapper:hover) ytd-reel-player-overlay-renderer .metadata-container {
+  margin-bottom: 60px;
+}
+ytd-shorts[cfyts-enabled=true][cfyts-always-visible=false]:has(.player-wrapper:hover) .cfyts-player-controls {
+  height: 60px;
+}
+ytd-shorts[cfyts-enabled=true][cfyts-always-visible=false]:has(reel-player-header-renderer:hover) ytd-reel-player-overlay-renderer .metadata-container {
+  margin-bottom: 60px;
+}
+ytd-shorts[cfyts-enabled=true][cfyts-always-visible=false]:has(reel-player-header-renderer:hover) .cfyts-player-controls {
+  height: 60px;
+}
+ytd-shorts[cfyts-enabled=true][cfyts-always-visible=true] ytd-reel-player-overlay-renderer .metadata-container {
+  margin-bottom: 60px;
+}
+ytd-shorts[cfyts-enabled=true][cfyts-always-visible=true] .cfyts-player-controls {
+  height: 60px;
+}
+ytd-shorts[cfyts-enabled=true][cfyts-hide-info=true] #overlay {
+  opacity: 0;
+}
+ytd-shorts[cfyts-enabled=true][cfyts-hide-info=true]:has(.player-wrapper:hover) #overlay {
   opacity: 1;
 }
-ytd-reel-video-renderer:has(#shorts-player[cfyts-player-enabled=true]):not(ytd-reel-video-renderer:has(#shorts-player[cfyts-player-enabled=true])[show-player-controls], ytd-reel-video-renderer:has(#shorts-player[cfyts-player-enabled=true]):has(ytd-reel-player-overlay-renderer:hover)):has(#shorts-player[cfyts-hide-video-info=true]) .metadata-container.ytd-reel-player-overlay-renderer {
-  opacity: 0;
+ytd-shorts[cfyts-enabled=true][cfyts-hide-info=true]:has(reel-player-header-renderer:hover) #overlay {
+  opacity: 1;
 }
-ytd-reel-video-renderer:has(#shorts-player[cfyts-player-enabled=true]) #overlay {
-  padding-right: 0;
-}
-ytd-reel-video-renderer:has(#shorts-player[cfyts-player-enabled=true]) #player-container #progress-bar, ytd-reel-video-renderer:has(#shorts-player[cfyts-player-enabled=true]) .PlayerControlsProgressBarHost {
-  display: none !important;
-}
-ytd-reel-video-renderer:has(#shorts-player[cfyts-player-enabled=true]) .fluid_control_fullscreen,
-ytd-reel-video-renderer:has(#shorts-player[cfyts-player-enabled=true]) .fluid_control_mini_player,
-ytd-reel-video-renderer:has(#shorts-player[cfyts-player-enabled=true]) .fluid_control_theatre {
-  display: none !important;
-}
-ytd-reel-video-renderer:has(#shorts-player[cfyts-player-enabled=true]) #player-container #container .html5-video-container,
-ytd-reel-video-renderer:has(#shorts-player[cfyts-player-enabled=true]) #player-container #container .html5-video-container .fluid_video_wrapper {
-  width: 100% !important;
-  height: 100% !important;
-}
-ytd-reel-video-renderer:has(#shorts-player[cfyts-player-enabled=true]):has(#watch-while-engagement-panel ytd-engagement-panel-section-list-renderer[visibility=ENGAGEMENT_PANEL_VISIBILITY_EXPANDED]) .fluid_slider {
-  margin-right: 55px;
-}
-ytd-reel-video-renderer:has(#shorts-player[cfyts-player-enabled=true]) .fluid_context_menu {
-  display: none !important;
+ytd-shorts[cfyts-enabled=true] ytd-reel-video-renderer[is-active][is-watch-while-mode] .cfyts-player-controls .progress-bar-wrapper {
+  padding-right: 16%;
 }
 
-ytd-reel-video-renderer:has(#shorts-player[CFYTS-player-enabled=false]) .fluid_controls_container {
-  display: none !important;
+ytd-shorts[cfyts-enabled=false] .cfyts-player-controls {
+  display: none;
+}
+
+.cfyts-player-controls {
+  position: absolute;
+  display: flex;
+  flex-direction: column;
+  bottom: 0;
+  height: 0;
+  transition: height 0.2s ease-in-out;
+  width: 100%;
+  z-index: 10;
+  background-color: rgba(0, 0, 0, 0.8);
+}
+.cfyts-player-controls input[type=range].slider {
+  -webkit-appearance: none;
+  background: white;
+  appearance: none;
+  border-radius: 20px;
+  height: 3px;
+  outline: none;
+  border: none;
+  width: 100%;
+  cursor: pointer;
+}
+.cfyts-player-controls input[type=range].slider::-webkit-slider-thumb {
+  -webkit-appearance: none;
+  appearance: none;
+  height: 13px;
+  width: 13px;
+  background: white;
+  border-radius: 50%;
+}
+.cfyts-player-controls .progress-bar {
+  width: 100%;
+}
+.cfyts-player-controls .progress-bar .progress-bar-wrapper {
+  padding-left: 5%;
+  padding-right: 5%;
+}
+.cfyts-player-controls .progress-bar input[type=range]::-webkit-slider-thumb {
+  height: 0px;
+  width: 0px;
+  transition: ease-in-out width 0.1s, ease-in-out height 0.1s;
+  background: red;
+}
+.cfyts-player-controls .progress-bar input[type=range]:hover::-webkit-slider-thumb {
+  height: 13px;
+  width: 13px;
+}
+.cfyts-player-controls .control-buttons {
+  display: flex;
+  width: 100%;
+  align-items: center;
+  padding-left: 10px;
+}
+.cfyts-player-controls .control-buttons .play-button {
+  width: 40px;
+  height: 40px;
+  background: none;
+  border: none;
+  cursor: pointer;
+  opacity: 0.8;
+}
+.cfyts-player-controls .control-buttons .play-button:hover {
+  opacity: 1;
+}
+.cfyts-player-controls .control-buttons .play-button[playing=true] .play-icon {
+  display: none;
+}
+.cfyts-player-controls .control-buttons .play-button[playing=false] .pause-icon {
+  display: none;
+}
+.cfyts-player-controls .control-buttons .volume-control {
+  display: flex;
+  align-items: center;
+  padding-right: 5px;
+}
+.cfyts-player-controls .control-buttons .volume-control .mute-button {
+  width: 40px;
+  height: 40px;
+  background: none;
+  border: none;
+  cursor: pointer;
+  opacity: 0.8;
+}
+.cfyts-player-controls .control-buttons .volume-control .mute-button:hover {
+  opacity: 1;
+}
+.cfyts-player-controls .control-buttons .volume-control .mute-button[icon=high-volume] .low-volume-icon {
+  display: none;
+}
+.cfyts-player-controls .control-buttons .volume-control .mute-button[icon=high-volume] .muted-volume-icon {
+  display: none;
+}
+.cfyts-player-controls .control-buttons .volume-control .mute-button[icon=low-volume] .high-volume-icon {
+  display: none;
+}
+.cfyts-player-controls .control-buttons .volume-control .mute-button[icon=low-volume] .muted-volume-icon {
+  display: none;
+}
+.cfyts-player-controls .control-buttons .volume-control .mute-button[icon=muted] .high-volume-icon {
+  display: none;
+}
+.cfyts-player-controls .control-buttons .volume-control .mute-button[icon=muted] .low-volume-icon {
+  display: none;
+}
+.cfyts-player-controls .control-buttons .volume-control .volume-slider {
+  min-height: 18px;
+}
+.cfyts-player-controls .control-buttons .volume-control .volume-slider input {
+  width: 80px;
+}
+.cfyts-player-controls .control-buttons .time-display {
+  font-family: "YouTube Noto", Roboto, Arial, Helvetica, sans-serif;
+  font-size: 13px;
 }
 
 /*# sourceMappingURL=content_script.css.map */

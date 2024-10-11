@@ -18,6 +18,7 @@
         "libs/fluidplayer.min.js",
         "js/observer.js",
         "js/utils.js",
+        "js/player.js",
         "js/content_script.js"
       ]
     }

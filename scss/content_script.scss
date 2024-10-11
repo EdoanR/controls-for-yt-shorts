@@ -1,102 +1,264 @@
-// apply only when the extension is activated.
-ytd-reel-video-renderer:has(#shorts-player[cfyts-player-enabled='true']) {
+$player-height: 60px;
+$animation-speed: 0.2s;
+$player-background-transparency: 0.8;
 
-  // hide default controls.
-  .player-controls {
-    display: none !important;
-  }
-  
-  // setting up controls visuals
-  .fluid_controls_container {
-    padding-bottom: 10px;
-    // add black background behind the controls.
-    background-color: rgba(0, 0, 0, 0.85) !important;
-    z-index: 99 !important;
-    opacity: 0;
-    visibility: visible !important;
-    transition: opacity 0.5s ease-in-out;
-  }
-
-  // setting up video info transitions
-  .metadata-container.ytd-reel-player-overlay-renderer, .YtwReelsPlayerOverlayLayoutViewModelHostMetadataContainer {
-    transition:
-      margin-bottom 0.5s ease-in-out,
-      opacity 0.25s ease-in-out,
-      border-bottom-left-radius 0.25s ease-in-out,
-      border-bottom-right-radius 0.25s ease-in-out;
+// when "enabled" option is enabled.
+ytd-shorts[cfyts-enabled='true'] {
+  // setup overlay transitions
+  ytd-reel-player-overlay-renderer .metadata-container {
     margin-bottom: 0px;
+    transition:
+      margin-bottom $animation-speed ease-in-out,
+      opacity $animation-speed ease-in-out;
   }
 
-  &:has(#shorts-player[cfyts-controls-always-on='true']), &[show-player-controls], &:has(ytd-reel-player-overlay-renderer:hover) { 
-    // when controls always on or hovering the video.
-    
-    // move info of the video up to give the controls a space
-    .metadata-container.ytd-reel-player-overlay-renderer, .YtwReelsPlayerOverlayLayoutViewModelHostMetadataContainer {
-      margin-bottom: 63px;
-      border-bottom-left-radius: 0px;
-      border-bottom-right-radius: 0px;
-    }
-
-    // show controllers
-    .fluid_controls_container {
-      opacity: 1;
-    }
+  #overlay {
+    transition: opacity $animation-speed ease-in-out;
   }
 
-  &:not(
-      &[show-player-controls],
-      &:has(ytd-reel-player-overlay-renderer:hover)
-    ) {
-    // hide video info.
-    &:has(#shorts-player[cfyts-hide-video-info='true']) {
-      .metadata-container.ytd-reel-player-overlay-renderer {
-        opacity: 0;
+  // hide default youtube scrubber.
+  #scrubber {
+    display: none;
+  }
+
+  // when "always visible" option is disabled.
+  &[cfyts-always-visible='false'] {
+    // on player hover
+    &:has(.player-wrapper:hover) {
+      // move overlay up
+      ytd-reel-player-overlay-renderer .metadata-container {
+        margin-bottom: $player-height;
+      }
+
+      // show controls
+      .cfyts-player-controls {
+        height: $player-height;
+      }
+    }
+
+    // on video info hover
+    &:has(reel-player-header-renderer:hover) {
+      // move overlay up
+      ytd-reel-player-overlay-renderer .metadata-container {
+        margin-bottom: $player-height;
+      }
+
+      // show controls
+      .cfyts-player-controls {
+        height: $player-height;
       }
     }
   }
 
-  #overlay {
-    // fix space padding when opening comments.
-    padding-right: 0;
-  }
+  // when "always visible" option is enabled.
+  &[cfyts-always-visible='true'] {
+    // move overlay up.
+    ytd-reel-player-overlay-renderer .metadata-container {
+      margin-bottom: $player-height;
+    }
 
-  // hide progress bar
-  #player-container #progress-bar, .PlayerControlsProgressBarHost {
-    display: none !important;
-  }
-
-  /* remove some buttons from control that doesn't work */
-  .fluid_control_fullscreen,
-  .fluid_control_mini_player,
-  .fluid_control_theatre {
-    display: none !important;
-  }
-
-  // make controls adapt to size changes (such when you unzoom the page)
-  #player-container #container .html5-video-container,
-  #player-container #container .html5-video-container .fluid_video_wrapper {
-    width: 100% !important;
-    height: 100% !important;
-  }
-
-  &:has(
-      #watch-while-engagement-panel
-        ytd-engagement-panel-section-list-renderer[visibility='ENGAGEMENT_PANEL_VISIBILITY_EXPANDED']
-    ) {
-    // add margin to the progress bar when comments are open.
-    .fluid_slider {
-      margin-right: 55px;
+    // show controls.
+    .cfyts-player-controls {
+      height: $player-height;
     }
   }
 
-  // hide default fluid player context menu
-  .fluid_context_menu {
-    display: none !important;
+  // when "hide video info" option is enabled.
+  &[cfyts-hide-info='true'] {
+    // hide video info by default.
+    #overlay {
+      opacity: 0;
+    }
+
+    // on player hover
+    &:has(.player-wrapper:hover) {
+      // show video info
+      #overlay {
+        opacity: 1;
+      }
+    }
+
+    // on video info hover
+    &:has(reel-player-header-renderer:hover) {
+      // show video info
+      #overlay {
+        opacity: 1;
+      }
+    }
+  }
+
+  // when comments are opened.
+  // channel logo can be over the progress bar.
+  // so let's make the progress bar smaller to give it space for the channel logo.
+
+  // when comments are opened.
+  ytd-reel-video-renderer[is-active][is-watch-while-mode] {
+    .cfyts-player-controls {
+      .progress-bar-wrapper {
+        padding-right: 16%;
+      }
+    }
   }
 }
 
-// hide controls when the extension is deactivated.
-ytd-reel-video-renderer:has(#shorts-player[CFYTS-player-enabled='false'])
-  .fluid_controls_container {
-  display: none !important;
+// when "enabled" option is disabled.
+ytd-shorts[cfyts-enabled='false'] {
+  // hide controls.
+  .cfyts-player-controls {
+    display: none;
+  }
+}
+
+// setup controls look.
+.cfyts-player-controls {
+  position: absolute;
+  display: flex;
+  flex-direction: column;
+  bottom: 0;
+  height: 0;
+  transition: height $animation-speed ease-in-out;
+  width: 100%;
+  z-index: 10;
+  background-color: rgba(0, 0, 0, $player-background-transparency);
+
+  input[type='range'].slider {
+    -webkit-appearance: none;
+    background: white;
+    appearance: none;
+    border-radius: 20px;
+    height: 3px;
+    outline: none;
+    border: none;
+    width: 100%;
+    cursor: pointer;
+
+    &::-webkit-slider-thumb {
+      -webkit-appearance: none;
+      appearance: none;
+      height: 13px;
+      width: 13px;
+      background: white;
+      border-radius: 50%;
+    }
+  }
+
+  .progress-bar {
+    width: 100%;
+
+    .progress-bar-wrapper {
+      padding-left: 5%;
+      padding-right: 5%;
+    }
+  }
+
+  .progress-bar input[type='range'] {
+    &::-webkit-slider-thumb {
+      height: 0px;
+      width: 0px;
+      transition:
+        ease-in-out width 0.1s,
+        ease-in-out height 0.1s;
+      background: red;
+    }
+
+    &:hover::-webkit-slider-thumb {
+      height: 13px;
+      width: 13px;
+    }
+  }
+
+  .control-buttons {
+    display: flex;
+    width: 100%;
+    align-items: center;
+    padding-left: 10px;
+
+    .play-button {
+      width: 40px;
+      height: 40px;
+      background: none;
+      border: none;
+      cursor: pointer;
+      opacity: 0.8;
+    }
+
+    .play-button:hover {
+      opacity: 1;
+    }
+
+    .play-button[playing='true'] {
+      .play-icon {
+        display: none;
+      }
+    }
+
+    .play-button[playing='false'] {
+      .pause-icon {
+        display: none;
+      }
+    }
+
+    .volume-control {
+      display: flex;
+      align-items: center;
+      padding-right: 5px;
+
+      .mute-button {
+        width: 40px;
+        height: 40px;
+        background: none;
+        border: none;
+        cursor: pointer;
+        opacity: 0.8;
+      }
+
+      .mute-button:hover {
+        opacity: 1;
+      }
+
+      .mute-button[icon='high-volume'] {
+        .low-volume-icon {
+          display: none;
+        }
+
+        .muted-volume-icon {
+          display: none;
+        }
+      }
+
+      .mute-button[icon='low-volume'] {
+        .high-volume-icon {
+          display: none;
+        }
+
+        .muted-volume-icon {
+          display: none;
+        }
+      }
+
+      .mute-button[icon='muted'] {
+        .high-volume-icon {
+          display: none;
+        }
+
+        .low-volume-icon {
+          display: none;
+        }
+      }
+
+      .volume-slider {
+        min-height: 18px;
+
+        input {
+          width: 80px;
+        }
+      }
+    }
+
+    .time-display {
+      // font used by youtube.
+      font-family: 'YouTube Noto', Roboto, Arial, Helvetica, sans-serif;
+      font-size: 13px;
+    }
+  }
 }
