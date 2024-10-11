@@ -118,6 +118,7 @@ class YTShortsPlayer {
     document.addEventListener('keydown', (e) => {
       if (e.key !== 'ArrowLeft' && e.key !== 'ArrowRight') return;
       if (!isShortsPage()) return;
+      if (isUserTyping()) return;
 
       const goFoward = e.key === 'ArrowRight';
 
@@ -271,6 +272,7 @@ class YTShortsPlayer {
 
         if (e.key !== 'ArrowUp' && e.key !== 'ArrowDown') return;
         if (!isShortsPage()) return;
+        if (isUserTyping()) return;
 
         e.preventDefault();
         e.stopPropagation();

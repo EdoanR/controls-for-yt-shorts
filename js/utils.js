@@ -14,6 +14,15 @@ function isShortsPage() {
   return location.href.includes('/shorts/');
 }
 
+function isUserTyping() {
+  return (
+    document.activeElement.tagName === 'INPUT' ||
+    document.activeElement.tagName === 'TEXTAREA' ||
+    document.activeElement.tagName === 'SELECT' ||
+    document.activeElement.getAttribute('contenteditable') === 'true'
+  );
+}
+
 function formatTime(seconds) {
   const minutes = Math.floor(seconds / 60);
   seconds = Math.floor(seconds);
