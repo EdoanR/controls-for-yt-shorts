@@ -262,7 +262,10 @@ class YTShortsPlayer {
 
         const volumeUp = e.key === 'ArrowUp';
         const percent = parseInt(this.shortsVolumeSlider.value);
-        const newPercent = volumeUp ? percent + 5 : percent - 5;
+        const newPercent = Math.min(
+          Math.max(volumeUp ? percent + 5 : percent - 5, 0),
+          100,
+        );
 
         this.shortsVolumeSlider.value = newPercent;
         this.shortsVolumeSlider.dispatchEvent(new Event('input'));
