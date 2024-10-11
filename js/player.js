@@ -5,11 +5,18 @@ class YTShortsPlayer {
    * @param {HTMLButtonElement} shortsMuteButton
    * @param {HTMLInputElement} shortsVolumeSlider
    * */
-  constructor(video, container, shortsMuteButton, shortsVolumeSlider) {
+  constructor(
+    video,
+    container,
+    shortsMuteButton,
+    shortsVolumeSlider,
+    controlVolumeWithArrows = false,
+  ) {
     this.video = video;
     this.container = container;
     this.shortsMuteButton = shortsMuteButton;
     this.shortsVolumeSlider = shortsVolumeSlider;
+    this.controlVolumeWithArrows = controlVolumeWithArrows;
 
     /** @type {(muteButton: HTMLButtonElement, volumeSlider: HTMLInputElement) => void | null} */
     this.onNewShortVolumeControls = null;
@@ -233,6 +240,38 @@ class YTShortsPlayer {
     this.video.addEventListener('volumechange', (e) => {
       updateIcon();
     });
+
+    document.addEventListener(
+      'keydown',
+      (e) => {
+        if (
+          (!this.controlVolumeWithArrows && !e.shiftKey) ||
+          (this.controlVolumeWithArrows && e.shiftKey)
+        ) {
+          // if controlling volume with arrows is disabled, you can still control using shift + arrow keys.
+          // or the reverse otherwise.
+          return;
+        }
+
+        if (e.key !== 'ArrowUp' && e.key !== 'ArrowDown') return;
+        if (!isShortsPage()) return;
+
+        e.preventDefault();
+        e.stopPropagation();
+        e.stopImmediatePropagation();
+
+        const volumeUp = e.key === 'ArrowUp';
+        const percent = parseInt(this.shortsVolumeSlider.value);
+        const newPercent = volumeUp ? percent + 5 : percent - 5;
+
+        this.shortsVolumeSlider.value = newPercent;
+        this.shortsVolumeSlider.dispatchEvent(new Event('input'));
+
+        volumeSlider.value = this.shortsVolumeSlider.value;
+        updateVolumeSliderBackground();
+      },
+      true,
+    );
 
     const updateVolumeSliderBackground = () => {
       const percent = volumeSlider.value;

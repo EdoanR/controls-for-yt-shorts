@@ -30,7 +30,7 @@ chrome.storage.sync
     let shortsMuteButton = null;
 
     let ytShortsPageElement = document.querySelector(ytShortsPageTagName);
-    if (ytShortsPageElement) updatePageAttributes();
+    if (ytShortsPageElement) applyConfig();
 
     const observableElement =
       document.querySelector(
@@ -58,7 +58,7 @@ chrome.storage.sync
           if (element.tagName === ytShortsPageTagName.toUpperCase()) {
             ytShortsPageElement = element;
             devLog('yt shorts page element found');
-            updatePageAttributes();
+            applyConfig();
           }
 
           checkForVideoAndContainer(element);
@@ -80,10 +80,14 @@ chrome.storage.sync
         items[key] = changes[key].newValue;
       }
 
-      updatePageAttributes();
+      applyConfig();
     });
 
-    function updatePageAttributes() {
+    function applyConfig() {
+      if (player) {
+        player.controlVolumeWithArrows = items.controlVolumeWithArrows;
+      }
+
       if (!ytShortsPageElement) return;
 
       ytShortsPageElement.setAttribute(
@@ -207,6 +211,7 @@ chrome.storage.sync
         shortVideoContainer,
         shortsMuteButton,
         shortsVolumeSlider,
+        items.controlVolumeWithArrows,
       );
 
       devLog('player added.');
