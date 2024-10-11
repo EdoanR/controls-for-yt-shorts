@@ -36,7 +36,11 @@ ytd-shorts[cfyts-enabled='true'] {
   // when "always visible" option is disabled.
   &[cfyts-always-visible='false'] {
     // on player hover, or video info hover
-    &:has(.player-wrapper:hover, reel-player-header-renderer:hover) {
+    &:has(
+        .player-wrapper:hover,
+        reel-player-header-renderer:hover,
+        #sound-metadata
+      ) {
       // move overlay up
       ytd-reel-player-overlay-renderer .metadata-container {
         margin-bottom: $player-height;
@@ -72,7 +76,11 @@ ytd-shorts[cfyts-enabled='true'] {
     }
 
     // on player hover, or video info hover
-    &:has(.player-wrapper:hover, reel-player-header-renderer:hover) {
+    &:has(
+        .player-wrapper:hover,
+        reel-player-header-renderer:hover,
+        #sound-metadata
+      ) {
       // show video info
       #overlay {
         opacity: 1;
