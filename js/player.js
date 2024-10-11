@@ -115,6 +115,22 @@ class YTShortsPlayer {
 
     const slider = scrubber.querySelector('input');
 
+    document.addEventListener('keydown', (e) => {
+      if (e.key !== 'ArrowLeft' && e.key !== 'ArrowRight') return;
+      if (!isShortsPage()) return;
+
+      const goFoward = e.key === 'ArrowRight';
+
+      const currentTime = this.video.currentTime;
+      const duration = this.video.duration;
+
+      const newTime = goFoward
+        ? Math.min(currentTime + 5, duration)
+        : Math.max(currentTime - 5, 0);
+
+      this.video.currentTime = newTime;
+    });
+
     const updateSliderProgressBackground = () => {
       const percent = slider.value;
       slider.style.background = `linear-gradient(to right, red, red ${percent}%, rgba(255, 255, 255, 0.35) ${percent}%)`;
