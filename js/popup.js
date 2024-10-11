@@ -9,6 +9,9 @@ const hideVideoInfoCheckbox = document.querySelector('#hide_video_info');
 const controlVolumeArrowCheckbox = document.querySelector(
   '#control_volume_arrow',
 );
+const hideDefaultControlsCheckbox = document.querySelector(
+  '#hide_default_controls',
+);
 
 // Load options values.
 chrome.storage.sync
@@ -17,12 +20,14 @@ chrome.storage.sync
     controlAlwaysVisible: false,
     hideVideoInfo: false,
     controlVolumeWithArrows: false,
+    hideDefaultControls: true,
   })
   .then((items) => {
     enabledCheckBox.checked = items.enabled;
     alwaysVisibleCheckbox.checked = items.controlAlwaysVisible;
     hideVideoInfoCheckbox.checked = items.hideVideoInfo;
     controlVolumeArrowCheckbox.checked = items.controlVolumeWithArrows;
+    hideDefaultControlsCheckbox.checked = items.hideDefaultControls;
 
     updateText();
   });
@@ -46,6 +51,12 @@ hideVideoInfoCheckbox.addEventListener('change', (e) => {
 controlVolumeArrowCheckbox.addEventListener('change', (e) => {
   chrome.storage.sync.set({
     controlVolumeWithArrows: controlVolumeArrowCheckbox.checked,
+  });
+});
+
+hideDefaultControlsCheckbox.addEventListener('change', (e) => {
+  chrome.storage.sync.set({
+    hideDefaultControls: hideDefaultControlsCheckbox.checked,
   });
 });
 

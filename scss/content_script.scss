@@ -17,9 +17,20 @@ ytd-shorts[cfyts-enabled='true'] {
     transition: opacity $animation-speed ease-in-out;
   }
 
+  ytd-shorts-player-controls {
+    opacity: 1;
+    transition: opacity $animation-speed ease-in-out;
+  }
+
   // hide default youtube scrubber.
   #scrubber {
     display: none;
+  }
+
+  &[cfyts-hide-default-controls='true'] {
+    ytd-shorts-player-controls {
+      opacity: 0 !important;
+    }
   }
 
   // when "always visible" option is disabled.

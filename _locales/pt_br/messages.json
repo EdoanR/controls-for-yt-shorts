@@ -23,6 +23,9 @@
   "ArrowControlVolume": {
     "message": "Volume com seta cima/baixo"
   },
+  "HideDefaultControls": {
+    "message": "Esconder controles padrão"
+  },
   "SupportMe": {
     "message": "Me apoie ❤"
   },

@@ -5,8 +5,15 @@ ytd-shorts[cfyts-enabled=true] ytd-reel-player-overlay-renderer .metadata-contai
 ytd-shorts[cfyts-enabled=true] #overlay {
   transition: opacity 0.2s ease-in-out;
 }
+ytd-shorts[cfyts-enabled=true] ytd-shorts-player-controls {
+  opacity: 1;
+  transition: opacity 0.2s ease-in-out;
+}
 ytd-shorts[cfyts-enabled=true] #scrubber {
   display: none;
+}
+ytd-shorts[cfyts-enabled=true][cfyts-hide-default-controls=true] ytd-shorts-player-controls {
+  opacity: 0 !important;
 }
 ytd-shorts[cfyts-enabled=true][cfyts-always-visible=false]:has(.player-wrapper:hover) ytd-reel-player-overlay-renderer .metadata-container {
   margin-bottom: 60px;

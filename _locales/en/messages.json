@@ -23,6 +23,9 @@
   "ArrowControlVolume": {
     "message": "Arrow Up/Down to control volume"
   },
+  "HideDefaultControls": {
+    "message": "Hide default controls"
+  },
   "SupportMe": {
     "message": "Support me ❤"
   },

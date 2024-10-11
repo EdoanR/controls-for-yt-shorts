@@ -6,6 +6,7 @@ chrome.storage.sync
     controlAlwaysVisible: false,
     hideVideoInfo: false,
     controlVolumeWithArrows: false,
+    hideDefaultControls: true,
   })
   .then((items) => {
     /** @type {YTShortsPlayer | null} */
@@ -47,7 +48,6 @@ chrome.storage.sync
 
           /** @type {HTMLElement} */
           const element = addedNode;
-          if (IS_DEV) element.setAttribute('node-added', '');
 
           if (element.tagName === shortsVolumeControlClassName.toUpperCase()) {
             shortsVolumeSlider = null;
@@ -99,6 +99,11 @@ chrome.storage.sync
       ytShortsPageElement.setAttribute(
         'cfyts-hide-info',
         items.hideVideoInfo.toString(),
+      );
+
+      ytShortsPageElement.setAttribute(
+        'cfyts-hide-default-controls',
+        items.hideDefaultControls.toString(),
       );
     }
 
