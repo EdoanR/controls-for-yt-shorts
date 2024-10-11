@@ -39,7 +39,7 @@ ytd-shorts[cfyts-enabled='true'] {
     &:has(
         .player-wrapper:hover,
         reel-player-header-renderer:hover,
-        #sound-metadata
+        #sound-metadata:hover
       ) {
       // move overlay up
       ytd-reel-player-overlay-renderer .metadata-container {
@@ -79,7 +79,7 @@ ytd-shorts[cfyts-enabled='true'] {
     &:has(
         .player-wrapper:hover,
         reel-player-header-renderer:hover,
-        #sound-metadata
+        #sound-metadata:hover
       ) {
       // show video info
       #overlay {
