@@ -1,6 +1,6 @@
 ytd-shorts[cfyts-enabled=true] ytd-reel-player-overlay-renderer .metadata-container {
   margin-bottom: 0px;
-  transition: margin-bottom 0.2s ease-in-out, opacity 0.2s ease-in-out;
+  transition: margin-bottom 0.2s ease-in-out, opacity 0.2s ease-in-out, border-radius 0.2s ease-in-out;
 }
 ytd-shorts[cfyts-enabled=true] #overlay {
   transition: opacity 0.2s ease-in-out;
@@ -10,18 +10,21 @@ ytd-shorts[cfyts-enabled=true] #scrubber {
 }
 ytd-shorts[cfyts-enabled=true][cfyts-always-visible=false]:has(.player-wrapper:hover) ytd-reel-player-overlay-renderer .metadata-container {
   margin-bottom: 60px;
+  border-radius: 0px;
 }
 ytd-shorts[cfyts-enabled=true][cfyts-always-visible=false]:has(.player-wrapper:hover) .cfyts-player-controls {
   height: 60px;
 }
 ytd-shorts[cfyts-enabled=true][cfyts-always-visible=false]:has(reel-player-header-renderer:hover) ytd-reel-player-overlay-renderer .metadata-container {
   margin-bottom: 60px;
+  border-radius: 0px;
 }
 ytd-shorts[cfyts-enabled=true][cfyts-always-visible=false]:has(reel-player-header-renderer:hover) .cfyts-player-controls {
   height: 60px;
 }
 ytd-shorts[cfyts-enabled=true][cfyts-always-visible=true] ytd-reel-player-overlay-renderer .metadata-container {
   margin-bottom: 60px;
+  border-radius: 0px;
 }
 ytd-shorts[cfyts-enabled=true][cfyts-always-visible=true] .cfyts-player-controls {
   height: 60px;

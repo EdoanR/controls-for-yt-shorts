@@ -9,7 +9,8 @@ ytd-shorts[cfyts-enabled='true'] {
     margin-bottom: 0px;
     transition:
       margin-bottom $animation-speed ease-in-out,
-      opacity $animation-speed ease-in-out;
+      opacity $animation-speed ease-in-out,
+      border-radius $animation-speed ease-in-out;
   }
 
   #overlay {
@@ -28,6 +29,7 @@ ytd-shorts[cfyts-enabled='true'] {
       // move overlay up
       ytd-reel-player-overlay-renderer .metadata-container {
         margin-bottom: $player-height;
+        border-radius: 0px; // remove rounded bottom corners
       }
 
       // show controls
@@ -41,6 +43,7 @@ ytd-shorts[cfyts-enabled='true'] {
       // move overlay up
       ytd-reel-player-overlay-renderer .metadata-container {
         margin-bottom: $player-height;
+        border-radius: 0px; // remove rounded bottom corners
       }
 
       // show controls
@@ -55,6 +58,7 @@ ytd-shorts[cfyts-enabled='true'] {
     // move overlay up.
     ytd-reel-player-overlay-renderer .metadata-container {
       margin-bottom: $player-height;
+      border-radius: 0px; // remove rounded bottom corners
     }
 
     // show controls.
