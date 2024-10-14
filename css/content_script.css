@@ -18,20 +18,20 @@ ytd-shorts[cfyts-enabled=true][cfyts-hide-default-controls=true] ytd-shorts-play
 ytd-shorts[cfyts-enabled=true][cfyts-always-visible=false]:has(.player-wrapper:hover,
 reel-player-header-renderer:hover,
 #sound-metadata:hover) ytd-reel-player-overlay-renderer .metadata-container {
-  margin-bottom: 60px;
+  margin-bottom: 65px;
   border-radius: 0px;
 }
 ytd-shorts[cfyts-enabled=true][cfyts-always-visible=false]:has(.player-wrapper:hover,
 reel-player-header-renderer:hover,
 #sound-metadata:hover) .cfyts-player-controls {
-  height: 60px;
+  height: 65px;
 }
 ytd-shorts[cfyts-enabled=true][cfyts-always-visible=true] ytd-reel-player-overlay-renderer .metadata-container {
-  margin-bottom: 60px;
+  margin-bottom: 65px;
   border-radius: 0px;
 }
 ytd-shorts[cfyts-enabled=true][cfyts-always-visible=true] .cfyts-player-controls {
-  height: 60px;
+  height: 65px;
 }
 ytd-shorts[cfyts-enabled=true][cfyts-hide-info=true] #overlay {
   opacity: 0;
@@ -81,6 +81,7 @@ ytd-shorts[cfyts-enabled=false] .cfyts-player-controls {
 }
 .cfyts-player-controls .progress-bar {
   width: 100%;
+  padding-bottom: 5px;
 }
 .cfyts-player-controls .progress-bar .progress-bar-wrapper {
   padding-left: 5%;
@@ -95,6 +96,16 @@ ytd-shorts[cfyts-enabled=false] .cfyts-player-controls {
 .cfyts-player-controls .progress-bar input[type=range]:hover::-webkit-slider-thumb {
   height: 13px;
   width: 13px;
+}
+.cfyts-player-controls .progress-bar input[type=range]::before {
+  position: absolute;
+  content: " ";
+  width: 100%;
+  height: 30px;
+  left: 0;
+  right: 0;
+  top: -7px;
+  bottom: 0;
 }
 .cfyts-player-controls .control-buttons {
   display: flex;

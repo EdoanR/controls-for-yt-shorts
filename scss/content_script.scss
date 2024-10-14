@@ -1,4 +1,4 @@
-$player-height: 60px;
+$player-height: 65px;
 $animation-speed: 0.2s;
 $player-background-transparency: 0.8;
 
@@ -145,6 +145,7 @@ ytd-shorts[cfyts-enabled='false'] {
 
   .progress-bar {
     width: 100%;
+    padding-bottom: 5px;
 
     .progress-bar-wrapper {
       padding-left: 5%;
@@ -165,6 +166,19 @@ ytd-shorts[cfyts-enabled='false'] {
     &:hover::-webkit-slider-thumb {
       height: 13px;
       width: 13px;
+    }
+
+    // make clickable area bigger, without having to change the visuals of the slider.
+    // Thanks to Colmea: https://github.com/davidchin/react-input-range/issues/136#issuecomment-427020157
+    &::before {
+      position: absolute;
+      content: ' ';
+      width: 100%;
+      height: 30px;
+      left: 0;
+      right: 0;
+      top: -7px;
+      bottom: 0;
     }
   }
 
