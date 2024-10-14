@@ -11,12 +11,14 @@ class YTShortsPlayer {
     shortsMuteButton,
     shortsVolumeSlider,
     controlVolumeWithArrows = false,
+    enabled = true,
   ) {
     this.video = video;
     this.container = container;
     this.shortsMuteButton = shortsMuteButton;
     this.shortsVolumeSlider = shortsVolumeSlider;
     this.controlVolumeWithArrows = controlVolumeWithArrows;
+    this.enabled = enabled;
 
     /** @type {(muteButton: HTMLButtonElement, volumeSlider: HTMLInputElement) => void | null} */
     this.onNewShortVolumeControls = null;
@@ -113,6 +115,7 @@ class YTShortsPlayer {
     const slider = scrubber.querySelector('input');
 
     document.addEventListener('keydown', (e) => {
+      if (!this.enabled) return;
       if (e.key !== 'ArrowLeft' && e.key !== 'ArrowRight') return;
       if (!isShortsPage()) return;
       if (isUserTyping()) return;
@@ -258,6 +261,7 @@ class YTShortsPlayer {
     document.addEventListener(
       'keydown',
       (e) => {
+        if (!this.enabled) return;
         if (
           (!this.controlVolumeWithArrows && !e.shiftKey) ||
           (this.controlVolumeWithArrows && e.shiftKey)

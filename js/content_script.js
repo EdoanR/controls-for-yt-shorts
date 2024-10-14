@@ -86,6 +86,7 @@ chrome.storage.sync
     function applyConfig() {
       if (player) {
         player.controlVolumeWithArrows = items.controlVolumeWithArrows;
+        player.enabled = items.enabled;
       }
 
       if (!ytShortsPageElement) return;
@@ -212,6 +213,7 @@ chrome.storage.sync
         shortsMuteButton,
         shortsVolumeSlider,
         items.controlVolumeWithArrows,
+        items.enabled,
       );
 
       devLog('player added.');
