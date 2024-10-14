@@ -35,30 +35,41 @@ class YTShortsPlayer {
 
     const playerControls = this.createPlayerControls();
 
+    if (this.container.querySelector('.cfyts-player-controls')) return;
+
     this.container.appendChild(playerControls);
   }
 
   createPlayerControls() {
-    const controls = document.createElement('div');
+    let controls = this.container.querySelector('.cfyts-player-controls');
+    let created = false;
+    if (!controls) {
+      controls = document.createElement('div');
+      created = true;
+    }
 
-    const scrubber = this.createScrubber();
-    controls.appendChild(scrubber);
+    const scrubber = this.createScrubber(controls);
+    if (created) controls.appendChild(scrubber);
 
-    const controlButtons = document.createElement('div');
-    controls.appendChild(controlButtons);
+    let controlButtons = controls.querySelector('.control-buttons');
+    if (!controlButtons) {
+      controlButtons = document.createElement('div');
+      controls.appendChild(controlButtons);
+      controlButtons.classList.add('control-buttons');
+    }
 
-    controlButtons.classList.add('control-buttons');
+    const playButton = this.createPlayButton(controls);
+    const volumeControl = this.createVolumeControl(controls);
+    const timeDisplay = this.createTimeDisplay(controls);
 
-    const playButton = this.createPlayButton();
-    controlButtons.appendChild(playButton);
+    if (created) {
+      controlButtons.appendChild(playButton);
+      controlButtons.appendChild(volumeControl);
+      controlButtons.appendChild(timeDisplay);
 
-    const volumeControl = this.createVolumeControl();
-    controlButtons.appendChild(volumeControl);
+      controls.classList.add('cfyts-player-controls');
+    }
 
-    const timeDisplay = this.createTimeDisplay();
-    controlButtons.appendChild(timeDisplay);
-
-    controls.classList.add('cfyts-player-controls');
     return controls;
   }
 
@@ -103,18 +114,24 @@ class YTShortsPlayer {
     return playButton;
   }
 
-  createScrubber() {
-    const scrubber = document.createElement('div');
-    scrubber.classList.add('progress-bar');
-    scrubber.innerHTML = `
-      <div class="progress-bar-wrapper">
-        <input class="slider" type="range" value="0" min="0" max="100"/>
-      </div>
-    `;
+  /** @param {HTMLDivElement} controls */
+  createScrubber(controls) {
+    let scrubber = controls.querySelector('.progress-bar');
+
+    if (!scrubber) {
+      scrubber = document.createElement('div');
+      scrubber.classList.add('progress-bar');
+      scrubber.innerHTML = `
+        <div class="progress-bar-wrapper">
+          <input class="slider" type="range" value="0" min="0" max="100"/>
+        </div>
+      `;
+    }
 
     const slider = scrubber.querySelector('input');
 
     document.addEventListener('keydown', (e) => {
+      if (!chrome.runtime.id) return;
       if (!this.enabled) return;
       if (e.key !== 'ArrowLeft' && e.key !== 'ArrowRight') return;
       if (!isShortsPage()) return;
@@ -149,6 +166,7 @@ class YTShortsPlayer {
 
     // Handle video progress updating the slider
     this.video.addEventListener('timeupdate', (e) => {
+      if (!chrome.runtime.id) return;
       updateSliderValueWithVideoTime();
       updateSliderProgressBackground();
     });
@@ -158,6 +176,7 @@ class YTShortsPlayer {
 
     // Handle slider drag start (user interaction)
     slider.addEventListener('input', (e) => {
+      if (!chrome.runtime.id) return;
       if (!isDragging) {
         isDragging = true; // Mark as dragging
         wasPlayingBeforeDrag = !this.video.paused; // Check if the video was playing
@@ -176,6 +195,7 @@ class YTShortsPlayer {
 
     // Handle drag end (when the user releases the slider)
     slider.addEventListener('change', (e) => {
+      if (!chrome.runtime.id) return;
       isDragging = false; // Stop dragging
 
       // If the video was playing before dragging, play it again
@@ -187,9 +207,14 @@ class YTShortsPlayer {
     return scrubber;
   }
 
-  createTimeDisplay() {
-    const timeDisplay = document.createElement('div');
-    timeDisplay.classList.add('time-display');
+  /** @param {HTMLDivElement} controls */
+  createTimeDisplay(controls) {
+    let timeDisplay = controls.querySelector('.time-display');
+
+    if (!timeDisplay) {
+      timeDisplay = document.createElement('div');
+      timeDisplay.classList.add('time-display');
+    }
 
     const updateTimeDisplay = () => {
       const duration = this.video.duration;
@@ -204,32 +229,38 @@ class YTShortsPlayer {
 
     updateTimeDisplay();
     this.video.addEventListener('timeupdate', (e) => {
+      if (!chrome.runtime.id) return;
       updateTimeDisplay();
     });
 
     return timeDisplay;
   }
 
-  createVolumeControl() {
-    const volumeControl = document.createElement('div');
-    volumeControl.classList.add('volume-control');
+  /** @param {HTMLDivElement} controls */
+  createVolumeControl(controls) {
+    let volumeControl = controls.querySelector('.volume-control');
 
-    volumeControl.innerHTML = `
-      <button class="mute-button">
-        <svg class="high-volume-icon" viewBox="6 5 24 24" width="100%">
-          <path class="ytp-svg-fill" d="M8,21 L12,21 L17,26 L17,10 L12,15 L8,15 L8,21 Z M19,14 L19,22 C20.48,21.32 21.5,19.77 21.5,18 C21.5,16.26 20.48,14.74 19,14 ZM19,11.29 C21.89,12.15 24,14.83 24,18 C24,21.17 21.89,23.85 19,24.71 L19,26.77 C23.01,25.86 26,22.28 26,18 C26,13.72 23.01,10.14 19,9.23 L19,11.29 Z" fill="#fff"></path>
-        </svg>
-        <svg class="low-volume-icon" viewBox="6 5 24 24" width="100%">
-          <path class="ytp-svg-fill" d="M8,21 L12,21 L17,26 L17,10 L12,15 L8,15 L8,21 Z M19,14 L19,22 C20.48,21.32 21.5,19.77 21.5,18 C21.5,16.26 20.48,14.74 19,14 Z" fill="#fff"></path>
-        </svg>
-        <svg class="muted-volume-icon" viewBox="6 5 24 24" width="100%">
-          <path class="ytp-svg-fill" d="m 21.48,17.98 c 0,-1.77 -1.02,-3.29 -2.5,-4.03 v 2.21 l 2.45,2.45 c .03,-0.2 .05,-0.41 .05,-0.63 z m 2.5,0 c 0,.94 -0.2,1.82 -0.54,2.64 l 1.51,1.51 c .66,-1.24 1.03,-2.65 1.03,-4.15 0,-4.28 -2.99,-7.86 -7,-8.76 v 2.05 c 2.89,.86 5,3.54 5,6.71 z M 9.25,8.98 l -1.27,1.26 4.72,4.73 H 7.98 v 6 H 11.98 l 5,5 v -6.73 l 4.25,4.25 c -0.67,.52 -1.42,.93 -2.25,1.18 v 2.06 c 1.38,-0.31 2.63,-0.95 3.69,-1.81 l 2.04,2.05 1.27,-1.27 -9,-9 -7.72,-7.72 z m 7.72,.99 -2.09,2.08 2.09,2.09 V 9.98 z"></path>
-        </svg>
-      </button>
-      <div class="volume-slider">
-        <input class="slider" type="range" value="0" min="0" max="100"/>
-      </div>
-    `;
+    if (!volumeControl) {
+      volumeControl = document.createElement('div');
+      volumeControl.classList.add('volume-control');
+
+      volumeControl.innerHTML = `
+        <button class="mute-button">
+          <svg class="high-volume-icon" viewBox="6 5 24 24" width="100%">
+            <path class="ytp-svg-fill" d="M8,21 L12,21 L17,26 L17,10 L12,15 L8,15 L8,21 Z M19,14 L19,22 C20.48,21.32 21.5,19.77 21.5,18 C21.5,16.26 20.48,14.74 19,14 ZM19,11.29 C21.89,12.15 24,14.83 24,18 C24,21.17 21.89,23.85 19,24.71 L19,26.77 C23.01,25.86 26,22.28 26,18 C26,13.72 23.01,10.14 19,9.23 L19,11.29 Z" fill="#fff"></path>
+          </svg>
+          <svg class="low-volume-icon" viewBox="6 5 24 24" width="100%">
+            <path class="ytp-svg-fill" d="M8,21 L12,21 L17,26 L17,10 L12,15 L8,15 L8,21 Z M19,14 L19,22 C20.48,21.32 21.5,19.77 21.5,18 C21.5,16.26 20.48,14.74 19,14 Z" fill="#fff"></path>
+          </svg>
+          <svg class="muted-volume-icon" viewBox="6 5 24 24" width="100%">
+            <path class="ytp-svg-fill" d="m 21.48,17.98 c 0,-1.77 -1.02,-3.29 -2.5,-4.03 v 2.21 l 2.45,2.45 c .03,-0.2 .05,-0.41 .05,-0.63 z m 2.5,0 c 0,.94 -0.2,1.82 -0.54,2.64 l 1.51,1.51 c .66,-1.24 1.03,-2.65 1.03,-4.15 0,-4.28 -2.99,-7.86 -7,-8.76 v 2.05 c 2.89,.86 5,3.54 5,6.71 z M 9.25,8.98 l -1.27,1.26 4.72,4.73 H 7.98 v 6 H 11.98 l 5,5 v -6.73 l 4.25,4.25 c -0.67,.52 -1.42,.93 -2.25,1.18 v 2.06 c 1.38,-0.31 2.63,-0.95 3.69,-1.81 l 2.04,2.05 1.27,-1.27 -9,-9 -7.72,-7.72 z m 7.72,.99 -2.09,2.08 2.09,2.09 V 9.98 z"></path>
+          </svg>
+        </button>
+        <div class="volume-slider">
+          <input class="slider" type="range" value="0" min="0" max="100"/>
+        </div>
+      `;
+    }
 
     const muteButton = volumeControl.querySelector('.mute-button');
 
@@ -255,12 +286,14 @@ class YTShortsPlayer {
 
     updateIcon();
     this.video.addEventListener('volumechange', (e) => {
+      if (!chrome.runtime.id) return;
       updateIcon();
     });
 
     document.addEventListener(
       'keydown',
       (e) => {
+        if (!chrome.runtime.id) return;
         if (!this.enabled) return;
         if (
           (!this.controlVolumeWithArrows && !e.shiftKey) ||
@@ -300,17 +333,20 @@ class YTShortsPlayer {
     };
 
     volumeSlider.addEventListener('input', (e) => {
+      if (!chrome.runtime.id) return;
       this.shortsVolumeSlider.value = volumeSlider.value;
       this.shortsVolumeSlider.dispatchEvent(new Event('input'));
       updateVolumeSliderBackground();
     });
 
     const shortsVolumeSliderChangeCallback = (e) => {
+      if (!chrome.runtime.id) return;
       volumeSlider.value = this.shortsVolumeSlider.value;
       updateVolumeSliderBackground();
     };
 
     const addListenersToShortsVolumeControls = () => {
+      if (!chrome.runtime.id) return;
       this.shortsVolumeSlider.addEventListener(
         'change',
         shortsVolumeSliderChangeCallback,

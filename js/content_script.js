@@ -1,5 +1,10 @@
 devLog('content script started.');
 
+chrome.runtime.onMessage.addListener((message, sender, sendResponse) => {
+  // background script is checking connection with content script.
+  if (message === 'connected') sendResponse(true);
+});
+
 chrome.storage.sync
   .get({
     enabled: true,

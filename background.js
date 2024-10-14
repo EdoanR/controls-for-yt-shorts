@@ -1,50 +1,50 @@
-chrome.runtime.onInstalled.addListener(addContentScriptToTabs);
+addContentScriptToTabs();
 
-function addContentScriptToTabs() {
-  // dinamically add content scripts on install.
-  chrome.tabs
-    .query({})
-    .then((tabs) => {
-      for (const tab of tabs) {
-        // only for youtube urls.
-        if (!tab.url || !tab.url.match(/https:\/\/(www\.)?youtube\.com\//))
-          continue;
+// dinamically add content scripts on install.
+async function addContentScriptToTabs() {
+  const youtubeUrlPattern = '*://*.youtube.com/*';
+  const contentScripts = chrome.runtime.getManifest().content_scripts;
+  if (!contentScripts || !contentScripts.length) return;
 
-        // add css first.
-        chrome.scripting
-          .insertCSS({
-            target: { tabId: tab.id },
-            files: ['css/content_script.css'],
-          })
-          .then(() => {
-            // add js files.
+  const ytContentScript = contentScripts.find((cs) =>
+    cs.matches.includes(youtubeUrlPattern),
+  );
 
-            chrome.scripting
-              .executeScript({
-                target: { tabId: tab.id },
-                files: [
-                  'libs/mutation_summary.js',
-                  'libs/fluidplayer.min.js',
-                  'js/observer.js',
-                  'js/utils.js',
-                  'js/content_script.js',
-                ],
-              })
-              .catch((err) => {
-                console.log(
-                  `Could not add content scripts to the tab ${tab.id}`,
-                  err,
-                );
-              });
-          })
-          .catch((err) => {
-            console.log(`Could not add css files to the tab ${tab.id}`, err);
-          });
+  if (!ytContentScript) return;
+
+  const cssFiles = ytContentScript.css || [];
+  const jsFiles = ytContentScript.js || [];
+
+  try {
+    const tabs = await chrome.tabs.query({ url: youtubeUrlPattern });
+
+    for (const tab of tabs) {
+      // check if already has content script.
+      const isTabConnected = await chrome.tabs
+        .sendMessage(tab.id, 'connected')
+        .catch((err) => false);
+
+      if (isTabConnected) continue; // tab has content script, skip it.
+
+      if (cssFiles.length) {
+        // add css.
+        await chrome.scripting.insertCSS({
+          target: { tabId: tab.id },
+          files: cssFiles,
+        });
       }
-    })
-    .catch((err) => {
-      console.log('Could not query tabs', err);
-    });
+
+      if (jsFiles.length) {
+        // add js.
+        await chrome.scripting.executeScript({
+          target: { tabId: tab.id },
+          files: jsFiles,
+        });
+      }
+    }
+  } catch (err) {
+    console.log('Could not inject script into youtube tabs', err);
+  }
 }
 
 // Send a message for a tab when it's url update.
