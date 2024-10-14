@@ -7,13 +7,15 @@ ytd-shorts[cfyts-enabled=true] #overlay {
 }
 ytd-shorts[cfyts-enabled=true] ytd-shorts-player-controls {
   opacity: 1;
-  transition: opacity 0.2s ease-in-out;
+  visibility: visible;
+  transition: opacity 0.2s ease-in-out, visibility 0.2s;
 }
 ytd-shorts[cfyts-enabled=true] #scrubber {
   display: none;
 }
 ytd-shorts[cfyts-enabled=true][cfyts-hide-default-controls=true] ytd-shorts-player-controls {
   opacity: 0 !important;
+  visibility: hidden;
 }
 ytd-shorts[cfyts-enabled=true][cfyts-always-visible=false]:has(.player-wrapper:hover,
 reel-player-header-renderer:hover,

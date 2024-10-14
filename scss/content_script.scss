@@ -19,7 +19,10 @@ ytd-shorts[cfyts-enabled='true'] {
 
   ytd-shorts-player-controls {
     opacity: 1;
-    transition: opacity $animation-speed ease-in-out;
+    visibility: visible;
+    transition:
+      opacity $animation-speed ease-in-out,
+      visibility $animation-speed;
   }
 
   // hide default youtube scrubber.
@@ -30,6 +33,7 @@ ytd-shorts[cfyts-enabled='true'] {
   &[cfyts-hide-default-controls='true'] {
     ytd-shorts-player-controls {
       opacity: 0 !important;
+      visibility: hidden;
     }
   }
 
