@@ -15,7 +15,6 @@
       "css": ["css/content_script.css"],
       "js": [
         "libs/mutation_summary.js",
-        "libs/fluidplayer.min.js",
         "js/observer.js",
         "js/utils.js",
         "js/player.js",
