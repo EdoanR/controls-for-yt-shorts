@@ -56,9 +56,6 @@ class YTShortsPlayer {
     const timeDisplay = this.createTimeDisplay();
     controlButtons.appendChild(timeDisplay);
 
-    // const scrubber = this.createScrubber();
-    // controls.appendChild(scrubber);
-
     controls.classList.add('cfyts-player-controls');
     return controls;
   }
