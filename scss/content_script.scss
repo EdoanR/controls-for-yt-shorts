@@ -43,6 +43,7 @@ ytd-shorts[cfyts-enabled='true'] {
     &:has(
         .player-wrapper:hover,
         reel-player-header-renderer:hover,
+        .metadata-container:hover,
         #sound-metadata:hover
       ) {
       // move overlay up
@@ -83,6 +84,7 @@ ytd-shorts[cfyts-enabled='true'] {
     &:has(
         .player-wrapper:hover,
         reel-player-header-renderer:hover,
+        .metadata-container:hover,
         #sound-metadata:hover
       ) {
       // show video info
