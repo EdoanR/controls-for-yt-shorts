@@ -12,12 +12,14 @@ class YTShortsPlayer {
     shortsVolumeSlider,
     controlVolumeWithArrows = false,
     enabled = true,
+    disableInfiniteLoop = false,
   ) {
     this.video = video;
     this.container = container;
     this.shortsMuteButton = shortsMuteButton;
     this.shortsVolumeSlider = shortsVolumeSlider;
     this.controlVolumeWithArrows = controlVolumeWithArrows;
+    this.disableInfiniteLoop = disableInfiniteLoop;
     this.enabled = enabled;
 
     /** @type {(muteButton: HTMLButtonElement, volumeSlider: HTMLInputElement) => void | null} */
@@ -33,11 +35,49 @@ class YTShortsPlayer {
     if (!this.video) throw new Error('no video was set to the player');
     if (!this.container) throw new Error('no container was set to the player');
 
-    const playerControls = this.createPlayerControls();
+    this.disableLoopingIfNeeded(this.video);
 
     if (this.container.querySelector('.cfyts-player-controls')) return;
+    const playerControls = this.createPlayerControls();
 
     this.container.appendChild(playerControls);
+  }
+
+  disableLoop(videoElement) {
+    setTimeout(() => {
+      videoElement.loop = false;
+    }, 1500);
+  }
+
+  disableLoopingIfNeeded(video) {
+    if (!this.disableInfiniteLoop) return;
+    if (video.isObserved) return;
+    video.isObserved = true;
+    const int = setInterval(() => {
+      if (video.currentTime > 0) {
+        this.createLoopObserver();
+        this.loopObserver.observe(video, { attributes: true });
+        video.loop = false;
+        clearInterval(int);
+      }
+    }, 100);
+
+    video.addEventListener('ended', (e) => video.pause());
+  }
+
+  createLoopObserver() {
+    if (this.loopObserver) return;
+    this.loopObserver = new MutationObserver((mutationsList) => {
+      for (const mutation of mutationsList) {
+        if (
+          mutation.type === 'attributes' &&
+          mutation.attributeName === 'loop' &&
+          mutation.target.loop === true
+        ) {
+          mutation.target.loop = false;
+        }
+      }
+    });
   }
 
   createPlayerControls() {

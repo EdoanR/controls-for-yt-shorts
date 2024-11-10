@@ -26,6 +26,9 @@
   "HideDefaultControls": {
     "message": "Hide default controls"
   },
+  "DisableInfiniteLoop": {
+    "message": "Disable Infinite Loop"
+  },
   "SupportMe": {
     "message": "Support me ❤"
   },

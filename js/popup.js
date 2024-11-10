@@ -12,6 +12,9 @@ const controlVolumeArrowCheckbox = document.querySelector(
 const hideDefaultControlsCheckbox = document.querySelector(
   '#hide_default_controls',
 );
+const disableInfiniteLoopCheckbox = document.querySelector(
+  '#disable_inifinite_loop',
+);
 
 // Load options values.
 chrome.storage.sync
@@ -20,6 +23,7 @@ chrome.storage.sync
     controlAlwaysVisible: false,
     hideVideoInfo: false,
     controlVolumeWithArrows: false,
+    disableInfiniteLoop: false,
     hideDefaultControls: true,
   })
   .then((items) => {
@@ -28,6 +32,7 @@ chrome.storage.sync
     hideVideoInfoCheckbox.checked = items.hideVideoInfo;
     controlVolumeArrowCheckbox.checked = items.controlVolumeWithArrows;
     hideDefaultControlsCheckbox.checked = items.hideDefaultControls;
+    disableInfiniteLoopCheckbox.checked = items.disableInfiniteLoop;
 
     updateText();
   });
@@ -57,6 +62,12 @@ controlVolumeArrowCheckbox.addEventListener('change', (e) => {
 hideDefaultControlsCheckbox.addEventListener('change', (e) => {
   chrome.storage.sync.set({
     hideDefaultControls: hideDefaultControlsCheckbox.checked,
+  });
+});
+
+disableInfiniteLoopCheckbox.addEventListener('change', (e) => {
+  chrome.storage.sync.set({
+    disableInfiniteLoop: disableInfiniteLoopCheckbox.checked,
   });
 });
 
