@@ -93,6 +93,10 @@ chrome.storage.sync
       if (player) {
         player.controlVolumeWithArrows = items.controlVolumeWithArrows;
         player.enabled = items.enabled;
+        if (player.disableInfiniteLoop !== items.disableInfiniteLoop) {
+          player.disableInfiniteLoop = items.disableInfiniteLoop;
+          player.applyLoopingSetting()
+        }
       }
 
       if (!ytShortsPageElement) return;

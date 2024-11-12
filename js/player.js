@@ -35,7 +35,7 @@ class YTShortsPlayer {
     if (!this.video) throw new Error('no video was set to the player');
     if (!this.container) throw new Error('no container was set to the player');
 
-    this.disableLoopingIfNeeded(this.video);
+    this.attachLoopingControl(this.video);
 
     if (this.container.querySelector('.cfyts-player-controls')) return;
     const playerControls = this.createPlayerControls();
@@ -43,26 +43,33 @@ class YTShortsPlayer {
     this.container.appendChild(playerControls);
   }
 
-  disableLoop(videoElement) {
-    setTimeout(() => {
-      videoElement.loop = false;
-    }, 1500);
-  }
-
-  disableLoopingIfNeeded(video) {
-    if (!this.disableInfiniteLoop) return;
+  attachLoopingControl(video) {
     if (video.isObserved) return;
     video.isObserved = true;
     const int = setInterval(() => {
+      // wait until video has started, so autoplay triggers
       if (video.currentTime > 0) {
         this.createLoopObserver();
         this.loopObserver.observe(video, { attributes: true });
-        video.loop = false;
+        video.loop = !this.disableInfiniteLoop;
         clearInterval(int);
       }
     }, 100);
 
-    video.addEventListener('ended', (e) => video.pause());
+    video.addEventListener('ended', (e) => {
+      if (this.disableInfiniteLoop) {
+        video.pause()
+      }
+    });
+  }
+
+  applyLoopingSetting() {
+    if (this.video.currentTime > 0) {
+      this.video.loop = !this.disableInfiniteLoop;
+      if (!this.disableInfiniteLoop && (this.video.ended || Math.abs(this.video.currentTime - this.video.duration) < 5 && this.video.paused)) {
+        this.video.play()
+      }
+    }
   }
 
   createLoopObserver() {
@@ -72,9 +79,9 @@ class YTShortsPlayer {
         if (
           mutation.type === 'attributes' &&
           mutation.attributeName === 'loop' &&
-          mutation.target.loop === true
+          mutation.target.loop === this.disableInfiniteLoop
         ) {
-          mutation.target.loop = false;
+          mutation.target.loop = !this.disableInfiniteLoop;
         }
       }
     });
