@@ -25,7 +25,7 @@ function isUserTyping() {
 
 function formatTime(seconds) {
   const minutes = Math.floor(seconds / 60);
-  seconds = Math.floor(seconds);
+  seconds = Math.floor(seconds % 60);
 
   const minutesFormatted = minutes.toString().padStart(2, '0');
   const secondsFormatted = seconds.toString().padStart(2, '0');
