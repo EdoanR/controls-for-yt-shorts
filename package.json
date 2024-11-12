@@ -2,7 +2,7 @@
   "name": "controls-for-yt-shorts",
   "scripts": {
     "dev": "npm-run-all --parallel scss web-ext",
-    "web-ext": "node .ext-template.mjs",
+    "web-ext": "node .ext.mjs",
     "scss": "sass --watch scss:css",
     "format": "prettier --write . --ignore-path .prettierignore",
     "zip": "node zip.mjs"
