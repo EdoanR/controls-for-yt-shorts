@@ -13,13 +13,7 @@
     {
       "matches": ["*://*.youtube.com/*"],
       "css": ["css/content_script.css"],
-      "js": [
-        "libs/mutation_summary.js",
-        "js/observer.js",
-        "js/utils.js",
-        "js/player.js",
-        "js/content_script.js"
-      ]
+      "js": ["js/utils.js", "js/player.js", "js/content_script.js"]
     }
   ],
   "action": {
