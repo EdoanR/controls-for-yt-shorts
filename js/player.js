@@ -56,7 +56,6 @@ class YTShortsPlayer {
   }
 
   attachLoopingControl(video) {
-    console.log('video check', video.isObserved);
     if (video.isObserved) return;
     video.isObserved = true;
     const int = setInterval(() => {
