@@ -46,16 +46,25 @@ class YTShortsPlayer {
 
     this.attachLoopingControl(this.video);
 
-    if (this.container.querySelector('.cfyts-player-controls')) return;
+    const constrolsAlreadyExists = !!this.container.querySelector(
+      '.cfyts-player-controls',
+    );
+
     const playerControls = this.createPlayerControls();
 
-    this.container.appendChild(playerControls);
+    if (!constrolsAlreadyExists) this.container.appendChild(playerControls);
   }
 
   attachLoopingControl(video) {
+    console.log('video check', video.isObserved);
     if (video.isObserved) return;
     video.isObserved = true;
     const int = setInterval(() => {
+      if (isExtensionDisabledOrReloaded()) {
+        clearInterval(int);
+        this.loopObserver.disconnect();
+        return;
+      }
       // wait until video has started, so autoplay triggers
       if (video.currentTime > 0) {
         this.createLoopObserver();
@@ -90,6 +99,10 @@ class YTShortsPlayer {
   createLoopObserver() {
     if (this.loopObserver) return;
     this.loopObserver = new MutationObserver((mutationsList) => {
+      if (isExtensionDisabledOrReloaded()) {
+        if (this.loopObserver) this.loopObserver.disconnect();
+        return;
+      }
       for (const mutation of mutationsList) {
         if (
           mutation.type === 'attributes' &&
@@ -145,10 +158,14 @@ class YTShortsPlayer {
     return controls;
   }
 
-  createPlayButton() {
-    const playButton = document.createElement('button');
-    playButton.classList.add('play-button');
-    playButton.innerHTML = `
+  /** @param {HTMLDivElement} controls */
+  createPlayButton(controls) {
+    let playButton = controls.querySelector('.play-button');
+
+    if (!playButton) {
+      playButton = document.createElement('button');
+      playButton.classList.add('play-button');
+      playButton.innerHTML = `
       <svg class="play-icon" viewBox="6 5 24 24" width="100%">
         <path class="ytp-svg-fill" d="M 12,26 18.5,22 18.5,14 12,10 z M 18.5,22 25,18 25,18 18.5,14 z"></path>
       </svg>
@@ -156,6 +173,7 @@ class YTShortsPlayer {
         <path class="ytp-svg-fill" d="M 12,26 16,26 16,10 12,10 z M 21,26 25,26 25,10 21,10 z"></path>
       </svg>
     `;
+    }
 
     const updateButtonIcon = () => {
       if (this.video.paused) {
@@ -168,15 +186,18 @@ class YTShortsPlayer {
     updateButtonIcon();
 
     this.video.addEventListener('play', (e) => {
+      if (isExtensionDisabledOrReloaded()) return;
       updateButtonIcon();
     });
 
     this.video.addEventListener('pause', (e) => {
+      if (isExtensionDisabledOrReloaded()) return;
       updateButtonIcon();
     });
 
     playButton.addEventListener('click', (e) => {
       if (isExtensionDisabledOrReloaded()) return;
+
       if (this.video.paused) {
         this.video.play();
       } else {
