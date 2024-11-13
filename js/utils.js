@@ -16,7 +16,8 @@ function isShortsPage() {
 
 function isUserTyping() {
   return (
-    document.activeElement.tagName === 'INPUT' ||
+    (document.activeElement.tagName === 'INPUT' &&
+      document.activeElement.type === 'text') ||
     document.activeElement.tagName === 'TEXTAREA' ||
     document.activeElement.tagName === 'SELECT' ||
     document.activeElement.getAttribute('contenteditable') === 'true'

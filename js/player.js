@@ -194,15 +194,40 @@ class YTShortsPlayer {
       updateButtonIcon();
     });
 
-    playButton.addEventListener('click', (e) => {
-      if (isExtensionDisabledOrReloaded()) return;
-
+    const toggleVideoPlayPause = () => {
+      devLog('toggling video');
       if (this.video.paused) {
         this.video.play();
       } else {
         this.video.pause();
       }
+    };
+
+    playButton.addEventListener('click', (e) => {
+      if (isExtensionDisabledOrReloaded()) return;
+      toggleVideoPlayPause();
     });
+
+    document.addEventListener(
+      'keydown',
+      (e) => {
+        // youtube already has these shortcuts for play/pause
+        // but doesn't work when the scrubber (or volume slider) is focused.
+        // So we will overwrite it.
+        if (e.key !== 'k' && e.key !== 'K' && e.key !== ' ') return;
+        if (isExtensionDisabledOrReloaded()) return;
+        if (!this.enabled) return;
+        if (!isShortsPage()) return;
+        if (isUserTyping()) return;
+
+        e.preventDefault();
+        e.stopPropagation();
+        e.stopImmediatePropagation();
+
+        toggleVideoPlayPause();
+      },
+      true,
+    );
 
     return playButton;
   }
