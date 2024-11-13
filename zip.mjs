@@ -28,6 +28,7 @@ async function zipProject() {
       'package.json',
       'package-lock.json',
       'prettier.config.mjs',
+      'ensure-ext-config.mjs',
     ];
 
     // Read .gitignore to get additional exclusions
