@@ -66,6 +66,7 @@ class YTShortsPlayer {
     }, 100);
 
     video.addEventListener('ended', (e) => {
+      if (isExtensionDisabledOrReloaded()) return;
       if (this.disableInfiniteLoop) {
         video.pause();
       }
@@ -175,6 +176,7 @@ class YTShortsPlayer {
     });
 
     playButton.addEventListener('click', (e) => {
+      if (isExtensionDisabledOrReloaded()) return;
       if (this.video.paused) {
         this.video.play();
       } else {
@@ -202,7 +204,7 @@ class YTShortsPlayer {
     const slider = scrubber.querySelector('input');
 
     document.addEventListener('keydown', (e) => {
-      if (!chrome.runtime.id) return;
+      if (isExtensionDisabledOrReloaded()) return;
       if (!this.enabled) return;
       if (e.key !== 'ArrowLeft' && e.key !== 'ArrowRight') return;
       if (!isShortsPage()) return;
@@ -237,7 +239,7 @@ class YTShortsPlayer {
 
     // Handle video progress updating the slider
     this.video.addEventListener('timeupdate', (e) => {
-      if (!chrome.runtime.id) return;
+      if (isExtensionDisabledOrReloaded()) return;
       updateSliderValueWithVideoTime();
       updateSliderProgressBackground();
     });
@@ -247,7 +249,7 @@ class YTShortsPlayer {
 
     // Handle slider drag start (user interaction)
     slider.addEventListener('input', (e) => {
-      if (!chrome.runtime.id) return;
+      if (isExtensionDisabledOrReloaded()) return;
       if (!isDragging) {
         isDragging = true; // Mark as dragging
         wasPlayingBeforeDrag = !this.video.paused; // Check if the video was playing
@@ -266,7 +268,7 @@ class YTShortsPlayer {
 
     // Handle drag end (when the user releases the slider)
     slider.addEventListener('change', (e) => {
-      if (!chrome.runtime.id) return;
+      if (isExtensionDisabledOrReloaded()) return;
       isDragging = false; // Stop dragging
 
       // If the video was playing before dragging, play it again
@@ -300,7 +302,7 @@ class YTShortsPlayer {
 
     updateTimeDisplay();
     this.video.addEventListener('timeupdate', (e) => {
-      if (!chrome.runtime.id) return;
+      if (isExtensionDisabledOrReloaded()) return;
       updateTimeDisplay();
     });
 
@@ -336,6 +338,7 @@ class YTShortsPlayer {
     const muteButton = volumeControl.querySelector('.mute-button');
 
     muteButton.addEventListener('click', (e) => {
+      if (isExtensionDisabledOrReloaded()) return;
       this.shortsMuteButton.click();
     });
 
@@ -357,14 +360,14 @@ class YTShortsPlayer {
 
     updateIcon();
     this.video.addEventListener('volumechange', (e) => {
-      if (!chrome.runtime.id) return;
+      if (isExtensionDisabledOrReloaded()) return;
       updateIcon();
     });
 
     document.addEventListener(
       'keydown',
       (e) => {
-        if (!chrome.runtime.id) return;
+        if (isExtensionDisabledOrReloaded()) return;
         if (!this.enabled) return;
         if (
           (!this.controlVolumeWithArrows && !e.shiftKey) ||
@@ -404,20 +407,20 @@ class YTShortsPlayer {
     };
 
     volumeSlider.addEventListener('input', (e) => {
-      if (!chrome.runtime.id) return;
+      if (isExtensionDisabledOrReloaded()) return;
       this.shortsVolumeSlider.value = volumeSlider.value;
       this.shortsVolumeSlider.dispatchEvent(new Event('input'));
       updateVolumeSliderBackground();
     });
 
     const shortsVolumeSliderChangeCallback = (e) => {
-      if (!chrome.runtime.id) return;
+      if (isExtensionDisabledOrReloaded()) return;
       volumeSlider.value = this.shortsVolumeSlider.value;
       updateVolumeSliderBackground();
     };
 
     const addListenersToShortsVolumeControls = () => {
-      if (!chrome.runtime.id) return;
+      if (isExtensionDisabledOrReloaded()) return;
       this.shortsVolumeSlider.addEventListener(
         'change',
         shortsVolumeSliderChangeCallback,
@@ -503,7 +506,7 @@ class YTShortsPlayer {
     }
 
     this.fullScreenButton.addEventListener('click', (e) => {
-      if (!chrome.runtime.id) return; // extension was reload or disabled, so ignore this event.
+      if (isExtensionDisabledOrReloaded()) return;
       if (!this.shortsFullscreenButton) return;
       this.shortsFullscreenButton.click();
     });

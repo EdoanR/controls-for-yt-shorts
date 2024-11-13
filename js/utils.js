@@ -23,6 +23,10 @@ function isUserTyping() {
   );
 }
 
+function isExtensionDisabledOrReloaded() {
+  return !chrome.runtime.id;
+}
+
 function formatTime(seconds) {
   const minutes = Math.floor(seconds / 60);
   seconds = Math.floor(seconds % 60);
