@@ -109,3 +109,20 @@ input:checked + .slider:before {
   -ms-transform: translateX(26px);
   transform: translateX(26px);
 }
+
+/* Custom overwrite to ensure top-aligned checkboxes for long labels */
+.form-check {
+  padding: 0 0.5em;
+
+  .form-check-label {
+    display: flex;
+    flex-direction: row-reverse;
+    justify-content: flex-end;
+    gap: 0.5em;
+  }
+
+  .form-check-input {
+    margin-left: 0;
+    flex: 1em 0 0;
+  }
+}

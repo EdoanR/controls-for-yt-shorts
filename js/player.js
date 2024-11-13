@@ -12,12 +12,14 @@ class YTShortsPlayer {
     shortsVolumeSlider,
     controlVolumeWithArrows = false,
     enabled = true,
+    disableInfiniteLoop = false,
   ) {
     this.video = video;
     this.container = container;
     this.shortsMuteButton = shortsMuteButton;
     this.shortsVolumeSlider = shortsVolumeSlider;
     this.controlVolumeWithArrows = controlVolumeWithArrows;
+    this.disableInfiniteLoop = disableInfiniteLoop;
     this.enabled = enabled;
 
     /** @type {(muteButton: HTMLButtonElement, volumeSlider: HTMLInputElement) => void | null} */
@@ -33,11 +35,56 @@ class YTShortsPlayer {
     if (!this.video) throw new Error('no video was set to the player');
     if (!this.container) throw new Error('no container was set to the player');
 
-    const playerControls = this.createPlayerControls();
+    this.attachLoopingControl(this.video);
 
     if (this.container.querySelector('.cfyts-player-controls')) return;
+    const playerControls = this.createPlayerControls();
 
     this.container.appendChild(playerControls);
+  }
+
+  attachLoopingControl(video) {
+    if (video.isObserved) return;
+    video.isObserved = true;
+    const int = setInterval(() => {
+      // wait until video has started, so autoplay triggers
+      if (video.currentTime > 0) {
+        this.createLoopObserver();
+        this.loopObserver.observe(video, { attributes: true });
+        video.loop = !this.disableInfiniteLoop;
+        clearInterval(int);
+      }
+    }, 100);
+
+    video.addEventListener('ended', (e) => {
+      if (this.disableInfiniteLoop) {
+        video.pause()
+      }
+    });
+  }
+
+  applyLoopingSetting() {
+    if (this.video.currentTime > 0) {
+      this.video.loop = !this.disableInfiniteLoop;
+      if (!this.disableInfiniteLoop && (this.video.ended || Math.abs(this.video.currentTime - this.video.duration) < 5 && this.video.paused)) {
+        this.video.play()
+      }
+    }
+  }
+
+  createLoopObserver() {
+    if (this.loopObserver) return;
+    this.loopObserver = new MutationObserver((mutationsList) => {
+      for (const mutation of mutationsList) {
+        if (
+          mutation.type === 'attributes' &&
+          mutation.attributeName === 'loop' &&
+          mutation.target.loop === this.disableInfiniteLoop
+        ) {
+          mutation.target.loop = !this.disableInfiniteLoop;
+        }
+      }
+    });
   }
 
   createPlayerControls() {

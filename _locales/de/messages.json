@@ -1,0 +1,38 @@
+{
+  "AppName": {
+    "message": "Steuerelemente für YouTube™ Shorts"
+  },
+  "AppDescription": {
+    "message": "Fügt YouTube™ Shorts Steuerelemente und Tastenkürzel hinzu!"
+  },
+  "ThisLanguage": {
+    "message": "de"
+  },
+  "Enabled": {
+    "message": "Aktiv"
+  },
+  "Disabled": {
+    "message": "Deaktiviert"
+  },
+  "ControlsAlwaysVisibleOption": {
+    "message": "Steuerelemente immer anzeigen"
+  },
+  "HideVideoInfoOption": {
+    "message": "Videotitel und Kanalinfo verbergen"
+  },
+  "ArrowControlVolume": {
+    "message": "Lautstärke über Hoch/Runtertaste steuern"
+  },
+  "HideDefaultControls": {
+    "message": "Standard-Steuerelemente verbergen"
+  },
+  "DisableInfiniteLoop": {
+    "message": "Endlosschleife deaktivieren"
+  },
+  "SupportMe": {
+    "message": "Unterstütz mich ❤"
+  },
+  "GitHubRepository": {
+    "message": "GitHub Repository"
+  }
+}

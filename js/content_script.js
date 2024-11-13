@@ -11,6 +11,7 @@ chrome.storage.sync
     controlAlwaysVisible: false,
     hideVideoInfo: false,
     controlVolumeWithArrows: false,
+    disableInfiniteLoop: false,
     hideDefaultControls: true,
   })
   .then((items) => {
@@ -92,6 +93,10 @@ chrome.storage.sync
       if (player) {
         player.controlVolumeWithArrows = items.controlVolumeWithArrows;
         player.enabled = items.enabled;
+        if (player.disableInfiniteLoop !== items.disableInfiniteLoop) {
+          player.disableInfiniteLoop = items.disableInfiniteLoop;
+          player.applyLoopingSetting()
+        }
       }
 
       if (!ytShortsPageElement) return;
@@ -119,12 +124,18 @@ chrome.storage.sync
 
     /** @param {HTMLElement} [ element ] */
     function checkForVideoAndContainer(element) {
-      if (!element) element = document.querySelector(shortVideoSelector);
-      if (!element) return;
-      if (player) return;
-      if (element.tagName !== 'VIDEO') return;
+      const video = element
+        ? element.querySelector('video')
+        : document.querySelector(shortVideoSelector);
 
-      const video = document.querySelector(shortVideoSelector);
+      if (!video) return;
+      shortsVideo = video;
+
+      if (player) {
+        devLog('looping disabled for new video element', video);
+        player.disableLoopingIfNeeded(video);
+        return;
+      }
       const container = document.querySelector(
         '#shorts-container ytd-player #container .html5-video-player',
       );
@@ -132,7 +143,6 @@ chrome.storage.sync
       devLog('video found?', video, container);
       if (!video || !container) return;
 
-      shortsVideo = video;
       shortVideoContainer = container;
 
       createPlayerWhenAllElementFound();
@@ -219,6 +229,7 @@ chrome.storage.sync
         shortsVolumeSlider,
         items.controlVolumeWithArrows,
         items.enabled,
+        items.disableInfiniteLoop,
       );
 
       devLog('player added.');

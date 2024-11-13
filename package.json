@@ -5,7 +5,8 @@
     "web-ext": "node .ext.mjs",
     "scss": "sass --watch scss:css",
     "format": "prettier --write . --ignore-path .prettierignore",
-    "zip": "node zip.mjs"
+    "zip": "node zip.mjs",
+    "postinstall": "node ensure-ext-config.mjs"
   },
   "devDependencies": {
     "@types/chrome": "^0.0.237",
