@@ -24,6 +24,7 @@ chrome.storage.sync
       'YtdDesktopShortsVolumeControlsNativeSlider';
     const shortsMuteButtonClassName =
       'YtdDesktopShortsVolumeControlsMuteIconButton';
+    const shortsFullscreenButtonContainerId = 'fullscreen-button-shape';
     const ytShortsPageTagName = 'ytd-shorts';
 
     /** @type {HTMLVideoElement | null} */
@@ -34,6 +35,8 @@ chrome.storage.sync
     let shortsVolumeSlider = null;
     /** @type {HTMLButtonElement | null} */
     let shortsMuteButton = null;
+    /** @type {HTMLButtonElement | null} */
+    let shortsFullScreenButton = null;
 
     let ytShortsPageElement = document.querySelector(ytShortsPageTagName);
     if (ytShortsPageElement) applyConfig();
@@ -45,6 +48,7 @@ chrome.storage.sync
 
     checkForMuteButton();
     checkForVolumeSlider();
+    checkForFullScreenButton();
     checkForVideoAndContainer();
 
     const observer = new MutationObserver((mutations) => {
@@ -67,9 +71,10 @@ chrome.storage.sync
             applyConfig();
           }
 
-          checkForVideoAndContainer(element);
           checkForMuteButton(element);
           checkForVolumeSlider(element);
+          checkForFullScreenButton(element);
+          checkForVideoAndContainer(element);
         }
       }
     });
@@ -95,7 +100,7 @@ chrome.storage.sync
         player.enabled = items.enabled;
         if (player.disableInfiniteLoop !== items.disableInfiniteLoop) {
           player.disableInfiniteLoop = items.disableInfiniteLoop;
-          player.applyLoopingSetting()
+          player.applyLoopingSetting();
         }
       }
 
@@ -131,11 +136,8 @@ chrome.storage.sync
       if (!video) return;
       shortsVideo = video;
 
-      if (player) {
-        devLog('looping disabled for new video element', video);
-        player.disableLoopingIfNeeded(video);
-        return;
-      }
+      if (player) return;
+
       const container = document.querySelector(
         '#shorts-container ytd-player #container .html5-video-player',
       );
@@ -216,6 +218,26 @@ chrome.storage.sync
       }
     }
 
+    /** @param {HTMLElement} [ element ] */
+    function checkForFullScreenButton(element) {
+      if (element) {
+        if (element.id !== shortsFullscreenButtonContainerId) return;
+        element = element.querySelector('button');
+        if (!element) return;
+      }
+
+      if (!element) {
+        element = document.querySelector(
+          `#${shortsFullscreenButtonContainerId} button`,
+        );
+        if (!element) return;
+      }
+
+      shortsFullScreenButton = element;
+      // new full screen button found, update the one from the player.
+      if (player) player.setYTShortsFullscreenButton(shortsFullScreenButton);
+    }
+
     function createPlayerWhenAllElementFound() {
       if (!shortsVideo) return;
       if (!shortVideoContainer) return;
@@ -227,6 +249,7 @@ chrome.storage.sync
         shortVideoContainer,
         shortsMuteButton,
         shortsVolumeSlider,
+        shortsFullScreenButton,
         items.controlVolumeWithArrows,
         items.enabled,
         items.disableInfiniteLoop,

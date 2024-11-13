@@ -65,6 +65,9 @@ ytd-shorts[cfyts-enabled=false] .cfyts-player-controls {
   z-index: 10;
   background-color: rgba(0, 0, 0, 0.8);
 }
+.cfyts-player-controls [hidden] {
+  display: none !important;
+}
 .cfyts-player-controls input[type=range].slider {
   -webkit-appearance: none;
   background: white;
@@ -116,9 +119,12 @@ ytd-shorts[cfyts-enabled=false] .cfyts-player-controls {
   display: flex;
   width: 100%;
   align-items: center;
-  padding-left: 10px;
 }
-.cfyts-player-controls .control-buttons .play-button {
+.cfyts-player-controls .control-buttons .spacer {
+  flex-grow: 1;
+}
+.cfyts-player-controls .control-buttons .play-button,
+.cfyts-player-controls .control-buttons .full-screen-button {
   width: 40px;
   height: 40px;
   background: none;
@@ -126,14 +132,21 @@ ytd-shorts[cfyts-enabled=false] .cfyts-player-controls {
   cursor: pointer;
   opacity: 0.8;
 }
-.cfyts-player-controls .control-buttons .play-button:hover {
+.cfyts-player-controls .control-buttons .play-button:hover,
+.cfyts-player-controls .control-buttons .full-screen-button:hover {
   opacity: 1;
+}
+.cfyts-player-controls .control-buttons .full-screen-button {
+  margin-right: 10px;
 }
 .cfyts-player-controls .control-buttons .play-button[playing=true] .play-icon {
   display: none;
 }
 .cfyts-player-controls .control-buttons .play-button[playing=false] .pause-icon {
   display: none;
+}
+.cfyts-player-controls .control-buttons .play-button {
+  margin-left: 10px;
 }
 .cfyts-player-controls .control-buttons .volume-control {
   display: flex;

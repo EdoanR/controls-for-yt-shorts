@@ -4,12 +4,17 @@ class YTShortsPlayer {
    * @param {HTMLElement} container
    * @param {HTMLButtonElement} shortsMuteButton
    * @param {HTMLInputElement} shortsVolumeSlider
+   * @param {HTMLInputElement | null} fullScreenButton
+   * @param {boolean} [controlVolumeWithArrows]
+   * @param {boolean} [enabled]
+   * @param {boolean} [disableInfiniteLoop]
    * */
   constructor(
     video,
     container,
     shortsMuteButton,
     shortsVolumeSlider,
+    fullScreenButton = null,
     controlVolumeWithArrows = false,
     enabled = true,
     disableInfiniteLoop = false,
@@ -18,9 +23,13 @@ class YTShortsPlayer {
     this.container = container;
     this.shortsMuteButton = shortsMuteButton;
     this.shortsVolumeSlider = shortsVolumeSlider;
+    this.shortsFullscreenButton = fullScreenButton;
     this.controlVolumeWithArrows = controlVolumeWithArrows;
     this.disableInfiniteLoop = disableInfiniteLoop;
     this.enabled = enabled;
+
+    /** @type {HTMLButtonElement | null} */
+    this.fullScreenButton = null;
 
     /** @type {(muteButton: HTMLButtonElement, volumeSlider: HTMLInputElement) => void | null} */
     this.onNewShortVolumeControls = null;
@@ -58,7 +67,7 @@ class YTShortsPlayer {
 
     video.addEventListener('ended', (e) => {
       if (this.disableInfiniteLoop) {
-        video.pause()
+        video.pause();
       }
     });
   }
@@ -66,8 +75,13 @@ class YTShortsPlayer {
   applyLoopingSetting() {
     if (this.video.currentTime > 0) {
       this.video.loop = !this.disableInfiniteLoop;
-      if (!this.disableInfiniteLoop && (this.video.ended || Math.abs(this.video.currentTime - this.video.duration) < 5 && this.video.paused)) {
-        this.video.play()
+      if (
+        !this.disableInfiniteLoop &&
+        (this.video.ended ||
+          (Math.abs(this.video.currentTime - this.video.duration) < 5 &&
+            this.video.paused))
+      ) {
+        this.video.play();
       }
     }
   }
@@ -95,6 +109,8 @@ class YTShortsPlayer {
       created = true;
     }
 
+    this.controls = controls;
+
     const scrubber = this.createScrubber(controls);
     if (created) controls.appendChild(scrubber);
 
@@ -108,11 +124,19 @@ class YTShortsPlayer {
     const playButton = this.createPlayButton(controls);
     const volumeControl = this.createVolumeControl(controls);
     const timeDisplay = this.createTimeDisplay(controls);
+    const fullscreenButton = this.createFullscreenButton(controls);
 
     if (created) {
       controlButtons.appendChild(playButton);
       controlButtons.appendChild(volumeControl);
       controlButtons.appendChild(timeDisplay);
+
+      // create space between the controls and the full screen button.
+      const spacer = document.createElement('div');
+      spacer.classList.add('spacer');
+      controlButtons.appendChild(spacer);
+
+      controlButtons.appendChild(fullscreenButton);
 
       controls.classList.add('cfyts-player-controls');
     }
@@ -436,6 +460,60 @@ class YTShortsPlayer {
 
   /** @param {number} volumePercent */
   setVolumeSliderInitialVolumeChange(volumePercent) {
-    this.onInitialVolumePercent(volumePercent);
+    if (this.onInitialVolumePercent) this.onInitialVolumePercent(volumePercent);
+  }
+
+  /** @param {HTMLDivElement} controls */
+  createFullscreenButton(controls) {
+    // we use the youtube fullscreen button to toggle the fullscreen mode.
+    // the button was added to youtube recently (november 2024).
+    // youtube gradually rolls out changes, so some users might not have the feature yet.
+    // for users that don't have, it will not work, so we hide it using the "hidden" attribute.
+
+    this.fullScreenButton = controls.querySelector('.full-screen-button');
+
+    if (!this.fullScreenButton) {
+      this.fullScreenButton = document.createElement('button');
+      this.fullScreenButton.classList.add('full-screen-button');
+      this.fullScreenButton.innerHTML = `
+        <svg
+          xmlns="http://www.w3.org/2000/svg"
+          width="24"
+          height="24"
+          viewBox="0 0 24 24"
+          fill="none"
+          stroke="white"
+          stroke-width="2"
+          stroke-linecap="round"
+          stroke-linejoin="round"
+          class="lucide lucide-maximize"
+        >
+          <path d="M8 3H5a2 2 0 0 0-2 2v3" />
+          <path d="M21 8V5a2 2 0 0 0-2-2h-3" />
+          <path d="M3 16v3a2 2 0 0 0 2 2h3" />
+          <path d="M16 21h3a2 2 0 0 0 2-2v-3" />
+        </svg>
+      `;
+    }
+
+    if (!this.shortsFullscreenButton) {
+      this.fullScreenButton.setAttribute('hidden', '');
+    } else {
+      this.fullScreenButton.removeAttribute('hidden');
+    }
+
+    this.fullScreenButton.addEventListener('click', (e) => {
+      if (!chrome.runtime.id) return; // extension was reload or disabled, so ignore this event.
+      if (!this.shortsFullscreenButton) return;
+      this.shortsFullscreenButton.click();
+    });
+
+    return this.fullScreenButton;
+  }
+
+  /** @param {HTMLButtonElement} element */
+  setYTShortsFullscreenButton(element) {
+    this.shortsFullscreenButton = element;
+    if (this.fullScreenButton) this.fullScreenButton.removeAttribute('hidden');
   }
 }

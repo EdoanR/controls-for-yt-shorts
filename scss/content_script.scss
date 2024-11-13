@@ -128,6 +128,10 @@ ytd-shorts[cfyts-enabled='false'] {
   z-index: 10;
   background-color: rgba(0, 0, 0, $player-background-transparency);
 
+  [hidden] {
+    display: none !important;
+  }
+
   input[type='range'].slider {
     -webkit-appearance: none;
     background: white;
@@ -192,9 +196,13 @@ ytd-shorts[cfyts-enabled='false'] {
     display: flex;
     width: 100%;
     align-items: center;
-    padding-left: 10px;
 
-    .play-button {
+    .spacer {
+      flex-grow: 1;
+    }
+
+    .play-button,
+    .full-screen-button {
       width: 40px;
       height: 40px;
       background: none;
@@ -203,8 +211,13 @@ ytd-shorts[cfyts-enabled='false'] {
       opacity: 0.8;
     }
 
-    .play-button:hover {
+    .play-button:hover,
+    .full-screen-button:hover {
       opacity: 1;
+    }
+
+    .full-screen-button {
+      margin-right: 10px;
     }
 
     .play-button[playing='true'] {
@@ -217,6 +230,10 @@ ytd-shorts[cfyts-enabled='false'] {
       .pause-icon {
         display: none;
       }
+    }
+
+    .play-button {
+      margin-left: 10px;
     }
 
     .volume-control {
