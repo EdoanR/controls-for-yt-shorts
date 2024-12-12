@@ -21,9 +21,9 @@ chrome.storage.sync
     const shortVideoSelector = '#shorts-container video';
     const shortsVolumeControlClassName = 'desktop-shorts-volume-controls';
     const shortsVolumeSliderClassName =
-      'YtdDesktopShortsVolumeControlsNativeSlider';
+      'ytdDesktopShortsVolumeControlsNativeSlider';
     const shortsMuteButtonClassName =
-      'YtdDesktopShortsVolumeControlsMuteIconButton';
+      'ytdDesktopShortsVolumeControlsMuteIconButton';
     const shortsFullscreenButtonContainerId = 'fullscreen-button-shape';
     const ytShortsPageTagName = 'ytd-shorts';
 
