@@ -7,6 +7,12 @@
 
 Add a control bar below videos from YouTube Shorts.
 
+Features:
+- Control bar with play/pause, volume, and fullscreen controls
+- Display of current time and total duration
+- Display of video view count
+- Keyboard shortcuts
+
 Keyboard shortcuts:
 
 - Left/Right arrow keys to rewind/fast-forward the video by 5 seconds.

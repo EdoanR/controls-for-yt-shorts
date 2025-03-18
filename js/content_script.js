@@ -13,6 +13,7 @@ chrome.storage.sync
     controlVolumeWithArrows: false,
     disableInfiniteLoop: false,
     hideDefaultControls: true,
+    showViewCount: true,
   })
   .then((items) => {
     /** @type {YTShortsPlayer | null} */
@@ -98,6 +99,7 @@ chrome.storage.sync
       if (player) {
         player.controlVolumeWithArrows = items.controlVolumeWithArrows;
         player.enabled = items.enabled;
+        player.showViewCount = items.showViewCount;
 
         const disableInfiniteLoop = items.enabled && items.disableInfiniteLoop;
 
@@ -127,6 +129,11 @@ chrome.storage.sync
       ytShortsPageElement.setAttribute(
         'cfyts-hide-default-controls',
         items.hideDefaultControls.toString(),
+      );
+      
+      ytShortsPageElement.setAttribute(
+        'cfyts-show-view-count',
+        items.showViewCount.toString(),
       );
     }
 
@@ -256,6 +263,7 @@ chrome.storage.sync
         items.controlVolumeWithArrows,
         items.enabled,
         items.disableInfiniteLoop,
+        items.showViewCount,
       );
 
       devLog('player added.');

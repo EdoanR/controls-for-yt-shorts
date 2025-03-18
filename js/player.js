@@ -8,6 +8,7 @@ class YTShortsPlayer {
    * @param {boolean} [controlVolumeWithArrows]
    * @param {boolean} [enabled]
    * @param {boolean} [disableInfiniteLoop]
+   * @param {boolean} [showViewCount]
    * */
   constructor(
     video,
@@ -18,6 +19,7 @@ class YTShortsPlayer {
     controlVolumeWithArrows = false,
     enabled = true,
     disableInfiniteLoop = false,
+    showViewCount = true,
   ) {
     this.video = video;
     this.container = container;
@@ -27,6 +29,7 @@ class YTShortsPlayer {
     this.controlVolumeWithArrows = controlVolumeWithArrows;
     this.disableInfiniteLoop = disableInfiniteLoop;
     this.enabled = enabled;
+    this.showViewCount = showViewCount;
 
     /** @type {HTMLButtonElement | null} */
     this.fullScreenButton = null;
@@ -137,12 +140,14 @@ class YTShortsPlayer {
     const playButton = this.createPlayButton(controls);
     const volumeControl = this.createVolumeControl(controls);
     const timeDisplay = this.createTimeDisplay(controls);
+    const viewCount = this.createViewCount(controls);
     const fullscreenButton = this.createFullscreenButton(controls);
 
     if (created) {
       controlButtons.appendChild(playButton);
       controlButtons.appendChild(volumeControl);
       controlButtons.appendChild(timeDisplay);
+      controlButtons.appendChild(viewCount);
 
       // create space between the controls and the full screen button.
       const spacer = document.createElement('div');
@@ -335,23 +340,139 @@ class YTShortsPlayer {
     }
 
     const updateTimeDisplay = () => {
-      const duration = this.video.duration;
-      const currentTime = this.video.currentTime;
+      if (isExtensionDisabledOrReloaded()) return;
+      if (!this.video) return;
 
-      // format current time as mm:ss
-      const currentTimeFormatted = formatTime(currentTime);
-      const durationFormatted = formatTime(duration);
-
-      timeDisplay.textContent = `${currentTimeFormatted} / ${durationFormatted}`;
+      timeDisplay.textContent = `${formatTime(
+        this.video.currentTime,
+      )} / ${formatTime(this.video.duration)}`;
     };
 
     updateTimeDisplay();
+
     this.video.addEventListener('timeupdate', (e) => {
       if (isExtensionDisabledOrReloaded()) return;
       updateTimeDisplay();
     });
 
+    this.video.addEventListener('loadedmetadata', (e) => {
+      if (isExtensionDisabledOrReloaded()) return;
+      updateTimeDisplay();
+    });
+
     return timeDisplay;
+  }
+
+  /** @param {HTMLDivElement} controls */
+  createViewCount(controls) {
+    let viewCountDisplay = controls.querySelector('.view-count-display');
+
+    if (!viewCountDisplay) {
+      viewCountDisplay = document.createElement('div');
+      viewCountDisplay.classList.add('view-count-display');
+    }
+
+    // Update visibility based on configuration
+    const updateViewCountVisibility = () => {
+      if (this.showViewCount) {
+        viewCountDisplay.style.display = '';
+      } else {
+        viewCountDisplay.style.display = 'none';
+      }
+    };
+
+    // Update visibility initially
+    updateViewCountVisibility();
+
+    const updateViewCount = () => {
+      if (isExtensionDisabledOrReloaded()) return;
+      if (!this.showViewCount) return;
+      
+      // List of possible selectors to find the view count
+      const selectors = [
+        // views selector
+        {
+          query: "#factoids > view-count-factoid-renderer > factoid-renderer > div",
+          getAttribute: "aria-label"
+        },
+        // Alternative selector 1
+        {
+          query: "#shorts-container .ytd-reel-player-overlay-renderer #info-text",
+          getAttribute: null
+        },
+        // Alternative selector 2
+        {
+          query: "#metadata-line > span:first-child",
+          getAttribute: null
+        },
+        // Alternative selector 3
+        {
+          query: "ytd-reel-player-header-renderer #info ytd-badge-supported-renderer yt-formatted-string",
+          getAttribute: null
+        },
+        // Alternative selector 4
+        {
+          query: ".view-count.ytd-video-view-count-renderer",
+          getAttribute: null
+        }
+      ];
+      
+      // Try each selector until finding one that works
+      for (const selector of selectors) {
+        const element = document.querySelector(selector.query);
+        if (!element) continue;
+        
+        let viewText = '';
+        if (selector.getAttribute) {
+          viewText = element.getAttribute(selector.getAttribute) || '';
+        } else {
+          viewText = element.textContent || '';
+        }
+        
+        viewText = viewText.trim();
+        if (viewText) {
+          viewCountDisplay.textContent = viewText;
+          return; // Exit function after finding the first valid value
+        }
+      }
+      
+      // If we got here, no selector worked
+      viewCountDisplay.textContent = '';
+    };
+
+    // Set up to react to configuration changes
+    Object.defineProperty(this, 'showViewCount', {
+      get: function() {
+        return this._showViewCount;
+      },
+      set: function(value) {
+        this._showViewCount = value;
+        updateViewCountVisibility();
+        if (value) updateViewCount();
+      }
+    });
+
+    // Update initially
+    updateViewCount();
+
+    // Set up a comprehensive MutationObserver to detect document changes
+    const observer = new MutationObserver(() => {
+      requestAnimationFrame(() => {
+        updateViewCount();
+      });
+    });
+      
+    observer.observe(document.body, {
+      childList: true,
+      subtree: true,
+      attributes: true,
+      attributeFilter: ['aria-label']
+    });
+
+    // Also update when the video changes
+    this.video.addEventListener('loadeddata', updateViewCount);
+    
+    return viewCountDisplay;
   }
 
   /** @param {HTMLDivElement} controls */
