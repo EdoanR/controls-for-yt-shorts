@@ -193,4 +193,25 @@ ytd-shorts[cfyts-enabled=false] .cfyts-player-controls {
   font-size: 13px;
 }
 
+.cfyts-player-controls .control-buttons .view-count-display {
+  font-family: "YouTube Noto", Roboto, Arial, Helvetica, sans-serif;
+  font-size: 13px;
+  margin-left: 10px;
+  color: rgba(255, 255, 255, 0.9);
+  display: flex;
+  align-items: center;
+  font-weight: 500;
+  background-color: rgba(0, 0, 0, 0.5);
+  padding: 2px 6px;
+  border-radius: 4px;
+  max-width: 150px;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+ytd-shorts[cfyts-enabled=true][cfyts-show-view-count=false] .cfyts-player-controls .view-count-display {
+  display: none !important;
+}
+
 /*# sourceMappingURL=content_script.css.map */
