@@ -372,7 +372,7 @@ class YTShortsPlayer {
       viewCountDisplay.classList.add('view-count-display');
     }
 
-    // Atualizar a visibilidade com base na configuração
+    // Update visibility based on configuration
     const updateViewCountVisibility = () => {
       if (this.showViewCount) {
         viewCountDisplay.style.display = '';
@@ -381,43 +381,43 @@ class YTShortsPlayer {
       }
     };
 
-    // Atualizar inicialmente a visibilidade
+    // Update visibility initially
     updateViewCountVisibility();
 
     const updateViewCount = () => {
       if (isExtensionDisabledOrReloaded()) return;
       if (!this.showViewCount) return;
       
-      // Lista de possíveis seletores para encontrar a contagem de visualizações
+      // List of possible selectors to find the view count
       const selectors = [
-        // Seletor do Better YT Shorts
+        // views selector
         {
           query: "#factoids > view-count-factoid-renderer > factoid-renderer > div",
           getAttribute: "aria-label"
         },
-        // Seletor alternativo 1
+        // Alternative selector 1
         {
           query: "#shorts-container .ytd-reel-player-overlay-renderer #info-text",
           getAttribute: null
         },
-        // Seletor alternativo 2
+        // Alternative selector 2
         {
           query: "#metadata-line > span:first-child",
           getAttribute: null
         },
-        // Seletor alternativo 3
+        // Alternative selector 3
         {
           query: "ytd-reel-player-header-renderer #info ytd-badge-supported-renderer yt-formatted-string",
           getAttribute: null
         },
-        // Seletor alternativo 4
+        // Alternative selector 4
         {
           query: ".view-count.ytd-video-view-count-renderer",
           getAttribute: null
         }
       ];
       
-      // Tentar cada seletor até encontrar um que funcione
+      // Try each selector until finding one that works
       for (const selector of selectors) {
         const element = document.querySelector(selector.query);
         if (!element) continue;
@@ -432,15 +432,15 @@ class YTShortsPlayer {
         viewText = viewText.trim();
         if (viewText) {
           viewCountDisplay.textContent = viewText;
-          return; // Encerrar função após encontrar o primeiro valor válido
+          return; // Exit function after finding the first valid value
         }
       }
       
-      // Se chegou aqui, nenhum seletor funcionou
+      // If we got here, no selector worked
       viewCountDisplay.textContent = '';
     };
 
-    // Configurar para reagir à mudança na configuração
+    // Set up to react to configuration changes
     Object.defineProperty(this, 'showViewCount', {
       get: function() {
         return this._showViewCount;
@@ -452,10 +452,10 @@ class YTShortsPlayer {
       }
     });
 
-    // Atualizar inicialmente
+    // Update initially
     updateViewCount();
 
-    // Configurar um MutationObserver abrangente para detectar mudanças no documento
+    // Set up a comprehensive MutationObserver to detect document changes
     const observer = new MutationObserver(() => {
       requestAnimationFrame(() => {
         updateViewCount();
@@ -469,7 +469,7 @@ class YTShortsPlayer {
       attributeFilter: ['aria-label']
     });
 
-    // Também atualizar quando o vídeo mudar
+    // Also update when the video changes
     this.video.addEventListener('loadeddata', updateViewCount);
     
     return viewCountDisplay;
