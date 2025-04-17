@@ -252,12 +252,10 @@ class YTShortsPlayer {
     document.addEventListener('keydown', (e) => {
       if (isExtensionDisabledOrReloaded()) return;
       if (!this.enabled) return;
-      //if (e.key !== 'ArrowLeft' && e.key !== 'ArrowRight') return;
       if (!validKeys.includes(e.key)) return;
       if (!isShortsPage()) return;
       if (isUserTyping()) return;
 
-      //const goFoward = e.key === 'ArrowRight';
       const goFoward = ['ArrowRight', 'l', 'L'].includes(e.key);
 
       const currentTime = this.video.currentTime;
