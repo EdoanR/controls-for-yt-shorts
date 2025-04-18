@@ -247,15 +247,16 @@ class YTShortsPlayer {
     }
 
     const slider = scrubber.querySelector('input');
+    const validKeys = ['ArrowLeft', 'ArrowRight', 'j', 'l', 'J', 'L'];
 
     document.addEventListener('keydown', (e) => {
       if (isExtensionDisabledOrReloaded()) return;
       if (!this.enabled) return;
-      if (e.key !== 'ArrowLeft' && e.key !== 'ArrowRight') return;
+      if (!validKeys.includes(e.key)) return;
       if (!isShortsPage()) return;
       if (isUserTyping()) return;
 
-      const goFoward = e.key === 'ArrowRight';
+      const goFoward = ['ArrowRight', 'l', 'L'].includes(e.key);
 
       const currentTime = this.video.currentTime;
       const duration = this.video.duration;
