@@ -18,7 +18,6 @@ chrome.storage.sync
     /** @type {YTShortsPlayer | null} */
     let player = null;
 
-    const shortVideoSelector = '#shorts-container video';
     const shortsVolumeControlClassName = 'desktop-shorts-volume-controls';
     const shortsVolumeSliderClassName =
       'ytdDesktopShortsVolumeControlsNativeSlider';
@@ -132,23 +131,20 @@ chrome.storage.sync
 
     /** @param {HTMLElement} [ element ] */
     function checkForVideoAndContainer(element) {
-      const video = element
-        ? element.querySelector('video')
-        : document.querySelector(shortVideoSelector);
-
-      if (!video) return;
-      shortsVideo = video;
-
-      if (player) return;
+      if (player || (shortsVideo && shortVideoContainer)) return;
 
       const container = document.querySelector(
         '#shorts-container ytd-player #container .html5-video-player',
       );
+      if (!container) return;
 
-      devLog('video found?', video, container);
-      if (!video || !container) return;
+      const video = container.querySelector('video');
+      if (!video) return;
 
+      shortsVideo = video;
       shortVideoContainer = container;
+
+      devLog('video and container found', video, container);
 
       createPlayerWhenAllElementFound();
     }
