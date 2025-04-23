@@ -336,8 +336,8 @@ class YTShortsPlayer {
     }
 
     const updateTimeDisplay = () => {
-      const duration = this.video.duration;
-      const currentTime = this.video.currentTime;
+      const duration = this.video.duration || 0;
+      const currentTime = this.video.currentTime || 0;
 
       // format current time as mm:ss
       const currentTimeFormatted = formatTime(currentTime);
