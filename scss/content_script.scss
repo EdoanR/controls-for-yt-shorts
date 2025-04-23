@@ -17,6 +17,12 @@ ytd-shorts[cfyts-enabled='true'] {
     transition: opacity $animation-speed ease-in-out;
   }
 
+  // setup transition for the ad overlay
+  ytd-in-feed-ad-layout-renderer
+    .ytwReelsPlayerOverlayLayoutViewModelHostMetadataContainer {
+    transition: opacity $animation-speed ease-in-out;
+  }
+
   ytd-shorts-player-controls {
     opacity: 1;
     visibility: visible;
@@ -30,7 +36,9 @@ ytd-shorts[cfyts-enabled='true'] {
     display: none;
   }
 
+  // when "hide default controls" option is enabled.
   &[cfyts-hide-default-controls='true'] {
+    // hide the controls buttons on top.
     ytd-shorts-player-controls {
       opacity: 0 !important;
       visibility: hidden;
@@ -52,6 +60,13 @@ ytd-shorts[cfyts-enabled='true'] {
         border-radius: 0px; // remove rounded bottom corners
       }
 
+      // move ad overlay up
+      ytd-in-feed-ad-layout-renderer
+        .ytwReelsPlayerOverlayLayoutViewModelHostMetadataContainer {
+        margin-bottom: $player-height;
+        border-radius: 0px; // remove rounded bottom corners
+      }
+
       // show controls
       .cfyts-player-controls {
         height: $player-height;
@@ -67,6 +82,13 @@ ytd-shorts[cfyts-enabled='true'] {
       border-radius: 0px; // remove rounded bottom corners
     }
 
+    // move ad overlay up
+    ytd-in-feed-ad-layout-renderer
+      .ytwReelsPlayerOverlayLayoutViewModelHostMetadataContainer {
+      margin-bottom: $player-height;
+      border-radius: 0px; // remove rounded bottom corners
+    }
+
     // show controls.
     .cfyts-player-controls {
       height: $player-height;
@@ -77,6 +99,13 @@ ytd-shorts[cfyts-enabled='true'] {
   &[cfyts-hide-info='true'] {
     // hide video info by default.
     #overlay {
+      opacity: 0;
+    }
+
+    // hide ad info
+    ytd-in-feed-ad-layout-renderer
+      .ytwReelsPlayerOverlayLayoutViewModelHostMetadataContainer
+      reels-ad-metadata-view-model {
       opacity: 0;
     }
 
