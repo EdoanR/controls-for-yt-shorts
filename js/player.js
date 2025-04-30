@@ -388,6 +388,9 @@ class YTShortsPlayer {
       this.shortsMuteButton.click();
     });
 
+    /** @type {HTMLDivElement} */
+    const volumeSliderContainer = volumeControl.querySelector('.volume-slider');
+
     const volumeSlider = volumeControl.querySelector(
       '.volume-slider input[type="range"]',
     );
@@ -455,6 +458,22 @@ class YTShortsPlayer {
     volumeSlider.addEventListener('input', (e) => {
       if (isExtensionDisabledOrReloaded()) return;
       this.shortsVolumeSlider.value = volumeSlider.value;
+      this.shortsVolumeSlider.dispatchEvent(new Event('input'));
+      updateVolumeSliderBackground();
+    });
+
+    // Change volume by scrolling on the volume slider while hovering it.
+    // We do this on the volume container because it's a bigger area to scroll into it.
+    volumeSliderContainer.addEventListener('wheel', (e) => {
+      if (isExtensionDisabledOrReloaded()) return;
+      e.preventDefault();
+      
+      const currentValue = parseInt(volumeSlider.value);
+      const delta = e.deltaY > 0 ? -5 : 5;
+      const newValue = Math.max(0, Math.min(100, currentValue + delta));
+      
+      volumeSlider.value = newValue;
+      this.shortsVolumeSlider.value = newValue;
       this.shortsVolumeSlider.dispatchEvent(new Event('input'));
       updateVolumeSliderBackground();
     });

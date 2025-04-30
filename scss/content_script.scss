@@ -314,7 +314,9 @@ ytd-shorts[cfyts-enabled='false'] {
       }
 
       .volume-slider {
-        min-height: 18px;
+        display: flex;
+        min-height: 40px;
+        align-items: center;
 
         input {
           width: 80px;
