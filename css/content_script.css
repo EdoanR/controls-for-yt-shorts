@@ -200,7 +200,9 @@ ytd-shorts[cfyts-enabled=false] .cfyts-player-controls {
   display: none;
 }
 .cfyts-player-controls .control-buttons .volume-control .volume-slider {
-  min-height: 18px;
+  display: flex;
+  min-height: 40px;
+  align-items: center;
 }
 .cfyts-player-controls .control-buttons .volume-control .volume-slider input {
   width: 80px;
