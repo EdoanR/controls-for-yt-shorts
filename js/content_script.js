@@ -70,8 +70,8 @@ chrome.storage.sync
             applyConfig();
           }
 
-          checkForMuteButton(element);
-          checkForVolumeSlider(element);
+          checkForMuteButton();
+          checkForVolumeSlider();
           checkForFullScreenButton(element);
           checkForVideoAndContainer(element);
         }
