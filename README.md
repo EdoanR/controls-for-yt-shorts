@@ -45,6 +45,6 @@ Keyboard shortcuts:
 
 # License
 
-Copyright (c) 2023 Edoan.
+Copyright (c) 2025 Edoan.
 
 This project is released under the MIT license.
