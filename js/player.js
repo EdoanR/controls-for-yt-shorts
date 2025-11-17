@@ -323,6 +323,11 @@ class YTShortsPlayer {
       }
     });
 
+    // prevent scrubber slider from capturing keyboard events.
+    slider.addEventListener('keydown', (e) => {
+      e.preventDefault();
+    });
+
     return scrubber;
   }
 
@@ -467,11 +472,11 @@ class YTShortsPlayer {
     volumeSliderContainer.addEventListener('wheel', (e) => {
       if (isExtensionDisabledOrReloaded()) return;
       e.preventDefault();
-      
+
       const currentValue = parseInt(volumeSlider.value);
       const delta = e.deltaY > 0 ? -5 : 5;
       const newValue = Math.max(0, Math.min(100, currentValue + delta));
-      
+
       volumeSlider.value = newValue;
       this.shortsVolumeSlider.value = newValue;
       this.shortsVolumeSlider.dispatchEvent(new Event('input'));
