@@ -19,10 +19,14 @@ chrome.storage.sync
     let player = null;
 
     const shortsVolumeControlClassName = 'desktop-shorts-volume-controls';
-    const shortsVolumeSliderClassName =
-      'ytdDesktopShortsVolumeControlsNativeSlider';
-    const shortsMuteButtonClassName =
-      'ytdDesktopShortsVolumeControlsMuteIconButton';
+    const shortsVolumeSliderClasses = [
+      'ytdDesktopShortsVolumeControlsNativeSlider',
+      'ytdVolumeControlsNativeSlider',
+    ];
+    const shortsMuteButtonClasses = [
+      'ytdDesktopShortsVolumeControlsMuteIconButton',
+      'ytdVolumeControlsMuteIconButton',
+    ];
     const shortsFullscreenButtonContainerId = 'fullscreen-button-shape';
     const ytShortsPageTagName = 'ytd-shorts';
 
@@ -58,6 +62,8 @@ chrome.storage.sync
           /** @type {HTMLElement} */
           const element = addedNode;
 
+          element.setAttribute('node-added', '');
+
           if (element.tagName === shortsVolumeControlClassName.toUpperCase()) {
             shortsVolumeSlider = null;
             shortsMuteButton = null;
@@ -84,6 +90,16 @@ chrome.storage.sync
     });
 
     devLog('observing element...', observableElement);
+
+    setInterval(() => {
+      devLog('#123 elements check', {
+        shortsVideo,
+        shortVideoContainer,
+        shortsMuteButton,
+        shortsVolumeSlider,
+        shortsFullScreenButton,
+      });
+    }, 2000);
 
     chrome.storage.sync.onChanged.addListener((changes) => {
       for (const key in changes) {
@@ -129,8 +145,7 @@ chrome.storage.sync
       );
     }
 
-    /** @param {HTMLElement} [ element ] */
-    function checkForVideoAndContainer(element) {
+    function checkForVideoAndContainer() {
       if (player || (shortsVideo && shortVideoContainer)) return;
 
       const container = document.querySelector(
@@ -149,18 +164,18 @@ chrome.storage.sync
       createPlayerWhenAllElementFound();
     }
 
-    /** @param {HTMLElement} [ element ] */
-    function checkForMuteButton(element) {
-      if (!element)
-        element = document.querySelector(`.${shortsMuteButtonClassName}`);
-      if (!element) return;
-      if (shortsMuteButton) return;
-      if (element.className !== shortsMuteButtonClassName) return;
+    function checkForMuteButton() {
+      const element = document.querySelector(
+        `.${shortsMuteButtonClasses.join(', .')}`,
+      );
+      if (!element || element.hasAttribute('cfyts-mute-button')) return;
 
       shortsMuteButton = element;
+      // add attribute so we can check if is the same element later.
+      shortsMuteButton.setAttribute('cfyts-mute-button', '');
       devLog('mute button found', shortsMuteButton);
 
-      if (player && shortsVolumeSlider) {
+      if (player) {
         // update volume controls.
         player.setNewShortVolumeControls(shortsMuteButton, shortsVolumeSlider);
       } else {
@@ -169,13 +184,11 @@ chrome.storage.sync
       }
     }
 
-    /** @param {HTMLElement} [ element ] */
-    function checkForVolumeSlider(element) {
-      if (!element)
-        element = document.querySelector(`.${shortsVolumeSliderClassName}`);
-      if (!element) return;
-      if (shortsVolumeSlider) return;
-      if (element.className !== shortsVolumeSliderClassName) return;
+    function checkForVolumeSlider() {
+      const element = document.querySelector(
+        `.${shortsVolumeSliderClasses.join(', .')}`,
+      );
+      if (!element || element.hasAttribute('cfyts-volume-slider')) return;
 
       const attrObserver = new MutationObserver((mutations) => {
         for (const mutation of mutations) {
@@ -198,6 +211,8 @@ chrome.storage.sync
       });
 
       shortsVolumeSlider = element;
+      // add attribute so we can check if is the same element later.
+      shortsVolumeSlider.setAttribute('cfyts-volume-slider', '');
       devLog('volume slider found', shortsVolumeSlider);
 
       attrObserver.observe(element, {
@@ -208,7 +223,11 @@ chrome.storage.sync
         attributeOldValue: true,
       });
 
-      if (player && shortsMuteButton) {
+      if (
+        player &&
+        shortsMuteButton &&
+        shortsMuteButton.hasAttribute('cfyts-mute-button')
+      ) {
         // update volume controls.
         player.setNewShortVolumeControls(shortsMuteButton, shortsVolumeSlider);
       } else {
@@ -217,27 +236,32 @@ chrome.storage.sync
       }
     }
 
-    /** @param {HTMLElement} [ element ] */
-    function checkForFullScreenButton(element) {
-      if (element) {
-        if (element.id !== shortsFullscreenButtonContainerId) return;
-        element = element.querySelector('button');
-        if (!element) return;
-      }
-
-      if (!element) {
-        element = document.querySelector(
-          `#${shortsFullscreenButtonContainerId} button`,
-        );
-        if (!element) return;
-      }
+    function checkForFullScreenButton() {
+      const element = document.querySelector(
+        `#${shortsFullscreenButtonContainerId} button`,
+      );
+      if (!element || element.hasAttribute('cfyts-full-screen-button')) return;
 
       shortsFullScreenButton = element;
+      // add attribute so we can check if is the same element later.
+      shortsFullScreenButton.setAttribute('cfyts-full-screen-button', '');
+
       // new full screen button found, update the one from the player.
-      if (player) player.setYTShortsFullscreenButton(shortsFullScreenButton);
+      if (player) {
+        player.setYTShortsFullscreenButton(shortsFullScreenButton);
+      } else {
+        createPlayerWhenAllElementFound();
+      }
     }
 
     function createPlayerWhenAllElementFound() {
+      devLog('#123 check', {
+        shortsVideo,
+        shortVideoContainer,
+        shortsMuteButton,
+        shortsVolumeSlider,
+        shortsFullScreenButton,
+      });
       if (!shortsVideo) return;
       if (!shortVideoContainer) return;
       if (!shortsMuteButton) return;
