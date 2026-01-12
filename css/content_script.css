@@ -20,6 +20,9 @@ ytd-shorts[cfyts-enabled=true][cfyts-hide-default-controls=true] ytd-shorts-play
   opacity: 0 !important;
   visibility: hidden;
 }
+ytd-shorts[cfyts-enabled=true][cfyts-hide-default-controls=false] #cfyts-menu-button {
+  display: none;
+}
 ytd-shorts[cfyts-enabled=true][cfyts-always-visible=false]:has(.player-wrapper:hover,
 reel-player-header-renderer:hover,
 .metadata-container:hover,
@@ -68,6 +71,9 @@ ytd-shorts[cfyts-enabled=true] ytd-reel-video-renderer[is-active][is-watch-while
 }
 
 ytd-shorts[cfyts-enabled=false] .cfyts-player-controls {
+  display: none;
+}
+ytd-shorts[cfyts-enabled=false] #cfyts-menu-button {
   display: none;
 }
 

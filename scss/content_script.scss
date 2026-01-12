@@ -45,6 +45,13 @@ ytd-shorts[cfyts-enabled='true'] {
     }
   }
 
+  &[cfyts-hide-default-controls='false'] {
+    // hide the custom menu button.
+    #cfyts-menu-button {
+      display: none;
+    }
+  }
+
   // when "always visible" option is disabled.
   &[cfyts-always-visible='false'] {
     // on player hover, or video info hover
@@ -141,6 +148,11 @@ ytd-shorts[cfyts-enabled='true'] {
 ytd-shorts[cfyts-enabled='false'] {
   // hide controls.
   .cfyts-player-controls {
+    display: none;
+  }
+
+  // hide the custom menu button.
+  #cfyts-menu-button {
     display: none;
   }
 }

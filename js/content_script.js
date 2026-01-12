@@ -41,6 +41,8 @@ chrome.storage.sync
     /** @type {HTMLButtonElement | null} */
     let shortsFullScreenButton = null;
 
+    let addedMenuButtonClickListener = false;
+
     let ytShortsPageElement = document.querySelector(ytShortsPageTagName);
     if (ytShortsPageElement) applyConfig();
 
@@ -53,6 +55,7 @@ chrome.storage.sync
     checkForVolumeSlider();
     checkForFullScreenButton();
     checkForVideoAndContainer();
+    addMenuButton();
 
     const observer = new MutationObserver((mutations) => {
       for (const mutation of mutations) {
@@ -74,6 +77,13 @@ chrome.storage.sync
             ytShortsPageElement = element;
             devLog('yt shorts page element found');
             applyConfig();
+          }
+
+          if (
+            element.id === 'button-bar' ||
+            element.tagName.toLowerCase() === 'ytd-reel-video-renderer'
+          ) {
+            addMenuButton();
           }
 
           checkForMuteButton();
@@ -262,5 +272,44 @@ chrome.storage.sync
       );
 
       devLog('player added.');
+    }
+
+    function addMenuButton() {
+      const actionButtons = document.querySelector(
+        'ytd-reel-video-renderer reel-action-bar-view-model',
+      );
+      if (!actionButtons) return;
+
+      let menuButton = actionButtons.querySelector('#cfyts-menu-button');
+
+      if (!menuButton) {
+        menuButton = document.createElement('button');
+        menuButton.textContent = 'Menu';
+        menuButton.id = 'cfyts-menu-button';
+        menuButton.className =
+          'yt-spec-button-shape-next yt-spec-button-shape-next--tonal yt-spec-button-shape-next--mono yt-spec-button-shape-next--size-l yt-spec-button-shape-next--icon-button yt-spec-button-shape-next--enable-backdrop-filter-experiment';
+
+        // add the three dots icon.
+        menuButton.innerHTML = `
+        <div aria-hidden="true" class="yt-spec-button-shape-next__icon" ><span class="ytIconWrapperHost" style="width: 24px; height: 24px;"><span class="yt-icon-shape ytSpecIconShapeHost"><div style="width: 100%; height: 100%; display: block; filter: drop-shadow(0px 1px 4px rgba(0, 0, 0, 0.3)); fill: currentcolor;" ><svg xmlns="http://www.w3.org/2000/svg" height="24" viewBox="0 0 24 24" width="24" focusable="false" aria-hidden="true" style="pointer-events: none; display: inherit; width: 100%; height: 100%;"><path d="M12 4a2 2 0 100 4 2 2 0 000-4Zm0 6a2 2 0 100 4 2 2 0 000-4Zm0 6a2 2 0 100 4 2 2 0 000-4Z"></path></svg></div></span></span></div>
+        `;
+
+        actionButtons.insertAdjacentElement('afterbegin', menuButton);
+        addedMenuButtonClickListener = false;
+      }
+
+      if (addedMenuButtonClickListener) return;
+
+      menuButton.addEventListener('click', () => {
+        if (isExtensionDisabledOrReloaded()) return;
+        const menuButton = document.querySelector(
+          'ytd-reel-video-renderer #menu-button button',
+        );
+
+        if (!menuButton) return alert('Something went wrong!');
+        menuButton.click();
+      });
+
+      addedMenuButtonClickListener = true;
     }
   });
