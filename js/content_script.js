@@ -62,7 +62,7 @@ chrome.storage.sync
           /** @type {HTMLElement} */
           const element = addedNode;
 
-          element.setAttribute('node-added', '');
+          if (IS_DEV) element.setAttribute('node-added', '');
 
           if (element.tagName === shortsVolumeControlClassName.toUpperCase()) {
             shortsVolumeSlider = null;
