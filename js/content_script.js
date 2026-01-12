@@ -91,16 +91,6 @@ chrome.storage.sync
 
     devLog('observing element...', observableElement);
 
-    setInterval(() => {
-      devLog('#123 elements check', {
-        shortsVideo,
-        shortVideoContainer,
-        shortsMuteButton,
-        shortsVolumeSlider,
-        shortsFullScreenButton,
-      });
-    }, 2000);
-
     chrome.storage.sync.onChanged.addListener((changes) => {
       for (const key in changes) {
         items[key] = changes[key].newValue;
@@ -255,13 +245,6 @@ chrome.storage.sync
     }
 
     function createPlayerWhenAllElementFound() {
-      devLog('#123 check', {
-        shortsVideo,
-        shortVideoContainer,
-        shortsMuteButton,
-        shortsVolumeSlider,
-        shortsFullScreenButton,
-      });
       if (!shortsVideo) return;
       if (!shortVideoContainer) return;
       if (!shortsMuteButton) return;
