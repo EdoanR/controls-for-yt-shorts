@@ -83,7 +83,8 @@ chrome.storage.sync
             element.id === 'button-bar' ||
             element.tagName.toLowerCase() === 'ytd-reel-video-renderer' ||
             element.tagName.toLowerCase() === 'reel-action-bar-view-model' ||
-            (element.querySelector && element.querySelector('reel-action-bar-view-model'))
+            (element.querySelector &&
+              element.querySelector('reel-action-bar-view-model'))
           ) {
             addMenuButton();
           }

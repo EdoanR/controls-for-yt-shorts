@@ -4,10 +4,10 @@ $player-background-transparency: 0.8;
 
 // when "enabled" option is enabled.
 ytd-shorts[cfyts-enabled='true'] {
-
   // setup overlay transitions
   ytd-reel-player-overlay-renderer .metadata-container,
-  ytd-reel-player-overlay-renderer .ytReelPlayerOverlayViewModelMetadataContainer {
+  ytd-reel-player-overlay-renderer
+    .ytReelPlayerOverlayViewModelMetadataContainer {
     margin-bottom: 0px;
     transition:
       margin-bottom $animation-speed ease-in-out,
@@ -20,7 +20,8 @@ ytd-shorts[cfyts-enabled='true'] {
   }
 
   // setup transition for the ad overlay
-  ytd-in-feed-ad-layout-renderer .ytwReelsPlayerOverlayLayoutViewModelHostMetadataContainer {
+  ytd-in-feed-ad-layout-renderer
+    .ytwReelsPlayerOverlayLayoutViewModelHostMetadataContainer {
     transition: opacity $animation-speed ease-in-out;
   }
 
@@ -39,7 +40,6 @@ ytd-shorts[cfyts-enabled='true'] {
 
   // when "hide default controls" option is enabled.
   &[cfyts-hide-default-controls='true'] {
-
     // hide the controls buttons on top.
     ytd-shorts-player-controls {
       opacity: 0 !important;
@@ -48,7 +48,6 @@ ytd-shorts[cfyts-enabled='true'] {
   }
 
   &[cfyts-hide-default-controls='false'] {
-
     // hide the custom menu button.
     #cfyts-menu-button,
     .cfyts-menu-button,
@@ -59,23 +58,26 @@ ytd-shorts[cfyts-enabled='true'] {
 
   // when "always visible" option is disabled.
   &[cfyts-always-visible='false'] {
-
     // on player hover, or video info hover
-    &:has(.player-wrapper:hover,
-      reel-player-header-renderer:hover,
-      .metadata-container:hover,
-      #sound-metadata:hover,
-      yt-reel-player-overlay-view-model .ytReelPlayerOverlayViewModelMetadataContainer:hover) {
-
+    &:has(
+        .player-wrapper:hover,
+        reel-player-header-renderer:hover,
+        .metadata-container:hover,
+        #sound-metadata:hover,
+        yt-reel-player-overlay-view-model
+          .ytReelPlayerOverlayViewModelMetadataContainer:hover
+      ) {
       // move overlay up
       ytd-reel-player-overlay-renderer .metadata-container,
-      yt-reel-player-overlay-view-model .ytReelPlayerOverlayViewModelMetadataContainer {
+      yt-reel-player-overlay-view-model
+        .ytReelPlayerOverlayViewModelMetadataContainer {
         margin-bottom: $player-height;
         border-radius: 0px; // remove rounded bottom corners
       }
 
       // move ad overlay up
-      ytd-in-feed-ad-layout-renderer .ytwReelsPlayerOverlayLayoutViewModelHostMetadataContainer {
+      ytd-in-feed-ad-layout-renderer
+        .ytwReelsPlayerOverlayLayoutViewModelHostMetadataContainer {
         margin-bottom: $player-height;
         border-radius: 0px; // remove rounded bottom corners
       }
@@ -88,16 +90,17 @@ ytd-shorts[cfyts-enabled='true'] {
   }
 
   &[cfyts-always-visible='true'] {
-
     // move overlay up.
     ytd-reel-player-overlay-renderer .metadata-container,
-    yt-reel-player-overlay-view-model .ytReelPlayerOverlayViewModelMetadataContainer {
+    yt-reel-player-overlay-view-model
+      .ytReelPlayerOverlayViewModelMetadataContainer {
       margin-bottom: $player-height;
       border-radius: 0px; // remove rounded bottom corners
     }
 
     // move ad overlay up
-    ytd-in-feed-ad-layout-renderer .ytwReelsPlayerOverlayLayoutViewModelHostMetadataContainer {
+    ytd-in-feed-ad-layout-renderer
+      .ytwReelsPlayerOverlayLayoutViewModelHostMetadataContainer {
       margin-bottom: $player-height;
       border-radius: 0px; // remove rounded bottom corners
     }
@@ -109,28 +112,35 @@ ytd-shorts[cfyts-enabled='true'] {
   }
 
   &[cfyts-hide-info='true'] {
-
     // hide video info by default.
     #overlay,
-    yt-reel-player-overlay-view-model .ytReelPlayerOverlayViewModelMetadataContainer {
+    yt-reel-player-overlay-view-model
+      .ytReelPlayerOverlayViewModelMetadataContainer {
       opacity: 0;
-      transition: opacity 0.2s ease-in-out, margin-bottom $animation-speed ease-in-out;
+      transition:
+        opacity 0.2s ease-in-out,
+        margin-bottom $animation-speed ease-in-out;
     }
 
     // hide ad info
-    ytd-in-feed-ad-layout-renderer .ytwReelsPlayerOverlayLayoutViewModelHostMetadataContainer reels-ad-metadata-view-model {
+    ytd-in-feed-ad-layout-renderer
+      .ytwReelsPlayerOverlayLayoutViewModelHostMetadataContainer
+      reels-ad-metadata-view-model {
       opacity: 0;
     }
 
-    &:has(.player-wrapper:hover,
-      reel-player-header-renderer:hover,
-      .metadata-container:hover,
-      #sound-metadata:hover,
-      yt-reel-player-overlay-view-model .ytReelPlayerOverlayViewModelMetadataContainer:hover) {
-
+    &:has(
+        .player-wrapper:hover,
+        reel-player-header-renderer:hover,
+        .metadata-container:hover,
+        #sound-metadata:hover,
+        yt-reel-player-overlay-view-model
+          .ytReelPlayerOverlayViewModelMetadataContainer:hover
+      ) {
       // show video info
       #overlay,
-      yt-reel-player-overlay-view-model .ytReelPlayerOverlayViewModelMetadataContainer {
+      yt-reel-player-overlay-view-model
+        .ytReelPlayerOverlayViewModelMetadataContainer {
         opacity: 1;
       }
     }
@@ -152,7 +162,6 @@ ytd-shorts[cfyts-enabled='true'] {
 
 // when "enabled" option is disabled.
 ytd-shorts[cfyts-enabled='false'] {
-
   // hide controls.
   .cfyts-player-controls {
     display: none;
