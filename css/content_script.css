@@ -20,7 +20,9 @@ ytd-shorts[cfyts-enabled=true][cfyts-hide-default-controls=true] ytd-shorts-play
   opacity: 0 !important;
   visibility: hidden;
 }
-ytd-shorts[cfyts-enabled=true][cfyts-hide-default-controls=false] #cfyts-menu-button {
+ytd-shorts[cfyts-enabled=true][cfyts-hide-default-controls=false] #cfyts-menu-button,
+ytd-shorts[cfyts-enabled=true][cfyts-hide-default-controls=false] .cfyts-menu-button,
+ytd-shorts[cfyts-enabled=true][cfyts-hide-default-controls=false] .cfyts-menu-button-wrapper {
   display: none;
 }
 ytd-shorts[cfyts-enabled=true][cfyts-always-visible=false]:has(.player-wrapper:hover,
@@ -90,7 +92,9 @@ ytd-shorts[cfyts-enabled=true] ytd-reel-video-renderer[is-active][is-watch-while
 ytd-shorts[cfyts-enabled=false] .cfyts-player-controls {
   display: none;
 }
-ytd-shorts[cfyts-enabled=false] #cfyts-menu-button {
+ytd-shorts[cfyts-enabled=false] #cfyts-menu-button,
+ytd-shorts[cfyts-enabled=false] .cfyts-menu-button,
+ytd-shorts[cfyts-enabled=false] .cfyts-menu-button-wrapper {
   display: none;
 }
 
@@ -233,6 +237,10 @@ ytd-shorts[cfyts-enabled=false] #cfyts-menu-button {
 .cfyts-player-controls .control-buttons .time-display {
   font-family: "YouTube Noto", Roboto, Arial, Helvetica, sans-serif;
   font-size: 13px;
+}
+
+.cfyts-menu-button-wrapper {
+  padding-bottom: 14px !important;
 }
 
 /*# sourceMappingURL=content_script.css.map */

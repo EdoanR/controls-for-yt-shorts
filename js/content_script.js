@@ -81,7 +81,9 @@ chrome.storage.sync
 
           if (
             element.id === 'button-bar' ||
-            element.tagName.toLowerCase() === 'ytd-reel-video-renderer'
+            element.tagName.toLowerCase() === 'ytd-reel-video-renderer' ||
+            element.tagName.toLowerCase() === 'reel-action-bar-view-model' ||
+            (element.querySelector && element.querySelector('reel-action-bar-view-model'))
           ) {
             addMenuButton();
           }
@@ -275,41 +277,52 @@ chrome.storage.sync
     }
 
     function addMenuButton() {
-      const actionButtons = document.querySelector(
-        'ytd-reel-video-renderer reel-action-bar-view-model',
+      const allActionBars = document.querySelectorAll(
+        'ytd-reel-video-renderer reel-action-bar-view-model, ytd-reel-video-renderer #button-bar',
       );
-      if (!actionButtons) return;
 
-      let menuButton = actionButtons.querySelector('#cfyts-menu-button');
+      allActionBars.forEach((actionButtons) => {
+        let menuButton = actionButtons.querySelector('.cfyts-menu-button');
 
-      if (!menuButton) {
-        menuButton = document.createElement('button');
-        menuButton.textContent = 'Menu';
-        menuButton.id = 'cfyts-menu-button';
-        menuButton.className =
-          'yt-spec-button-shape-next yt-spec-button-shape-next--tonal yt-spec-button-shape-next--mono yt-spec-button-shape-next--size-l yt-spec-button-shape-next--icon-button yt-spec-button-shape-next--enable-backdrop-filter-experiment';
+        if (!menuButton) {
+          menuButton = document.createElement('button');
+          menuButton.textContent = 'Menu';
+          menuButton.className =
+            'cfyts-menu-button ytSpecButtonShapeNextHost ytSpecButtonShapeNextTonal ytSpecButtonShapeNextMono ytSpecButtonShapeNextSizeL ytSpecButtonShapeNextIconButton ytSpecButtonShapeNextEnableBackdropFilterExperiment';
 
-        // add the three dots icon.
-        menuButton.innerHTML = `
-        <div aria-hidden="true" class="yt-spec-button-shape-next__icon" ><span class="ytIconWrapperHost" style="width: 24px; height: 24px;"><span class="yt-icon-shape ytSpecIconShapeHost"><div style="width: 100%; height: 100%; display: block; filter: drop-shadow(0px 1px 4px rgba(0, 0, 0, 0.3)); fill: currentcolor;" ><svg xmlns="http://www.w3.org/2000/svg" height="24" viewBox="0 0 24 24" width="24" focusable="false" aria-hidden="true" style="pointer-events: none; display: inherit; width: 100%; height: 100%;"><path d="M12 4a2 2 0 100 4 2 2 0 000-4Zm0 6a2 2 0 100 4 2 2 0 000-4Zm0 6a2 2 0 100 4 2 2 0 000-4Z"></path></svg></div></span></span></div>
-        `;
+          // add the three dots icon.
+          menuButton.innerHTML = `
+          <div aria-hidden="true" class="yt-spec-button-shape-next__icon" ><span class="ytIconWrapperHost" style="width: 24px; height: 24px;"><span class="yt-icon-shape ytSpecIconShapeHost"><div style="width: 100%; height: 100%; display: block; filter: drop-shadow(0px 1px 4px rgba(0, 0, 0, 0.3)); fill: currentcolor;" ><svg xmlns="http://www.w3.org/2000/svg" height="24" viewBox="0 0 24 24" width="24" focusable="false" aria-hidden="true" style="pointer-events: none; display: inherit; width: 100%; height: 100%;"><path d="M12 4a2 2 0 100 4 2 2 0 000-4Zm0 6a2 2 0 100 4 2 2 0 000-4Zm0 6a2 2 0 100 4 2 2 0 000-4Z"></path></svg></div></span></span></div>
+          `;
 
-        actionButtons.insertAdjacentElement('afterbegin', menuButton);
-        addedMenuButtonClickListener = false;
-      }
+          // Depending on the DOM structure, wrap it if necessary to maintain layout.
+          if (
+            actionButtons.tagName.toLowerCase() === 'reel-action-bar-view-model'
+          ) {
+            const wrapper = document.createElement('button-view-model');
+            wrapper.className =
+              'ytSpecButtonViewModelHost ytwReelActionBarViewModelHostDesktopActionButton cfyts-menu-button-wrapper';
+            const label = document.createElement('label');
+            label.className = 'ytSpecButtonShapeWithLabelHost';
+            label.appendChild(menuButton);
+            wrapper.appendChild(label);
+            actionButtons.insertAdjacentElement('afterbegin', wrapper);
+          } else {
+            actionButtons.insertAdjacentElement('afterbegin', menuButton);
+          }
 
-      if (addedMenuButtonClickListener) return;
+          menuButton.addEventListener('click', () => {
+            if (isExtensionDisabledOrReloaded()) return;
+            const originalMenuButton = actionButtons
+              .closest('ytd-reel-video-renderer')
+              .querySelector(
+                '#menu-button button, ytd-shorts-player-controls #menu-button button',
+              );
 
-      menuButton.addEventListener('click', () => {
-        if (isExtensionDisabledOrReloaded()) return;
-        const menuButton = document.querySelector(
-          'ytd-reel-video-renderer #menu-button button',
-        );
-
-        if (!menuButton) return alert('Something went wrong!');
-        menuButton.click();
+            if (!originalMenuButton) return alert('Something went wrong!');
+            originalMenuButton.click();
+          });
+        }
       });
-
-      addedMenuButtonClickListener = true;
     }
   });
