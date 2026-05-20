@@ -19,6 +19,7 @@ Keyboard shortcuts:
 - **Always show controls**: don't need to hover the video for the controls to appear.
 - **Hide title and channel**: hide video info when not hovering the video.
 - **Control volume with Arrow Up/Down**: allow you to control the volume with arrow keys without holding shift/cmd, it is optional, as many users use it to scroll between shorts.
+- **Disable infinite loop**: disable video replay when it ends, instead it will just stop.
 
 # Installation
 
