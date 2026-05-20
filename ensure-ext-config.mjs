@@ -1,12 +1,12 @@
-import fs from 'fs/promises'
+import fs from 'fs/promises';
 
 async function createTemplateIfMissing() {
   try {
     await fs.stat('./.ext.mjs');
-    return
+    return;
   } catch (err) {
-    console.log('".ext.js" missing. Creating new from template.')
-    await fs.copyFile('./.ext-template.mjs', './.ext.mjs')
+    console.log('".ext.js" missing. Creating new from template.');
+    await fs.copyFile('./.ext-template.mjs', './.ext.mjs');
   }
 }
 
