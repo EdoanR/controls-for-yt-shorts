@@ -59,10 +59,14 @@ ytd-shorts[cfyts-enabled='true'] {
         .player-wrapper:hover,
         reel-player-header-renderer:hover,
         .metadata-container:hover,
-        #sound-metadata:hover
+        #sound-metadata:hover,
+        yt-reel-player-overlay-view-model
+          .ytReelPlayerOverlayViewModelMetadataContainer:hover
       ) {
       // move overlay up
-      ytd-reel-player-overlay-renderer .metadata-container {
+      ytd-reel-player-overlay-renderer .metadata-container,
+      yt-reel-player-overlay-view-model
+        .ytReelPlayerOverlayViewModelMetadataContainer {
         margin-bottom: $player-height;
         border-radius: 0px; // remove rounded bottom corners
       }
@@ -81,10 +85,11 @@ ytd-shorts[cfyts-enabled='true'] {
     }
   }
 
-  // when "always visible" option is enabled.
   &[cfyts-always-visible='true'] {
     // move overlay up.
-    ytd-reel-player-overlay-renderer .metadata-container {
+    ytd-reel-player-overlay-renderer .metadata-container,
+    yt-reel-player-overlay-view-model
+      .ytReelPlayerOverlayViewModelMetadataContainer {
       margin-bottom: $player-height;
       border-radius: 0px; // remove rounded bottom corners
     }
@@ -102,11 +107,13 @@ ytd-shorts[cfyts-enabled='true'] {
     }
   }
 
-  // when "hide video info" option is enabled.
   &[cfyts-hide-info='true'] {
     // hide video info by default.
-    #overlay {
+    #overlay,
+    yt-reel-player-overlay-view-model
+      .ytReelPlayerOverlayViewModelMetadataContainer {
       opacity: 0;
+      transition: opacity 0.2s ease-in-out;
     }
 
     // hide ad info
@@ -116,15 +123,18 @@ ytd-shorts[cfyts-enabled='true'] {
       opacity: 0;
     }
 
-    // on player hover, or video info hover
     &:has(
         .player-wrapper:hover,
         reel-player-header-renderer:hover,
         .metadata-container:hover,
-        #sound-metadata:hover
+        #sound-metadata:hover,
+        yt-reel-player-overlay-view-model
+          .ytReelPlayerOverlayViewModelMetadataContainer:hover
       ) {
       // show video info
-      #overlay {
+      #overlay,
+      yt-reel-player-overlay-view-model
+        .ytReelPlayerOverlayViewModelMetadataContainer {
         opacity: 1;
       }
     }
