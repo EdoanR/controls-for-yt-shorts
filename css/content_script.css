@@ -1,4 +1,5 @@
-ytd-shorts[cfyts-enabled=true] ytd-reel-player-overlay-renderer .metadata-container {
+ytd-shorts[cfyts-enabled=true] ytd-reel-player-overlay-renderer .metadata-container,
+ytd-shorts[cfyts-enabled=true] ytd-reel-player-overlay-renderer .ytReelPlayerOverlayViewModelMetadataContainer {
   margin-bottom: 0px;
   transition: margin-bottom 0.2s ease-in-out, opacity 0.2s ease-in-out, border-radius 0.2s ease-in-out;
 }
@@ -68,7 +69,7 @@ ytd-shorts[cfyts-enabled=true][cfyts-always-visible=true] .cfyts-player-controls
 ytd-shorts[cfyts-enabled=true][cfyts-hide-info=true] #overlay,
 ytd-shorts[cfyts-enabled=true][cfyts-hide-info=true] yt-reel-player-overlay-view-model .ytReelPlayerOverlayViewModelMetadataContainer {
   opacity: 0;
-  transition: opacity 0.2s ease-in-out;
+  transition: opacity 0.2s ease-in-out, margin-bottom 0.2s ease-in-out;
 }
 ytd-shorts[cfyts-enabled=true][cfyts-hide-info=true] ytd-in-feed-ad-layout-renderer .ytwReelsPlayerOverlayLayoutViewModelHostMetadataContainer reels-ad-metadata-view-model {
   opacity: 0;

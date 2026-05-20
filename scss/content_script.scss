@@ -6,7 +6,8 @@ $player-background-transparency: 0.8;
 ytd-shorts[cfyts-enabled='true'] {
 
   // setup overlay transitions
-  ytd-reel-player-overlay-renderer .metadata-container {
+  ytd-reel-player-overlay-renderer .metadata-container,
+  ytd-reel-player-overlay-renderer .ytReelPlayerOverlayViewModelMetadataContainer {
     margin-bottom: 0px;
     transition:
       margin-bottom $animation-speed ease-in-out,
@@ -113,7 +114,7 @@ ytd-shorts[cfyts-enabled='true'] {
     #overlay,
     yt-reel-player-overlay-view-model .ytReelPlayerOverlayViewModelMetadataContainer {
       opacity: 0;
-      transition: opacity 0.2s ease-in-out;
+      transition: opacity 0.2s ease-in-out, margin-bottom $animation-speed ease-in-out;
     }
 
     // hide ad info
