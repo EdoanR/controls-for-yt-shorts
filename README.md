@@ -37,6 +37,10 @@ Keyboard shortcuts:
 5. Click on **Load unpacked** button and choose the folder where you extracted the previously downloaded zip file.
 6. Done!
 
+# Contributing
+
+Contributions are welcome! Please read the [Contributing Guide](CONTRIBUTING.md) to learn how to set up the project locally and submit your changes.
+
 # Support me
 
 [![Ko-fi](https://i.imgur.com/4R7kMKs.png)](https://ko-fi.com/edoan)
